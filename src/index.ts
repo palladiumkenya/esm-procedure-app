@@ -16,6 +16,11 @@ import referredTile from "./procedure-tiles/referred-tile.component";
 import completedTile from "./procedure-tiles/completed-tile.component";
 import testsOrdered from "./procedure-tiles/tests-ordered-tile.component";
 
+import {
+  createDashboardLink,
+  registerWorkspace,
+} from "@openmrs/esm-patient-common-lib";
+
 const moduleName = "@openmrs/esm-procedure-app";
 
 const options = {
