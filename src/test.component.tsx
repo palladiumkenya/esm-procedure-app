@@ -18,7 +18,7 @@ const TestComponent: React.FC = () => {
   return (
     <div className={styles.container}>
       <h3 className={styles.welcome}>
-        {t("radiologyApp", "RADILOGY AND IMAGING")}
+        {t("procedureApp", "Medical Examinations & Surgeries")}
       </h3>
     </div>
   );

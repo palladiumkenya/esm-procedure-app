@@ -6,25 +6,25 @@
   },
   "extensions": [
     {
-      "component": "radiologyDashboardLink",
-      "name": "radiology-dashboard-link",
+      "component": "procedureDashboardLink",
+      "name": "procedure-dashboard-link",
       "slot": "homepage-dashboard-slot",
       "meta": {
-        "name": "radiology",
-        "title": "radiology",
-        "slot": "radiology-dashboard-slot"
+        "name": "procedure",
+        "title": "procedure",
+        "slot": "procedure-dashboard-slot"
       }
     },
     {
       "component": "root",
-      "name": "radiology-dashboard-root",
-      "slot": "radiology-dashboard-slot"
+      "name": "procedure-dashboard-root",
+      "slot": "procedure-dashboard-slot"
     }
   ],
   "pages": [
     {
       "component": "root",
-      "route": "radiology"
+      "route": "procedure"
     }
   ]
 }

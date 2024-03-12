@@ -12,7 +12,7 @@ import {
 import { configSchema } from "./config-schema";
 import { createLeftPanelLink } from "./left-panel-link";
 
-const moduleName = "@openmrs/esm-radiology-app";
+const moduleName = "@openmrs/esm-procedure-app";
 
 const options = {
   featureName: "root-world",
@@ -52,10 +52,10 @@ export const root = getAsyncLifecycle(
   options
 );
 
-export const radiologyDashboardLink = getSyncLifecycle(
+export const procedureDashboardLink = getSyncLifecycle(
   createLeftPanelLink({
-    name: "radiology",
-    title: "Radiology",
+    name: "procedure",
+    title: "Procedures",
   }),
   options
 );

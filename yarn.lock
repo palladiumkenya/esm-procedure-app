@@ -5532,7 +5532,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openmrs/esm-radiology-imaging@workspace:.":
+"@openmrs/esm-radiology-app@workspace:.":
   version: 0.0.0-use.local
   resolution: "@openmrs/esm-radiology-app@workspace:."
   dependencies:

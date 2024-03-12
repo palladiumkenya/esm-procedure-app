@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import TestComponent from "./test.component";
 
 const Root: React.FC = () => {
-  const baseName = window.getOpenmrsSpaBase() + "home/radiology";
+  const baseName = window.getOpenmrsSpaBase() + "home/procedure";
 
   return (
     <BrowserRouter basename={baseName}>
