@@ -19,6 +19,42 @@
       "component": "root",
       "name": "procedure-dashboard-root",
       "slot": "procedure-dashboard-slot"
+    },
+    {
+        "name": "tests-ordered-tile-component",
+        "slot": "procedure-tiles-slot",
+        "component": "testOrderedTileComponent",
+        "meta": {
+            "name": "testsOrderedTileSlot",
+            "title": "Ordered tests"
+        }
+    },
+    {
+        "name": "completed-tile-component",
+        "slot": "procedure-tiles-slot",
+        "component": "completedTileComponent",
+        "meta": {
+            "name": "completedTileSlot",
+            "title": "Completed"
+        }
+    },
+    {
+        "name": "worklist-tile-component",
+        "slot": "procedure-tiles-slot",
+        "component": "worklistTileComponent",
+        "meta": {
+            "name": "worklisTileSlot",
+            "title": "Worklist"
+        }
+    },
+    {
+        "name": "referred-tile-component",
+        "slot": "procedure-tiles-slot",
+        "component": "referredTileComponent",
+        "meta": {
+            "name": "referredTileSlot",
+            "title": "Referred tests"
+        }
     }
   ],
   "pages": [
