@@ -1,12 +1,11 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Procedure from "./procedure.component";
+import { basePath } from "./constants";
 
 const Root: React.FC = () => {
-  const baseName = window.getOpenmrsSpaBase() + "home/procedure";
-
   return (
-    <BrowserRouter basename={baseName}>
+    <BrowserRouter basename={basePath}>
       <Routes>
         <Route path="/" element={<Procedure />} />
       </Routes>
