@@ -9,7 +9,7 @@ const ReferredTileComponent = () => {
     <SummaryTile
       label={t("transferred", "Transferred")}
       value={0}
-      headerLabel={t("referredTests", "Ex-Referred tests")}
+      headerLabel={t("referredProcedures", "Referred Procedures")}
     />
   );
 };

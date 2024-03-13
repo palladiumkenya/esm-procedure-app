@@ -40,7 +40,7 @@ const ProcedureOrdersTabs: React.FC = () => {
             contained
           >
             <Tab style={{ width: "150px" }}>
-              {t("testedOrders", "Tests ordered")}
+              {t("proceduresOrdered", "Procedures ordered")}
             </Tab>
             {tabExtensions
               .filter((extension) => Object.keys(extension.meta).length > 0)

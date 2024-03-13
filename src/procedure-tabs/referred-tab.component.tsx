@@ -5,8 +5,8 @@ const ReferredComponent = () => {
   return (
     <div>
       <EmptyState
-        displayText={"referred tests"}
-        headerTitle={"Referred tests"}
+        displayText={"referred procedures"}
+        headerTitle={"Referred procedures"}
       />
     </div>
   );
