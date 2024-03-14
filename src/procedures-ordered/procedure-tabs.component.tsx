@@ -7,7 +7,7 @@ import {
 import { Tab, Tabs, TabList, TabPanels, TabPanel } from "@carbon/react";
 import { useTranslation } from "react-i18next";
 import styles from "./procedure-queue.scss";
-import TestsOrderedList from "./procedures-ordered-list.component";
+import ProcedureOrderedList from "./procedures-ordered-list.component";
 import { ComponentContext } from "@openmrs/esm-framework/src/internal";
 
 const procedurePanelSlot = "procedures-panels-slot";
@@ -58,7 +58,7 @@ const ProcedureOrdersTabs: React.FC = () => {
           </TabList>
           <TabPanels>
             <TabPanel style={{ padding: 0 }}>
-              <TestsOrderedList />
+              <ProcedureOrderedList />
             </TabPanel>
             {tabExtensions
               .filter((extension) => Object.keys(extension.meta).length > 0)

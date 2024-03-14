@@ -1,7 +1,7 @@
 import React from "react";
 import CompletedList from "../completed-list/completed-list.component";
 
-const ApprovedComponent = () => {
+const CompletedComponent = () => {
   return (
     <div>
       <CompletedList fulfillerStatus={"COMPLETED"} />
@@ -9,4 +9,4 @@ const ApprovedComponent = () => {
   );
 };
 
-export default ApprovedComponent;
+export default CompletedComponent;

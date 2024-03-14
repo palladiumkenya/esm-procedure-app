@@ -9,6 +9,8 @@ import worklistTile from "./procedure-tiles/worklist-tile.component";
 import referredTile from "./procedure-tiles/referred-tile.component";
 import completedTile from "./procedure-tiles/completed-tile.component";
 import testsOrdered from "./procedure-tiles/tests-ordered-tile.component";
+import referredProcedures from "./procedure-tabs/referred-tab.component";
+import completedProcedures from "./procedure-tabs/completed-tab.component";
 
 const moduleName = "@openmrs/esm-procedure-app";
 
@@ -48,3 +50,7 @@ export const referredTileComponent = getSyncLifecycle(referredTile, options);
 export const completedTileComponent = getSyncLifecycle(completedTile, options);
 
 export const testOrderedTileComponent = getSyncLifecycle(testsOrdered, options);
+
+export const referredProceduresTabComponent = getSyncLifecycle(referredProcedures, options);
+
+export const completedProceduresTabComponent = getSyncLifecycle(completedProcedures, options);
