@@ -58,7 +58,7 @@ const ProcedureOrdersTabs: React.FC = () => {
           </TabList>
           <TabPanels>
             <TabPanel style={{ padding: 0 }}>
-              <ProcedureOrderedList />
+              <ProcedureOrderedList fulfillerStatus="NEW"/>
             </TabPanel>
             {tabExtensions
               .filter((extension) => Object.keys(extension.meta).length > 0)
