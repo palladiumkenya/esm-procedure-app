@@ -4,20 +4,13 @@ import {
   Extension,
   useConnectedExtensions,
 } from "@openmrs/esm-framework";
-import { Tab, Tabs, TabList, TabPanels, TabPanel, Search } from "@carbon/react";
+import { Tab, Tabs, TabList, TabPanels, TabPanel } from "@carbon/react";
 import { useTranslation } from "react-i18next";
 import styles from "./procedure-queue.scss";
 import TestsOrderedList from "./procedures-ordered-list.component";
 import { ComponentContext } from "@openmrs/esm-framework/src/internal";
 
-enum TabTypes {
-  STARRED,
-  SYSTEM,
-  USER,
-  ALL,
-}
-
-const procedurePanelSlot = "lab-panels-slot";
+const procedurePanelSlot = "procedures-panels-slot";
 
 const ProcedureOrdersTabs: React.FC = () => {
   const { t } = useTranslation();
@@ -39,9 +32,7 @@ const ProcedureOrdersTabs: React.FC = () => {
             aria-label="Procedure tabs"
             contained
           >
-            <Tab style={{ width: "150px" }}>
-              {t("proceduresOrdered", "Procedures ordered")}
-            </Tab>
+            <Tab>{t("proceduresOrdered", "Procedures ordered")}</Tab>
             {tabExtensions
               .filter((extension) => Object.keys(extension.meta).length > 0)
               .map((extension, index) => {
@@ -53,7 +44,6 @@ const ProcedureOrdersTabs: React.FC = () => {
                       key={index}
                       className={styles.tab}
                       id={`${title || index}-tab`}
-                      style={{ width: "150px" }}
                     >
                       {t(title, {
                         ns: extension.moduleName,

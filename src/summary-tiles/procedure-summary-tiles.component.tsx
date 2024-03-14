@@ -1,23 +1,13 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React from "react";
 import styles from "./procedure-summary-tiles.scss";
 import {
   AssignedExtension,
-  ExtensionSlot,
   useConnectedExtensions,
-  useSession,
-  attach,
-  detachAll,
   Extension,
 } from "@openmrs/esm-framework";
 import { ComponentContext } from "@openmrs/esm-framework/src/internal";
-import SummaryTile from "./summary-tile.component";
 
 const ProcedureSummaryTiles: React.FC = () => {
-  const { t } = useTranslation();
-
-  const session = useSession();
-
   const ProcedureTileSlot = "procedure-tiles-slot";
 
   const tilesExtensions = useConnectedExtensions(
@@ -28,7 +18,7 @@ const ProcedureSummaryTiles: React.FC = () => {
     <div className={styles.cardContainer}>
       {tilesExtensions
         .filter((extension) => Object.keys(extension.meta).length > 0)
-        .map((extension, index) => {
+        .map((extension) => {
           return (
             <ComponentContext.Provider
               key={extension.id}

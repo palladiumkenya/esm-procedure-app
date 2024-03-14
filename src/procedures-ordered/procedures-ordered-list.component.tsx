@@ -17,7 +17,7 @@ import {
   Tile,
   TableToolbarSearch,
 } from "@carbon/react";
-import { TrashCan, OverflowMenuVertical } from "@carbon/react/icons";
+import { OverflowMenuVertical } from "@carbon/react/icons";
 
 import { useTranslation } from "react-i18next";
 import {
@@ -27,7 +27,6 @@ import {
   usePagination,
 } from "@openmrs/esm-framework";
 import styles from "./procedure-queue.scss";
-import { getStatusColor } from "../utils/functions";
 import { Result, useGetOrdersWorklist } from "../work-list/work-list.resource";
 import OrderCustomOverflowMenuComponent from "../ui-components/overflow-menu.component";
 
