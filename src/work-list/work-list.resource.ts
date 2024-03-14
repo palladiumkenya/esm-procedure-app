@@ -124,8 +124,7 @@ export interface SpecimenSource {
 }
 
 export function useGetOrdersWorklist(fulfillerStatus: string) {
-  // const { laboratoryOrderTypeUuid } = useConfig();
-const laboratoryOrderTypeUuid  = "4237a01f-29c5-4167-9d8e-96d6e590aa33";
+  const { laboratoryOrderTypeUuid } = useConfig();
   const orderTypeQuery =
     laboratoryOrderTypeUuid !== null
       ? `orderType=${laboratoryOrderTypeUuid}&`
