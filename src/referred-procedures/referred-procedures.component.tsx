@@ -22,11 +22,11 @@ import { formatDate, parseDate, usePagination } from "@openmrs/esm-framework";
 import { useSearchResults } from "../hooks/useSearchResults";
 import { Result } from "../work-list/work-list.resource";
 
-interface CompletedListProps {
+interface ReferredListProps {
   fulfillerStatus: string;
 }
 
-export const CompletedList: React.FC<CompletedListProps> = ({fulfillerStatus}) => {
+export const ReferredProcedures: React.FC<ReferredListProps> = ({fulfillerStatus}) => {
   const { t } = useTranslation();
   const [currentPageSize, setCurrentPageSize] = useState<number>(10);
   const { workListEntries, isLoading } = useOrdersWorklist("", "");
@@ -72,6 +72,7 @@ export const CompletedList: React.FC<CompletedListProps> = ({fulfillerStatus}) =
     { id: 4, header: t("priority", "Priority"), key: "urgency" },
     { id: 5, header: t("orderer", "Orderer"), key: "orderer" },
     { id: 6, header: t("actions", "Actions"), key: "actions" },
+    
   ];
 
   return isLoading ? (

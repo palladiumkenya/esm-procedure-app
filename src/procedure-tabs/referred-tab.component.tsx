@@ -1,12 +1,11 @@
 import React from "react";
 import { EmptyState } from "@openmrs/esm-patient-common-lib";
+import { ReferredProcedures } from "../referred-procedures/referred-procedures.component"; 
 
 const ReferredComponent = () => {
   return (
     <div>
-      <EmptyState
-        displayText={"referred procedures"}
-        headerTitle={"Referred procedures"}
+      <ReferredProcedures fulfillerStatus={"COMPLETED"}
       />
     </div>
   );

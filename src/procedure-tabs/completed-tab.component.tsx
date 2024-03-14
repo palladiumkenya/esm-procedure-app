@@ -1,5 +1,5 @@
 import React from "react";
-import CompletedList from "../completed-list/completed-list.component";
+import { CompletedList } from "../completed-list/completed-list.component";
 
 const CompletedComponent = () => {
   return (

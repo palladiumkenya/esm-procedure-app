@@ -27,16 +27,12 @@ import {
   usePagination,
 } from "@openmrs/esm-framework";
 import styles from "./procedure-queue.scss";
-import { Result, useGetOrdersWorklist } from "../work-list/work-list.resource";
+import { useOrdersWorklist } from "../hooks/useOrdersWorklist";
 import OrderCustomOverflowMenuComponent from "../ui-components/overflow-menu.component";
 
-interface LaboratoryPatientListProps {}
+interface ProcedurePatientListProps {fulfillerStatus: string;}
 
-interface RejectOrderProps {
-  order: Result;
-}
-
-const ProcedureOrderedList: React.FC<LaboratoryPatientListProps> = () => {
+const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = ({fulfillerStatus}) => {
   const { t } = useTranslation();
 
   const OrderStatuses = [
@@ -59,7 +55,7 @@ const ProcedureOrderedList: React.FC<LaboratoryPatientListProps> = () => {
     | "DECLINED"
   >("All");
 
-  const { workListEntries, isLoading } = useGetOrdersWorklist("");
+  const { workListEntries, isLoading } = useOrdersWorklist("","");
 
   const filteredStatus = useMemo(() => {
     if (!filter || filter == "All") {
@@ -113,8 +109,8 @@ const ProcedureOrderedList: React.FC<LaboratoryPatientListProps> = () => {
         ),
         patient: entry?.patient?.display.split("-")[1],
         orderNumber: entry?.orderNumber,
-        accessionNumber: entry?.accessionNumber,
-        test: entry?.concept?.display,
+        procedure: entry?.concept.display,
+        priority: entry?.urgency,
         action: entry?.action,
         orderer: entry?.orderer?.display,
         urgency: entry?.urgency,
@@ -222,7 +218,7 @@ const ProcedureOrderedList: React.FC<LaboratoryPatientListProps> = () => {
                     <p className={styles.content}>
                       {t(
                         "noWorklistsToDisplay",
-                        "No worklists orders to display"
+                        "No procedure orders to display"
                       )}
                     </p>
                   </div>
