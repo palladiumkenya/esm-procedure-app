@@ -1,18 +1,18 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import SummaryTile from "../summary-tiles/summary-tile.component";
-import { useLabTestsStats } from "../summary-tiles/procedure-summary.resource";
+import { useProcedureOrderStats } from "../summary-tiles/procedure-summary.resource";
 
 const ReferredTileComponent = () => {
   const { t } = useTranslation();
 
-  const { count: completedCount } = useLabTestsStats("COMPLETED");
+  const { count: completedCount } = useProcedureOrderStats("COMPLETED");
 
   return (
     <SummaryTile
       label={t("completed", "Completed")}
       value={completedCount}
-      headerLabel={t("results", "Results")}
+      headerLabel={t("proceduresCompleted", "Completed")}
     />
   );
 };

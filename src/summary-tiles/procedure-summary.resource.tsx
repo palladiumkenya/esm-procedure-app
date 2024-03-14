@@ -42,15 +42,10 @@ export function useServices() {
 }
 
 // worklist
-export function useLabTestsStats(fulfillerStatus: string) {
-  const { laboratoryOrderTypeUuid } = useConfig();
-
-  const orderTypeQuery =
-    laboratoryOrderTypeUuid !== ""
-      ? `orderType=${laboratoryOrderTypeUuid}&`
-      : "";
-
-  const apiUrl = `${restBaseUrl}/order?${orderTypeQuery}fulfillerStatus=${fulfillerStatus}&v=full`;
+export function useProcedureOrderStats(fulfillerStatus: string) {
+  const procedureOrderTypeUuid = "4237a01f-29c5-4167-9d8e-96d6e590aa33"; // TODO Make configurable
+  const orderTypeParam = `orderTypes=${procedureOrderTypeUuid}&fulfillerStatus=${fulfillerStatus}&v=custom:(uuid,orderNumber,patient:ref,concept:(uuid,display,conceptClass),action,careSetting,orderer:ref,urgency,instructions,commentToFulfiller,display,fulfillerStatus,dateStopped)`;
+  const apiUrl = `/ws/rest/v1/order?${orderTypeParam}`;
 
   const mutateOrders = useCallback(
     () =>
@@ -58,18 +53,37 @@ export function useLabTestsStats(fulfillerStatus: string) {
         (key) =>
           typeof key === "string" &&
           key.startsWith(
-            `/ws/rest/v1/order?orderType=${laboratoryOrderTypeUuid}`
+            `${restBaseUrl}/order?orderType=${procedureOrderTypeUuid}`
           )
       ),
-    [laboratoryOrderTypeUuid]
+    [procedureOrderTypeUuid]
   );
 
   const { data, error, isLoading } = useSWR<
     { data: { results: Array<Result> } },
     Error
   >(apiUrl, openmrsFetch);
+
+  const radiologyOrders = data?.data?.results?.filter((order) => {
+    if (
+      order.concept.conceptClass.uuid === "8d490bf4-c2cc-11de-8d13-0010c6dffd0f"
+    ) {
+      return order;
+    }
+  });
+
+  let length = 0;
+
+  if (!fulfillerStatus) {
+    const processedData = radiologyOrders?.filter(
+      (d) => d.fulfillerStatus == null
+    );
+    length = processedData?.length;
+  } else {
+    length = data?.data ? data.data.results.length : 0;
+  }
   return {
-    count: data?.data ? data.data.results.length : 0,
+    count: length,
     isLoading,
     isError: error,
     mutate: mutateOrders,

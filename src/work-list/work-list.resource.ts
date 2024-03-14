@@ -3,6 +3,7 @@ import { useCallback } from "react";
 import useSWR, { mutate } from "swr";
 
 export interface Result {
+
   uuid: string;
   orderNumber: string;
   accessionNumber: string;
@@ -50,9 +51,14 @@ export interface Link {
 }
 
 export interface Concept {
+  conceptClass: ConceptClass;
   uuid: string;
   display: string;
   links: Link[];
+}
+
+export interface ConceptClass {
+  uuid: string;
 }
 
 export interface CareSetting {
