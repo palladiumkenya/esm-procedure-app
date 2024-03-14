@@ -39,6 +39,33 @@
         }
     },
     {
+      "name": "referred-tab-component",
+      "slot": "procedures-panels-slot",
+      "component": "referredProceduresTabComponent",
+      "meta": {
+          "name": "proceduresPanelSlot",
+          "title": "Referred Procedures"
+      }
+  },
+  {
+    "name": "completed-tab-component",
+    "slot": "procedures-panels-slot",
+    "component": "completedProceduresTabComponent",
+    "meta": {
+        "name": "proceduresPanelSlot",
+        "title": "Completed Procedures"
+    }
+},
+    {
+        "name": "worklist-tile-component",
+        "slot": "procedure-tiles-slot",
+        "component": "worklistTileComponent",
+        "meta": {
+            "name": "worklisTileSlot",
+            "title": "Worklist"
+        }
+    },
+    {
         "name": "referred-tile-component",
         "slot": "procedure-tiles-slot",
         "component": "referredTileComponent",
