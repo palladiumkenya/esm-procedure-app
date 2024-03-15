@@ -61,7 +61,7 @@ const AddToWorklistDialog: React.FC<AddToWorklistDialogProps> = ({
 
   const pickLabRequestQueue = async (event) => {
     event.preventDefault();
-    // pick lab test
+    // pick procedure
     let body = {
       sampleId: specimenID,
       specimenSourceId: specimenType,
@@ -135,7 +135,7 @@ const AddToWorklistDialog: React.FC<AddToWorklistDialogProps> = ({
       <Form onSubmit={pickLabRequestQueue}>
         <ModalHeader
           closeModal={closeModal}
-          title={t("pickRequest", "Pick Lab Request")}
+          title={t("pickRequest", "Pick Request")}
         />
         <ModalBody>
           <div className={styles.modalBody}>
@@ -151,7 +151,7 @@ const AddToWorklistDialog: React.FC<AddToWorklistDialogProps> = ({
                 <div className={styles.sectionTitle}>
                   {preferred
                     ? t("barcode", "Barcode")
-                    : t("specimenID", "Specimen ID")}
+                    : t("specimenID", "Procedure Id")}
                 </div>
 
                 <div

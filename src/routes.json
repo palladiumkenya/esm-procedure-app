@@ -39,6 +39,15 @@
         }
     },
     {
+      "name": "worklist-tab-component",
+      "slot": "procedures-panels-slot",
+      "component": "worklistProceduresTabComponent",
+      "meta": {
+          "name": "proceduresPanelSlot",
+          "title": "Worklist Procedures"
+      }
+  },
+    {
       "name": "referred-tab-component",
       "slot": "procedures-panels-slot",
       "component": "referredProceduresTabComponent",

@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { Microscope, TrashCan } from "@carbon/react/icons";
+import { Scalpel, TrashCan } from "@carbon/react/icons";
 
 import {
   DataTable,
@@ -34,8 +34,9 @@ import {
   usePagination,
 } from "@openmrs/esm-framework";
 import { launchOverlay } from "../components/overlay/hook";
-import ResultForm from "../results/result-form.component";
+import PostProcedureForm from "../results/result-form.component";
 import { getStatusColor } from "../utils/functions";
+import Overlay from "../components/overlay/overlay.component";
 
 interface WorklistProps {
   fulfillerStatus: string;
@@ -54,7 +55,7 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
   const { t } = useTranslation();
 
   const { workListEntries, isLoading } = useGetOrdersWorklist(fulfillerStatus);
-
+  const [activatedOnOrAfterDate, setActivatedOnOrAfterDate] = useState("");
   const pageSizes = [10, 20, 30, 40, 50];
   const [currentPageSize, setPageSize] = useState(10);
 
@@ -86,7 +87,7 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
     { id: 1, header: t("orderNumber", "Procedure Number"), key: "orderNumber" },
     { id: 2, header: t("procedure", "Procedure"), key: "procedure" },
     { id: 3, header: t("patient", "Patient"), key: "patient" },
-    { id: 4, header: t("priority", "Priority"), key: "priority" },
+    { id: 4, header: t("priority", "Priority"), key: "urgency" },
     { id: 5, header: t("orderer", "Orderer"), key: "orderer" },
     { id: 6, header: t("actions", "Actions"), key: "actions" },
   ];
@@ -100,11 +101,11 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
         kind="ghost"
         onClick={() => {
           launchOverlay(
-            t("resultForm", "Lab results form"),
-            <ResultForm patientUuid={patientUuid} order={order} />
+            t("postProcedureResultForm", "Post Procedure form"),
+            <PostProcedureForm patientUuid={patientUuid} order={order} />
           );
         }}
-        renderIcon={(props) => <Microscope size={16} {...props} />}
+        renderIcon={(props) => <Scalpel size={16} {...props} />}
       />
     );
   };
@@ -123,21 +124,26 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
             {entry?.patient?.display.split("-")[1]}
           </ConfigurableLink>
         ),
-        orderNumber: entry?.orderNumber,
-        accessionNumber: entry?.accessionNumber,
-        test: entry?.concept?.display,
-        action: entry?.action,
-        status: (
+        orderNumber: { content: <span>{ entry?.orderNumber}</span>},
+        procedure: { content: <span>{ entry?.concept.display}</span>},
+        action: { content: <span>{ entry?.action}</span>},
+        status:{ 
+          content: (
+            <>
+            <Tag>
           <span
             className={styles.statusContainer}
             style={{ color: `${getStatusColor(entry?.fulfillerStatus)}` }}
           >
-            {entry?.fulfillerStatus}
+            <span>{entry?.fulfillerStatus}</span>
           </span>
+          </Tag>
+          </>
         ),
-        orderer: entry?.orderer?.display,
-        orderType: entry?.orderType?.display,
-        urgency: entry?.urgency,
+      },
+      orderer: { content: <span>{entry.orderer.display}</span> },
+      orderType: { content: <span>{entry?.orderType?.display}</span> },
+      urgency: { content: <span>{entry.urgency}</span> },
         actions: {
           content: (
             <>
@@ -158,6 +164,9 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
 
   if (paginatedWorkListEntries?.length >= 0) {
     return (
+      <>
+      <div>
+        <div className={styles.headerBtnContainer}></div>
       <DataTable rows={tableRows} headers={columns} useZebraStyles>
         {({
           rows,
@@ -174,14 +183,27 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
               }}
             >
               <TableToolbarContent>
-                <Layer>
-                  <TableToolbarSearch
-                    expanded
-                    onChange={onInputChange}
-                    placeholder={t("searchThisList", "Search this list")}
-                    size="sm"
-                  />
-                </Layer>
+              <Layer style={{ margin: "5px" }}>
+                      <DatePicker dateFormat="Y-m-d" datePickerType="single">
+                        <DatePickerInput
+                          labelText={""}
+                          id="activatedOnOrAfterDate"
+                          placeholder="YYYY-MM-DD"
+                          onChange={(event) => {
+                            setActivatedOnOrAfterDate(event.target.value);
+                          }}
+                          type="date"
+                          value={activatedOnOrAfterDate}
+                        />
+                      </DatePicker>
+                    </Layer>
+                    <Layer>
+                      <TableToolbarSearch
+                        onChange={onInputChange}
+                        placeholder={t("searchThisList", "Search this list")}
+                        size="sm"
+                      />
+                    </Layer>
               </TableToolbarContent>
             </TableToolbar>
             <Table {...getTableProps()} className={styles.activePatientsTable}>
@@ -217,7 +239,7 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
                     <p className={styles.content}>
                       {t(
                         "noWorklistsToDisplay",
-                        "No worklists orders to display"
+                        "No worklists procedures to display"
                       )}
                     </p>
                   </div>
@@ -244,6 +266,9 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
           </TableContainer>
         )}
       </DataTable>
+      </div>
+      <Overlay />
+      </>
     );
   }
 };

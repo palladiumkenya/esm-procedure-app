@@ -22,7 +22,7 @@ interface ResultFormProps {
   order: Result;
 }
 
-const ResultForm: React.FC<ResultFormProps> = ({ order, patientUuid }) => {
+const PostProcedureForm: React.FC<ResultFormProps> = ({ order, patientUuid }) => {
   const { t } = useTranslation();
   const {
     control,
@@ -199,4 +199,4 @@ const ResultForm: React.FC<ResultFormProps> = ({ order, patientUuid }) => {
   );
 };
 
-export default ResultForm;
+export default PostProcedureForm;

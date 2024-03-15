@@ -9,12 +9,12 @@ interface PickLabRequestActionMenuProps {
   closeModal: () => void;
 }
 
-const PickLabRequestActionMenu: React.FC<PickLabRequestActionMenuProps> = ({
+const PickProcedureRequestActionMenu: React.FC<PickLabRequestActionMenuProps> = ({
   order,
 }) => {
   const { t } = useTranslation();
 
-  const launchPickLabRequestModal = useCallback(() => {
+  const launchSelectProcedureRequestModal = useCallback(() => {
     const dispose = showModal("add-to-worklist-dialog", {
       closeModal: () => dispose(),
       order,
@@ -23,8 +23,8 @@ const PickLabRequestActionMenu: React.FC<PickLabRequestActionMenuProps> = ({
 
   return (
     <OverflowMenuItem
-      itemText={t("pickLabRequest", "Pick Lab Request")}
-      onClick={launchPickLabRequestModal}
+      itemText={t("pickLabRequest", "Select order")}
+      onClick={launchSelectProcedureRequestModal}
       style={{
         maxWidth: "100vw",
       }}
@@ -32,4 +32,4 @@ const PickLabRequestActionMenu: React.FC<PickLabRequestActionMenuProps> = ({
   );
 };
 
-export default PickLabRequestActionMenu;
+export default PickProcedureRequestActionMenu;

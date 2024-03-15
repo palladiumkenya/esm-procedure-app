@@ -35,6 +35,15 @@ export function useOrdersWorklist(
           "8d490bf4-c2cc-11de-8d13-0010c6dffd0f"
       );
     }
+    else if (fulfillerStatus === "COMPLETED") {
+      return (
+        order.fulfillerStatus === "COMPLETED" &&
+        order.dateStopped === null &&
+        order.action !== "DISCONTINUE" &&
+        order.concept.conceptClass.uuid ===
+          "8d490bf4-c2cc-11de-8d13-0010c6dffd0f"
+      );
+    }
   });
 
   return {
