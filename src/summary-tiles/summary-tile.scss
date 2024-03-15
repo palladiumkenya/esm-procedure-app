@@ -11,25 +11,35 @@
 }
 
 .tileHeader {
-  display: flex;
+  background-color: #fff;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: spacing.$spacing-03;
+  padding: 0.5rem;
 }
 
 .headerLabel {
-  @include type.type-style("heading-01");
-  color: $text-02;
+  font-size: var(--cds-heading-compact-01-font-size, 0.875rem);
+  font-weight: var(--cds-heading-compact-01-font-weight, 600);
+  line-height: var(--cds-heading-compact-01-line-height, 1.28572);
+  letter-spacing: var(--cds-heading-compact-01-letter-spacing, 0.16px);
+  color: #525252;
 }
 
 .totalsLabel {
-  @include type.type-style("label-01");
-  color: $text-02;
+  font-size: var(--cds-label-01-font-size, 0.75rem);
+  font-weight: var(--cds-label-01-font-weight, 400);
+  line-height: var(--cds-label-01-line-height, 1.33333);
+  letter-spacing: var(--cds-label-01-letter-spacing, 0.32px);
+  color: #525252;
 }
 
 .totalsValue {
-  @include type.type-style("heading-04");
-  color: $ui-05;
+  font-size: var(--cds-heading-04-font-size, 1.75rem);
+  font-weight: var(--cds-heading-04-font-weight, 400);
+  line-height: var(--cds-heading-04-line-height, 1.28572);
+  letter-spacing: var(--cds-heading-04-letter-spacing, 0);
+  color: #161616;
 }
 
 .headerLabelContainer {

@@ -7,9 +7,9 @@ const ReferredTileComponent = () => {
 
   return (
     <SummaryTile
-      label={t("transferred", "Transferred")}
+      label={t("referred", "Referred")}
       value={0}
-      headerLabel={t("referredProcedures", "Referred Procedures")}
+      headerLabel={t("referredProcedures", "Referred")}
     />
   );
 };

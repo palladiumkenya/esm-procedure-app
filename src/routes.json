@@ -21,11 +21,11 @@
       "slot": "procedure-dashboard-slot"
     },
     {
-        "name": "tests-ordered-tile-component",
+        "name": "ordered-tile-component",
         "slot": "procedure-tiles-slot",
-        "component": "testOrderedTileComponent",
+        "component": "OrderedTileComponent",
         "meta": {
-            "name": "testsOrderedTileSlot",
+            "name": "proceduresOrderedTileSlot",
             "title": "Ordered tests"
         }
     },
@@ -36,15 +36,6 @@
         "meta": {
             "name": "completedTileSlot",
             "title": "Completed"
-        }
-    },
-    {
-        "name": "worklist-tile-component",
-        "slot": "procedure-tiles-slot",
-        "component": "worklistTileComponent",
-        "meta": {
-            "name": "worklisTileSlot",
-            "title": "Worklist"
         }
     },
     {
