@@ -17,7 +17,7 @@ export function useMetrics() {
     transferred: 1,
     completed: 6,
   };
-  const { data, error } = useSWR<{ data: { results: {} } }, Error>(
+  const { data, error } = useSWR<{ data: { results: any } }, Error>(
     `${restBaseUrl}/queue?`,
     openmrsFetch
   );
