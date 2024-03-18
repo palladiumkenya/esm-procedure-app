@@ -15,19 +15,19 @@ import styles from "./results-summary.scss";
 interface SendEmailDialogProps {
   patientUuid: string;
   closeModal: () => void;
+  sendEmail: () => Promise<void>;
 }
 
 const SendEmailDialog: React.FC<SendEmailDialogProps> = ({
   patientUuid,
   closeModal,
+  sendEmail,
 }) => {
   const { t } = useTranslation();
 
   const [email, setEmail] = useState();
 
   const { patient, isLoading } = usePatient(patientUuid);
-
-  const sendEmail = async () => {};
 
   return (
     <>

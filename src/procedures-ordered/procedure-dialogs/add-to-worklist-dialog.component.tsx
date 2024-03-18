@@ -62,7 +62,7 @@ const AddToWorklistDialog: React.FC<AddToWorklistDialogProps> = ({
   const pickProcedureRequestQueue = async (event) => {
     event.preventDefault();
     // pick procedure
-    let body = {
+    const body = {
       sampleId: specimenID,
       specimenSourceId: specimenType,
       unProcessedOrders: "",

@@ -3,7 +3,6 @@ import { useCallback } from "react";
 import useSWR, { mutate } from "swr";
 
 export interface Result {
-
   uuid: string;
   orderNumber: string;
   accessionNumber: string;

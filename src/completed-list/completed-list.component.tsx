@@ -26,7 +26,9 @@ interface CompletedListProps {
   fulfillerStatus: string;
 }
 
-export const CompletedList: React.FC<CompletedListProps> = ({fulfillerStatus}) => {
+export const CompletedList: React.FC<CompletedListProps> = ({
+  fulfillerStatus,
+}) => {
   const { t } = useTranslation();
   const [currentPageSize, setCurrentPageSize] = useState<number>(10);
   const { workListEntries, isLoading } = useOrdersWorklist("", "");

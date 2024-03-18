@@ -44,7 +44,7 @@ const ReviewItem: React.FC<ReviewItemDialogProps> = ({
   }, [encounter?.obs]);
 
   const filteredGroupedResults = useMemo(() => {
-    let groupedResults = [];
+    const groupedResults = [];
 
     testsOrder?.forEach((element) => {
       groupedResults[element?.concept?.display] = element;
@@ -85,7 +85,7 @@ const ReviewItem: React.FC<ReviewItemDialogProps> = ({
       });
       return;
     }
-    let uuids = [];
+    const uuids = [];
 
     Object.keys(checkedItems).map((item, index) => {
       uuids.push(filteredGroupedResults[item].uuid);

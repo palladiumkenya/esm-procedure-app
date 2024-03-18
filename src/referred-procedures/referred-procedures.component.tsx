@@ -26,7 +26,9 @@ interface ReferredListProps {
   fulfillerStatus: string;
 }
 
-export const ReferredProcedures: React.FC<ReferredListProps> = ({fulfillerStatus}) => {
+export const ReferredProcedures: React.FC<ReferredListProps> = ({
+  fulfillerStatus,
+}) => {
   const { t } = useTranslation();
   const [currentPageSize, setCurrentPageSize] = useState<number>(10);
   const { workListEntries, isLoading } = useOrdersWorklist("", "EXCEPTION");
@@ -72,7 +74,6 @@ export const ReferredProcedures: React.FC<ReferredListProps> = ({fulfillerStatus
     { id: 4, header: t("priority", "Priority"), key: "urgency" },
     { id: 5, header: t("orderer", "Orderer"), key: "orderer" },
     { id: 6, header: t("actions", "Actions"), key: "actions" },
-    
   ];
 
   return isLoading ? (
