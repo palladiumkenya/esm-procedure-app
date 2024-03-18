@@ -53,8 +53,17 @@ export const completedTileComponent = getSyncLifecycle(completedTile, options);
 
 export const OrderedTileComponent = getSyncLifecycle(orderedTile, options);
 
-export const worklistProceduresTabComponent = getSyncLifecycle(workListProcedures, options);
+export const worklistProceduresTabComponent = getSyncLifecycle(
+  workListProcedures,
+  options
+);
 
-export const referredProceduresTabComponent = getSyncLifecycle(referredProcedures, options);
+export const referredProceduresTabComponent = getSyncLifecycle(
+  referredProcedures,
+  options
+);
 
-export const completedProceduresTabComponent = getSyncLifecycle(completedProcedures, options);
+export const completedProceduresTabComponent = getSyncLifecycle(
+  completedProcedures,
+  options
+);

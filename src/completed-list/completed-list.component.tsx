@@ -45,15 +45,15 @@ export const CompletedList: React.FC<CompletedListProps> = ({fulfillerStatus}) =
 
   const rows = useMemo(() => {
     return paginatedResults
-      ?.filter((item) => item.action === "NEW")
+      ?.filter((item) => item.action === "COMPLETED")
       .map((entry) => ({
         ...entry,
         //TODO: add action items here
         actions: (
           <OverflowMenu flipped={true}>
             <OverflowMenuItem
-              itemText="Pick Request"
-              onClick={() => "Pick Request"}
+              itemText="Pick Order"
+              onClick={() => "Pick Order"}
             />
             <OverflowMenuItem
               itemText="Rejected Order"
@@ -71,7 +71,6 @@ export const CompletedList: React.FC<CompletedListProps> = ({fulfillerStatus}) =
     { id: 3, header: t("patient", "Patient"), key: "patient" },
     { id: 4, header: t("priority", "Priority"), key: "urgency" },
     { id: 5, header: t("orderer", "Orderer"), key: "orderer" },
-    { id: 6, header: t("actions", "Actions"), key: "actions" },
   ];
 
   return isLoading ? (

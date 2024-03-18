@@ -59,7 +59,7 @@ const AddToWorklistDialog: React.FC<AddToWorklistDialogProps> = ({
 
   const config = useConfig();
 
-  const pickLabRequestQueue = async (event) => {
+  const pickProcedureRequestQueue = async (event) => {
     event.preventDefault();
     // pick procedure
     let body = {
@@ -132,7 +132,7 @@ const AddToWorklistDialog: React.FC<AddToWorklistDialogProps> = ({
 
   return (
     <div>
-      <Form onSubmit={pickLabRequestQueue}>
+      <Form onSubmit={pickProcedureRequestQueue}>
         <ModalHeader
           closeModal={closeModal}
           title={t("pickRequest", "Pick Request")}
@@ -343,8 +343,8 @@ const AddToWorklistDialog: React.FC<AddToWorklistDialogProps> = ({
           <Button kind="secondary" onClick={closeModal}>
             {t("cancel", "Cancel")}
           </Button>
-          <Button type="submit" onClick={pickLabRequestQueue}>
-            {t("pickPatient", "Pick Lab Request")}
+          <Button type="submit" onClick={pickProcedureRequestQueue}>
+            {t("pickPatient", "Pick Order Request")}
           </Button>
         </ModalFooter>
       </Form>
