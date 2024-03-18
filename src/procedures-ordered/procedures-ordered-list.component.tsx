@@ -27,16 +27,12 @@ import {
   usePagination,
 } from "@openmrs/esm-framework";
 import styles from "./procedure-queue.scss";
-import { Result, useGetOrdersWorklist } from "../work-list/work-list.resource";
+import { useOrdersWorklist } from "../hooks/useOrdersWorklist";
 import OrderCustomOverflowMenuComponent from "../ui-components/overflow-menu.component";
 
-interface LaboratoryPatientListProps {}
+interface ProcedurePatientListProps {fulfillerStatus: string;}
 
-interface RejectOrderProps {
-  order: Result;
-}
-
-const TestsOrderedList: React.FC<LaboratoryPatientListProps> = () => {
+const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = ({fulfillerStatus}) => {
   const { t } = useTranslation();
 
   const OrderStatuses = [
@@ -59,7 +55,7 @@ const TestsOrderedList: React.FC<LaboratoryPatientListProps> = () => {
     | "DECLINED"
   >("All");
 
-  const { workListEntries, isLoading } = useGetOrdersWorklist("");
+  const { workListEntries, isLoading } = useOrdersWorklist("","");
 
   const filteredStatus = useMemo(() => {
     if (!filter || filter == "All") {
@@ -86,20 +82,12 @@ const TestsOrderedList: React.FC<LaboratoryPatientListProps> = () => {
   // get picked orders
   let columns = [
     { id: 0, header: t("date", "Date"), key: "date" },
-
-    { id: 1, header: t("orderNumber", "Order Number"), key: "orderNumber" },
-    { id: 2, header: t("patient", "Patient"), key: "patient" },
-
-    {
-      id: 3,
-      header: t("accessionNumber", "Accession Number"),
-      key: "accessionNumber",
-    },
-    { id: 4, header: t("test", "Test"), key: "test" },
-    { id: 5, header: t("action", "Action"), key: "action" },
-    { id: 6, header: t("orderer", "Orderer"), key: "orderer" },
-    { id: 7, header: t("urgency", "Urgency"), key: "urgency" },
-    { id: 8, header: t("actions", "Actions"), key: "actions" },
+    { id: 1, header: t("orderNumber", "Procedure Number"), key: "orderNumber" },
+    { id: 2, header: t("procedure", "Procedure"), key: "procedure" },
+    { id: 3, header: t("patient", "Patient"), key: "patient" },
+    { id: 4, header: t("priority", "Priority"), key: "priority" },
+    { id: 5, header: t("orderer", "Orderer"), key: "orderer" },
+    { id: 6, header: t("actions", "Actions"), key: "actions" },
   ];
 
   const handleOrderStatusChange = ({ selectedItem }) => setFilter(selectedItem);
@@ -121,8 +109,8 @@ const TestsOrderedList: React.FC<LaboratoryPatientListProps> = () => {
         ),
         patient: entry?.patient?.display.split("-")[1],
         orderNumber: entry?.orderNumber,
-        accessionNumber: entry?.accessionNumber,
-        test: entry?.concept?.display,
+        procedure: entry?.concept.display,
+        priority: entry?.urgency,
         action: entry?.action,
         orderer: entry?.orderer?.display,
         urgency: entry?.urgency,
@@ -230,7 +218,7 @@ const TestsOrderedList: React.FC<LaboratoryPatientListProps> = () => {
                     <p className={styles.content}>
                       {t(
                         "noWorklistsToDisplay",
-                        "No worklists orders to display"
+                        "No procedure orders to display"
                       )}
                     </p>
                   </div>
@@ -261,4 +249,4 @@ const TestsOrderedList: React.FC<LaboratoryPatientListProps> = () => {
   }
 };
 
-export default TestsOrderedList;
+export default ProcedureOrderedList;
