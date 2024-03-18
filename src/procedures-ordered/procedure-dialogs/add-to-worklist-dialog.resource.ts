@@ -27,9 +27,9 @@ export interface QueueRoomsResponse {
   address5: string;
   address6: string;
   parentLocation: ParentLocation;
-  childLocations: String[];
+  childLocations: string[];
   retired: boolean;
-  attributes: String[];
+  attributes: string[];
   address7: string;
   address8: string;
   address9: string;
@@ -63,7 +63,7 @@ export interface ParentLocation {
   parentLocation: ParentLocation;
   childLocations: ChildLocations[];
   retired: boolean;
-  attributes: String[];
+  attributes: string[];
   address7: string;
   address8: string;
   address9: string;

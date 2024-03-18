@@ -9,9 +9,9 @@ interface PickLabRequestActionMenuProps {
   closeModal: () => void;
 }
 
-const PickProcedureRequestActionMenu: React.FC<PickLabRequestActionMenuProps> = ({
-  order,
-}) => {
+const PickProcedureRequestActionMenu: React.FC<
+  PickLabRequestActionMenuProps
+> = ({ order }) => {
   const { t } = useTranslation();
 
   const launchSelectProcedureRequestModal = useCallback(() => {

@@ -23,7 +23,7 @@ interface ProceduresProps {
 
 const ProceduresTests: React.FC<ProceduresProps> = ({ encounter, queueId }) => {
   const { t } = useTranslation();
-  let columns = [
+  const columns = [
     { id: 1, header: t("order", "Order"), key: "order", align: "left" },
     {
       id: 2,

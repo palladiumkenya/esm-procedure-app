@@ -30,9 +30,13 @@ import styles from "./procedure-queue.scss";
 import { useOrdersWorklist } from "../hooks/useOrdersWorklist";
 import OrderCustomOverflowMenuComponent from "../ui-components/overflow-menu.component";
 
-interface ProcedurePatientListProps {fulfillerStatus: string;}
+interface ProcedurePatientListProps {
+  fulfillerStatus: string;
+}
 
-const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = ({fulfillerStatus}) => {
+const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = ({
+  fulfillerStatus,
+}) => {
   const { t } = useTranslation();
 
   const OrderStatuses = [
@@ -55,7 +59,7 @@ const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = ({fulfillerSta
     | "DECLINED"
   >("All");
 
-  const { workListEntries, isLoading } = useOrdersWorklist("","");
+  const { workListEntries, isLoading } = useOrdersWorklist("", "");
 
   const filteredStatus = useMemo(() => {
     if (!filter || filter == "All") {
@@ -80,7 +84,7 @@ const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = ({fulfillerSta
     currentPage,
   } = usePagination(filteredStatus, currentPageSize);
   // get picked orders
-  let columns = [
+  const columns = [
     { id: 0, header: t("date", "Date"), key: "date" },
     { id: 1, header: t("orderNumber", "Procedure Number"), key: "orderNumber" },
     { id: 2, header: t("procedure", "Procedure"), key: "procedure" },

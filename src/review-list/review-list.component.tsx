@@ -81,7 +81,7 @@ const ReviewList: React.FC<ReviewlistProps> = ({ fulfillerStatus }) => {
   } = usePagination(workListEntries, currentPageSize);
 
   // get picked orders
-  let columns = [
+  const columns = [
     { id: 0, header: t("date", "Date"), key: "date" },
     { id: 1, header: t("orderNumber", "Procedure Number"), key: "orderNumber" },
     { id: 2, header: t("procedure", "Procedure"), key: "procedure" },

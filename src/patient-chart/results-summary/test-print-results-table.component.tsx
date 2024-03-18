@@ -25,7 +25,7 @@ interface TestOrdersProps {
 const TestsPrintResults: React.FC<TestOrdersProps> = ({ obs }) => {
   const { t } = useTranslation();
 
-  let columns = [
+  const columns = [
     { id: 1, header: t("order", "Order"), key: "order" },
     { id: 2, header: t("results", "Results"), key: "result" },
   ];

@@ -38,7 +38,7 @@ const TestResultsChildren: React.FC<TestsResultsChildrenProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  let columns = [
+  const columns = [
     { id: 1, header: t("test", "Test"), key: "test" },
 
     {

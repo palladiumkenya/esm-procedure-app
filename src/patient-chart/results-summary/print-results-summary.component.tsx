@@ -21,7 +21,7 @@ const PrintResultsSummary: React.FC<PrintResultsSummaryProps> = ({
   );
 
   const results = useMemo(() => {
-    let groupedResults = [];
+    const groupedResults = [];
 
     filteredItems.forEach((element) => {
       groupedResults[element?.order?.display] = element;

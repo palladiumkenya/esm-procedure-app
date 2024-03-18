@@ -403,7 +403,7 @@ export interface OrderType {
 
 export const getOrderColor = (activated: string, stopped: string) => {
   const numAct = formatWaitTime(activated);
-  let testStopped: Number;
+  let testStopped: number;
   if (stopped === null) {
     testStopped = 0;
   }
