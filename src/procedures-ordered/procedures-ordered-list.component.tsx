@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useCallback } from "react";
 import {
   DataTable,
   DataTableSkeleton,
@@ -17,18 +17,49 @@ import {
   Tile,
   TableToolbarSearch,
   OverflowMenu,
+  OverflowMenuItem,
 } from "@carbon/react";
 import { OverflowMenuVertical } from "@carbon/react/icons";
 
 import { useTranslation } from "react-i18next";
-import { formatDate, parseDate, usePagination } from "@openmrs/esm-framework";
+import {
+  ExtensionSlot,
+  formatDate,
+  parseDate,
+  usePagination,
+  showModal,
+} from "@openmrs/esm-framework";
 import styles from "./procedure-queue.scss";
 import { useOrdersWorklist } from "../hooks/useOrdersWorklist";
+import OrderCustomOverflowMenuComponent from "../ui-components/overflow-menu.component";
+import PickProcedureRequestActionMenu from "./pick-procedure-request-menu.component";
 import ProcedureInstructionsActionMenu from "./procedure-instructions/procedure-instructions-menu.component";
 
 interface ProcedurePatientListProps {
   fulfillerStatus: string;
 }
+interface RejectOrderOverflowMenuItemProps {
+  order: any;
+}
+
+const RejectOrderMenuItem: React.FC<RejectOrderOverflowMenuItemProps> = ({
+  order,
+}) => {
+  const handleRejectOrderModel = useCallback(() => {
+    const dispose = showModal("reject-order-dialog", {
+      closeModal: () => dispose(),
+      order,
+    });
+  }, [order]);
+  return (
+    <OverflowMenuItem
+      className={styles.rejectOrders}
+      itemText="Rejected Order"
+      onClick={handleRejectOrderModel}
+      hasDivider
+    />
+  );
+};
 
 const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = ({
   fulfillerStatus,
@@ -116,11 +147,16 @@ const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = ({
         urgency: entry?.urgency,
         actions: (
           <OverflowMenu flipped={true}>
+          <PickProcedureRequestActionMenu
+            closeModal={() => true}
+            order={entry}
+          />
             <ProcedureInstructionsActionMenu
               order={entry}
               closeModal={() => true}
             />
-          </OverflowMenu>
+          <RejectOrderMenuItem order={entry} />
+        </OverflowMenu>
         ),
       }));
   }, [paginatedWorklistQueueEntries]);

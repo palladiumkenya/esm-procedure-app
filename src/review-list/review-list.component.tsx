@@ -69,7 +69,7 @@ const ReviewList: React.FC<ReviewlistProps> = ({ fulfillerStatus }) => {
 
   const [activatedOnOrAfterDate, setActivatedOnOrAfterDate] = useState("");
 
-  const { workListEntries, isLoading } = useGetOrdersWorklist(fulfillerStatus);
+  const { workListEntries, isLoading } = useGetOrdersWorklist("",fulfillerStatus);
 
   const pageSizes = [10, 20, 30, 40, 50];
   const [currentPageSize, setPageSize] = useState(10);
