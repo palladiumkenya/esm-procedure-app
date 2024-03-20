@@ -44,7 +44,7 @@
       "component": "worklistProceduresTabComponent",
       "meta": {
           "name": "proceduresPanelSlot",
-          "title": "Worklist Procedures"
+          "title": "Worklist"
       }
   },
     {
@@ -53,7 +53,7 @@
       "component": "referredProceduresTabComponent",
       "meta": {
           "name": "proceduresPanelSlot",
-          "title": "Referred Procedures"
+          "title": "Referred"
       }
   },
   {
@@ -62,7 +62,7 @@
     "component": "completedProceduresTabComponent",
     "meta": {
         "name": "proceduresPanelSlot",
-        "title": "Completed Procedures"
+        "title": "Completed"
     }
 },
     {

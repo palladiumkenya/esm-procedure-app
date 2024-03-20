@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useCallback } from "react";
 import {
   DataTable,
   DataTableSkeleton,
@@ -16,6 +16,8 @@ import {
   Layer,
   Tile,
   TableToolbarSearch,
+  OverflowMenu,
+  OverflowMenuItem,
 } from "@carbon/react";
 import { OverflowMenuVertical } from "@carbon/react/icons";
 
@@ -25,15 +27,39 @@ import {
   formatDate,
   parseDate,
   usePagination,
+  showModal,
 } from "@openmrs/esm-framework";
 import styles from "./procedure-queue.scss";
 import { useOrdersWorklist } from "../hooks/useOrdersWorklist";
 import OrderCustomOverflowMenuComponent from "../ui-components/overflow-menu.component";
-import ProcedureInstructionsActionMenu from "./procedure-instructions/procedure-instructions-menu.component"
+import PickProcedureRequestActionMenu from "./pick-procedure-request-menu.component";
+import ProcedureInstructionsActionMenu from "./procedure-instructions/procedure-instructions-menu.component";
 
 interface ProcedurePatientListProps {
   fulfillerStatus: string;
 }
+interface RejectOrderOverflowMenuItemProps {
+  order: any;
+}
+
+const RejectOrderMenuItem: React.FC<RejectOrderOverflowMenuItemProps> = ({
+  order,
+}) => {
+  const handleRejectOrderModel = useCallback(() => {
+    const dispose = showModal("reject-order-dialog", {
+      closeModal: () => dispose(),
+      order,
+    });
+  }, [order]);
+  return (
+    <OverflowMenuItem
+      className={styles.rejectOrders}
+      itemText="Rejected Order"
+      onClick={handleRejectOrderModel}
+      hasDivider
+    />
+  );
+};
 
 const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = ({
   fulfillerStatus,
@@ -120,26 +146,17 @@ const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = ({
         orderer: entry?.orderer?.display,
         urgency: entry?.urgency,
         actions: (
-          <OrderCustomOverflowMenuComponent
-            menuTitle={
-              <>
-               <ProcedureInstructionsActionMenu
-              order={entry}
-              closeModal={() => true}
-            />
-                <OverflowMenuVertical
-                  size={16}
-                  style={{ marginLeft: "0.3rem" }}
-                />
-              </>
-            }
-          >
-            <ExtensionSlot
-              className={styles.menuLink}
-              state={{ order: paginatedWorklistQueueEntries[index] }}
-              name="order-actions-slot"
-            />
-          </OrderCustomOverflowMenuComponent>
+          <OverflowMenu flipped={true}>
+          <PickProcedureRequestActionMenu
+            closeModal={() => true}
+            order={entry}
+          />
+          <RejectOrderMenuItem order={entry} />
+          <ProcedureInstructionsActionMenu
+            order={entry}
+            closeModal={() => true}
+          />
+        </OverflowMenu>
         ),
       }));
   }, [paginatedWorklistQueueEntries]);

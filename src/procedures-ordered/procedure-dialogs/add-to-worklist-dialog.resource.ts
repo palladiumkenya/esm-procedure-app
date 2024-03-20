@@ -164,7 +164,7 @@ export async function GenerateSpecimenId(uuid: string) {
 // update Order
 export async function UpdateOrder(uuid: string, body: any) {
   const abortController = new AbortController();
-  return openmrsFetch(`${restBaseUrl}/accessionorder/${uuid}`, {
+  return openmrsFetch(`${restBaseUrl}/order/${uuid}/fulfillerdetails`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

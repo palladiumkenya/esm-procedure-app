@@ -37,7 +37,7 @@ import { launchOverlay } from "../components/overlay/hook";
 import PostProcedureForm from "../results/result-form.component";
 import { getStatusColor } from "../utils/functions";
 import Overlay from "../components/overlay/overlay.component";
-
+import { useOrdersWorklist } from "../hooks/useOrdersWorklist";
 interface WorklistProps {
   fulfillerStatus: string;
 }
@@ -54,11 +54,10 @@ interface RejectOrderProps {
 const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
   const { t } = useTranslation();
 
-  const { workListEntries, isLoading } = useGetOrdersWorklist(fulfillerStatus);
+  const { workListEntries, isLoading } = useOrdersWorklist("",fulfillerStatus);
   const [activatedOnOrAfterDate, setActivatedOnOrAfterDate] = useState("");
   const pageSizes = [10, 20, 30, 40, 50];
   const [currentPageSize, setPageSize] = useState(10);
-
   const {
     goTo,
     results: paginatedWorkListEntries,
