@@ -3,27 +3,29 @@ import { showModal } from "@openmrs/esm-framework";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
-interface PickProcedureRequestActionMenuProps {
+interface ProcedureInstructionsActionMenuProps {
   order: any;
   closeModal: () => void;
 }
 
-const PickProcedureRequestActionMenu: React.FC<
-  PickProcedureRequestActionMenuProps
+const ProcedureInstructionsActionMenu: React.FC<
+  ProcedureInstructionsActionMenuProps
 > = ({ order }) => {
   const { t } = useTranslation();
 
-  const launchPickProcedureRequestModal = useCallback(() => {
-    const dispose = showModal("add-procedure-to-worklist-dialog", {
+  const launchProcedureInstructionsModal = useCallback(() => {
+    const dispose = showModal("procedure-instructions-modal", {
       closeModal: () => dispose(),
       order,
     });
   }, [order]);
 
+
+  
   return (
     <OverflowMenuItem
-      itemText={t("pickRequest", "Pick Request")}
-      onClick={launchPickProcedureRequestModal}
+      itemText={t("prcodeureInstructionsModal", "Procedure Instructions")}
+      onClick={launchProcedureInstructionsModal}
       style={{
         maxWidth: "100vw",
       }}
@@ -31,4 +33,4 @@ const PickProcedureRequestActionMenu: React.FC<
   );
 };
 
-export default PickProcedureRequestActionMenu;
+export default ProcedureInstructionsActionMenu;

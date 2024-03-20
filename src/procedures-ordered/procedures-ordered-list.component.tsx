@@ -29,6 +29,7 @@ import {
 import styles from "./procedure-queue.scss";
 import { useOrdersWorklist } from "../hooks/useOrdersWorklist";
 import OrderCustomOverflowMenuComponent from "../ui-components/overflow-menu.component";
+import ProcedureInstructionsActionMenu from "./procedure-instructions/procedure-instructions-menu.component"
 
 interface ProcedurePatientListProps {
   fulfillerStatus: string;
@@ -122,6 +123,10 @@ const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = ({
           <OrderCustomOverflowMenuComponent
             menuTitle={
               <>
+               <ProcedureInstructionsActionMenu
+              order={entry}
+              closeModal={() => true}
+            />
                 <OverflowMenuVertical
                   size={16}
                   style={{ marginLeft: "0.3rem" }}
