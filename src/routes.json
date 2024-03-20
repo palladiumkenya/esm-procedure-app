@@ -86,6 +86,10 @@
             "name": "referredTileSlot",
             "title": "Referred tests"
         }
+    },
+    {
+      "name":"add-procedure-to-worklist-dialog",
+      "component": "addProcedureToWorklistDialogComponent"
     }
   ],
   "pages": [
