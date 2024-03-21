@@ -70,5 +70,5 @@ export const completedProceduresTabComponent = getSyncLifecycle(
 
 export const addProcedureToWorklistDialogComponent = getSyncLifecycle(
   addProcedureToWorklistDialog,
-   options
+  options
 );

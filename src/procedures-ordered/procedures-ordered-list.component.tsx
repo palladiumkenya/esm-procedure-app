@@ -147,16 +147,16 @@ const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = ({
         urgency: entry?.urgency,
         actions: (
           <OverflowMenu flipped={true}>
-          <PickProcedureRequestActionMenu
-            closeModal={() => true}
-            order={entry}
-          />
-          <RejectOrderMenuItem order={entry} />
-          <ProcedureInstructionsActionMenu
-            order={entry}
-            closeModal={() => true}
-          />
-        </OverflowMenu>
+            <PickProcedureRequestActionMenu
+              closeModal={() => true}
+              order={entry}
+            />
+            <RejectOrderMenuItem order={entry} />
+            <ProcedureInstructionsActionMenu
+              order={entry}
+              closeModal={() => true}
+            />
+          </OverflowMenu>
         ),
       }));
   }, [paginatedWorklistQueueEntries]);

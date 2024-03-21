@@ -6,7 +6,6 @@ export function useOrdersWorklist(
   activatedOnOrAfterDate: string,
   fulfillerStatus: string
 ) {
-
   const config = useConfig() as ConfigObject;
 
   const responseFormat =
@@ -25,24 +24,21 @@ export function useOrdersWorklist(
         order.fulfillerStatus === null &&
         order.dateStopped === null &&
         order.action === "NEW" &&
-        order.concept.conceptClass.uuid === 
-        ProcedureConceptClass_UUID
+        order.concept.conceptClass.uuid === ProcedureConceptClass_UUID
       );
     } else if (fulfillerStatus === "IN_PROGRESS") {
       return (
         order.fulfillerStatus === "IN_PROGRESS" &&
         order.dateStopped === null &&
         order.action !== "DISCONTINUE" &&
-        order.concept.conceptClass.uuid ===
-          ProcedureConceptClass_UUID
+        order.concept.conceptClass.uuid === ProcedureConceptClass_UUID
       );
     } else if (fulfillerStatus === "COMPLETED") {
       return (
         order.fulfillerStatus === "COMPLETED" &&
         order.dateStopped === null &&
         order.action !== "DISCONTINUE" &&
-        order.concept.conceptClass.uuid ===
-          ProcedureConceptClass_UUID
+        order.concept.conceptClass.uuid === ProcedureConceptClass_UUID
       );
     }
   });

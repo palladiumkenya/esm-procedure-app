@@ -20,8 +20,6 @@ const ProcedureInstructionsActionMenu: React.FC<
     });
   }, [order]);
 
-
-  
   return (
     <OverflowMenuItem
       itemText={t("prcodeureInstructionsModal", "Procedure Instructions")}

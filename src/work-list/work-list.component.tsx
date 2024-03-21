@@ -54,7 +54,7 @@ interface RejectOrderProps {
 const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
   const { t } = useTranslation();
 
-  const { workListEntries, isLoading } = useOrdersWorklist("",fulfillerStatus);
+  const { workListEntries, isLoading } = useOrdersWorklist("", fulfillerStatus);
   const [activatedOnOrAfterDate, setActivatedOnOrAfterDate] = useState("");
   const pageSizes = [10, 20, 30, 40, 50];
   const [currentPageSize, setPageSize] = useState(10);

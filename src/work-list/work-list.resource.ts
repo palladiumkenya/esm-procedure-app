@@ -1,7 +1,7 @@
 import { openmrsFetch, restBaseUrl, useConfig } from "@openmrs/esm-framework";
 import { useCallback } from "react";
 import useSWR, { mutate } from "swr";
-import { ConfigObject } from '../config-schema';
+import { ConfigObject } from "../config-schema";
 
 export interface Result {
   uuid: string;
@@ -123,36 +123,39 @@ export interface SpecimenSource {
   links: Link[];
 }
 
-export function useGetOrdersWorklist(activatedOnOrAfterDate: string,fulfillerStatus: string) {
-  
+export function useGetOrdersWorklist(
+  activatedOnOrAfterDate: string,
+  fulfillerStatus: string
+) {
   const config = useConfig() as ConfigObject;
 
   const apiUrl = `/ws/rest/v1/order?orderTypes=${config.procedureOrderTypeUuid}&activatedOnOrAfterDate=${activatedOnOrAfterDate}&isStopped=false&fulfillerStatus=${fulfillerStatus}&v=full
   `;
-  
-    const { data, error, isLoading } = useSWR<
-      { data: { results: Array<Result> } },
-      Error
-    >(apiUrl, openmrsFetch);
-  
-    const orders = data?.data?.results?.filter((order) => {
-      if (fulfillerStatus === "") {
-        return (
-          order.fulfillerStatus === null &&
-          order.dateStopped === null &&
-          order.action === "NEW"
-        );
-      } else if (fulfillerStatus === "IN_PROGRESS") {
-        return (
-          order.fulfillerStatus === "IN_PROGRESS" &&
-          order.dateStopped === null &&
-          order.action !== "DISCONTINUE"
-        );
-      }
-    });
-  
-    return {
-      workListEntries: orders?.length > 0 ? orders : [],
-      isLoading,
-      isError: error,
-    };}
+
+  const { data, error, isLoading } = useSWR<
+    { data: { results: Array<Result> } },
+    Error
+  >(apiUrl, openmrsFetch);
+
+  const orders = data?.data?.results?.filter((order) => {
+    if (fulfillerStatus === "") {
+      return (
+        order.fulfillerStatus === null &&
+        order.dateStopped === null &&
+        order.action === "NEW"
+      );
+    } else if (fulfillerStatus === "IN_PROGRESS") {
+      return (
+        order.fulfillerStatus === "IN_PROGRESS" &&
+        order.dateStopped === null &&
+        order.action !== "DISCONTINUE"
+      );
+    }
+  });
+
+  return {
+    workListEntries: orders?.length > 0 ? orders : [],
+    isLoading,
+    isError: error,
+  };
+}
