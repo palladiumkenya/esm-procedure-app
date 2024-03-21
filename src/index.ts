@@ -13,6 +13,7 @@ import workListProcedures from "./procedure-tabs/work-list-tab.component";
 import referredProcedures from "./procedure-tabs/referred-tab.component";
 import completedProcedures from "./procedure-tabs/completed-tab.component";
 import orderedTile from "./procedure-tiles/procedures-ordered-tile.component";
+import procedureInstructionsModal from "./procedures-ordered/procedure-instructions/procedure-instructions.component";
 
 const moduleName = "@openmrs/esm-procedure-app";
 
@@ -65,5 +66,9 @@ export const referredProceduresTabComponent = getSyncLifecycle(
 
 export const completedProceduresTabComponent = getSyncLifecycle(
   completedProcedures,
+  options
+);
+export const procedureInstructionsModalComponent = getSyncLifecycle(
+  procedureInstructionsModal,
   options
 );
