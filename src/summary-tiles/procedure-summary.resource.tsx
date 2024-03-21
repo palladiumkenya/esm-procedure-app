@@ -1,6 +1,7 @@
 import useSWR, { mutate } from "swr";
 import useSWRImmutable from "swr/immutable";
 import {
+  ConfigObject,
   FetchResponse,
   openmrsFetch,
   restBaseUrl,
@@ -9,6 +10,8 @@ import {
 
 import { Result } from "../work-list/work-list.resource";
 import { useCallback } from "react";
+import {ProcedureConceptClass_UUID, ServiceConceptSet_UUID} from "../constants";
+
 
 export function useMetrics() {
   const metrics = {
@@ -30,8 +33,7 @@ export function useMetrics() {
 }
 
 export function useServices() {
-  const serviceConceptSetUuid = "330c0ec6-0ac7-4b86-9c70-29d76f0ae20a";
-  const apiUrl = `${restBaseUrl}/concept/${serviceConceptSetUuid}`;
+  const apiUrl = `${restBaseUrl}/concept/${ServiceConceptSet_UUID}`;
   const { data } = useSWRImmutable<FetchResponse>(apiUrl, openmrsFetch);
 
   return {
@@ -43,8 +45,10 @@ export function useServices() {
 
 // worklist
 export function useProcedureOrderStats(fulfillerStatus: string) {
-  const procedureOrderTypeUuid = "4237a01f-29c5-4167-9d8e-96d6e590aa33"; // TODO Make configurable
-  const orderTypeParam = `orderTypes=${procedureOrderTypeUuid}&fulfillerStatus=${fulfillerStatus}&v=custom:(uuid,orderNumber,patient:ref,concept:(uuid,display,conceptClass),action,careSetting,orderer:ref,urgency,instructions,commentToFulfiller,display,fulfillerStatus,dateStopped)`;
+
+  const config = useConfig() as ConfigObject;
+
+  const orderTypeParam = `orderTypes=${config.procedureOrderTypeUuid}&fulfillerStatus=${fulfillerStatus}&v=custom:(uuid,orderNumber,patient:ref,concept:(uuid,display,conceptClass),action,careSetting,orderer:ref,urgency,instructions,commentToFulfiller,display,fulfillerStatus,dateStopped)`;
   const apiUrl = `/ws/rest/v1/order?${orderTypeParam}`;
 
   const mutateOrders = useCallback(
@@ -53,10 +57,10 @@ export function useProcedureOrderStats(fulfillerStatus: string) {
         (key) =>
           typeof key === "string" &&
           key.startsWith(
-            `${restBaseUrl}/order?orderType=${procedureOrderTypeUuid}`
+            `${restBaseUrl}/order?orderType=${config.procedureOrderTypeUuid}`
           )
       ),
-    [procedureOrderTypeUuid]
+    [config.procedureOrderTypeUuid]
   );
 
   const { data, error, isLoading } = useSWR<
@@ -64,9 +68,9 @@ export function useProcedureOrderStats(fulfillerStatus: string) {
     Error
   >(apiUrl, openmrsFetch);
 
-  const radiologyOrders = data?.data?.results?.filter((order) => {
+  const procedureOrders = data?.data?.results?.filter((order) => {
     if (
-      order.concept.conceptClass.uuid === "8d490bf4-c2cc-11de-8d13-0010c6dffd0f"
+      order.concept.conceptClass.uuid === ProcedureConceptClass_UUID
     ) {
       return order;
     }
@@ -75,7 +79,7 @@ export function useProcedureOrderStats(fulfillerStatus: string) {
   let length = 0;
 
   if (!fulfillerStatus) {
-    const processedData = radiologyOrders?.filter(
+    const processedData = procedureOrders?.filter(
       (d) => d.fulfillerStatus == null
     );
     length = processedData?.length;

@@ -1,6 +1,7 @@
 import { openmrsFetch, restBaseUrl, useConfig } from "@openmrs/esm-framework";
 import { useCallback } from "react";
 import useSWR, { mutate } from "swr";
+import { ConfigObject } from '../config-schema';
 
 export interface Result {
   uuid: string;
@@ -124,7 +125,9 @@ export interface SpecimenSource {
 
 export function useGetOrdersWorklist(activatedOnOrAfterDate: string,fulfillerStatus: string) {
   
-  const apiUrl = `/ws/rest/v1/order?orderTypes=4237a01f-29c5-4167-9d8e-96d6e590aa33&activatedOnOrAfterDate=${activatedOnOrAfterDate}&isStopped=false&fulfillerStatus=${fulfillerStatus}&v=full
+  const config = useConfig() as ConfigObject;
+
+  const apiUrl = `/ws/rest/v1/order?orderTypes=${config.procedureOrderTypeUuid}&activatedOnOrAfterDate=${activatedOnOrAfterDate}&isStopped=false&fulfillerStatus=${fulfillerStatus}&v=full
   `;
   
     const { data, error, isLoading } = useSWR<
