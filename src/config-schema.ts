@@ -28,5 +28,8 @@ export const configSchema = {
 export type Config = {
   casualGreeting: boolean;
   whoToGreet: Array<string>;
+};
+
+export interface ConfigObject {
   procedureOrderTypeUuid: string;
 };
