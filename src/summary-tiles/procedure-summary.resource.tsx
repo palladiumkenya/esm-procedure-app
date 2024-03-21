@@ -10,8 +10,10 @@ import {
 
 import { Result } from "../work-list/work-list.resource";
 import { useCallback } from "react";
-import {ProcedureConceptClass_UUID, ServiceConceptSet_UUID} from "../constants";
-
+import {
+  ProcedureConceptClass_UUID,
+  ServiceConceptSet_UUID,
+} from "../constants";
 
 export function useMetrics() {
   const metrics = {
@@ -45,7 +47,6 @@ export function useServices() {
 
 // worklist
 export function useProcedureOrderStats(fulfillerStatus: string) {
-
   const config = useConfig() as ConfigObject;
 
   const orderTypeParam = `orderTypes=${config.procedureOrderTypeUuid}&fulfillerStatus=${fulfillerStatus}&v=custom:(uuid,orderNumber,patient:ref,concept:(uuid,display,conceptClass),action,careSetting,orderer:ref,urgency,instructions,commentToFulfiller,display,fulfillerStatus,dateStopped)`;
@@ -69,9 +70,7 @@ export function useProcedureOrderStats(fulfillerStatus: string) {
   >(apiUrl, openmrsFetch);
 
   const procedureOrders = data?.data?.results?.filter((order) => {
-    if (
-      order.concept.conceptClass.uuid === ProcedureConceptClass_UUID
-    ) {
+    if (order.concept.conceptClass.uuid === ProcedureConceptClass_UUID) {
       return order;
     }
   });

@@ -24,7 +24,6 @@ import { Result } from "../work-list/work-list.resource";
 
 interface CompletedListProps {
   fulfillerStatus: string;
-  
 }
 
 export const CompletedList: React.FC<CompletedListProps> = ({
