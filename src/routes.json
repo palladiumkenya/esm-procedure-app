@@ -75,6 +75,10 @@
         }
     },
     {
+      "name":"procedure-instructions-modal",
+      "component": "procedureInstructionsModalComponent"
+    },
+    {
         "name": "referred-tile-component",
         "slot": "procedure-tiles-slot",
         "component": "referredTileComponent",

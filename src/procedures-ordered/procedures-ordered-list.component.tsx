@@ -16,19 +16,15 @@ import {
   Layer,
   Tile,
   TableToolbarSearch,
+  OverflowMenu,
 } from "@carbon/react";
 import { OverflowMenuVertical } from "@carbon/react/icons";
 
 import { useTranslation } from "react-i18next";
-import {
-  ExtensionSlot,
-  formatDate,
-  parseDate,
-  usePagination,
-} from "@openmrs/esm-framework";
+import { formatDate, parseDate, usePagination } from "@openmrs/esm-framework";
 import styles from "./procedure-queue.scss";
 import { useOrdersWorklist } from "../hooks/useOrdersWorklist";
-import OrderCustomOverflowMenuComponent from "../ui-components/overflow-menu.component";
+import ProcedureInstructionsActionMenu from "./procedure-instructions/procedure-instructions-menu.component";
 
 interface ProcedurePatientListProps {
   fulfillerStatus: string;
@@ -119,22 +115,12 @@ const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = ({
         orderer: entry?.orderer?.display,
         urgency: entry?.urgency,
         actions: (
-          <OrderCustomOverflowMenuComponent
-            menuTitle={
-              <>
-                <OverflowMenuVertical
-                  size={16}
-                  style={{ marginLeft: "0.3rem" }}
-                />
-              </>
-            }
-          >
-            <ExtensionSlot
-              className={styles.menuLink}
-              state={{ order: paginatedWorklistQueueEntries[index] }}
-              name="order-actions-slot"
+          <OverflowMenu flipped={true}>
+            <ProcedureInstructionsActionMenu
+              order={entry}
+              closeModal={() => true}
             />
-          </OrderCustomOverflowMenuComponent>
+          </OverflowMenu>
         ),
       }));
   }, [paginatedWorklistQueueEntries]);

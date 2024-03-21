@@ -61,6 +61,10 @@ export const ReferredProcedures: React.FC<ReferredListProps> = ({
               itemText="Rejected Order"
               onClick={() => "Rejected Order"}
             />
+            <OverflowMenuItem
+              itemText="Procedure"
+              onClick={() => "Rejected Order"}
+            />
           </OverflowMenu>
         ),
       }));
