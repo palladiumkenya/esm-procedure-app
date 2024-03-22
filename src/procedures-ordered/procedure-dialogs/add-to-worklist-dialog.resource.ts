@@ -86,27 +86,6 @@ export interface ParentLocation {
   display: string;
 }
 
-// get queue rooms
-export function useQueueRoomLocations(currentQueueLocation: string) {
-  const apiUrl = `${restBaseUrl}/location/${currentQueueLocation}?v=full`;
-  const { data, error, isLoading } = useSWR<{ data: QueueRoomsResponse }>(
-    apiUrl,
-    openmrsFetch
-  );
-
-  const queueRoomLocations = useMemo(
-    () =>
-      data?.data?.parentLocation?.childLocations?.map((response) => response) ??
-      [],
-    [data?.data?.parentLocation?.childLocations]
-  );
-  return {
-    queueRoomLocations: queueRoomLocations ? queueRoomLocations : [],
-    isLoading,
-    error,
-  };
-}
-
 // get referral locations
 export function useReferralLocations() {
   const config = useConfig();
