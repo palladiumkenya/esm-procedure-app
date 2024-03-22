@@ -15,7 +15,7 @@ export function useSearchResults(data: Result[], searchString: string) {
       action: eachObject.action,
       status: eachObject.fulfillerStatus ?? "--",
       orderer: eachObject.orderer.display,
-      urgency: eachObject.urgency,
+      urgency: eachObject.priority,
     };
   });
 

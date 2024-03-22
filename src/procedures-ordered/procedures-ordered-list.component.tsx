@@ -136,10 +136,9 @@ const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = () => {
         patient: entry?.patient?.display.split("-")[1],
         orderNumber: entry?.orderNumber,
         procedure: entry?.concept.display,
-        priority: entry?.urgency,
+        priority: entry?.priority,
         action: entry?.action,
         orderer: entry?.orderer?.display,
-        urgency: entry?.urgency,
         actions: (
           <OverflowMenu flipped={true}>
             <PickProcedureRequestActionMenu
