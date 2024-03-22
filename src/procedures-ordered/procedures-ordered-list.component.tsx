@@ -19,11 +19,9 @@ import {
   OverflowMenu,
   OverflowMenuItem,
 } from "@carbon/react";
-import { OverflowMenuVertical } from "@carbon/react/icons";
 
 import { useTranslation } from "react-i18next";
 import {
-  ExtensionSlot,
   formatDate,
   parseDate,
   usePagination,
@@ -31,7 +29,6 @@ import {
 } from "@openmrs/esm-framework";
 import styles from "./procedure-queue.scss";
 import { useOrdersWorklist } from "../hooks/useOrdersWorklist";
-import OrderCustomOverflowMenuComponent from "../ui-components/overflow-menu.component";
 import PickProcedureRequestActionMenu from "./pick-procedure-request-menu.component";
 import ProcedureInstructionsActionMenu from "./procedure-instructions/procedure-instructions-menu.component";
 
@@ -61,9 +58,7 @@ const RejectOrderMenuItem: React.FC<RejectOrderOverflowMenuItemProps> = ({
   );
 };
 
-const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = ({
-  fulfillerStatus,
-}) => {
+const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = () => {
   const { t } = useTranslation();
 
   const OrderStatuses = [
@@ -130,7 +125,7 @@ const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = ({
           (item?.fulfillerStatus === null || item?.fulfillerStatus === "") &&
           item?.action === "NEW"
       )
-      .map((entry, index) => ({
+      .map((entry) => ({
         ...entry,
         id: entry?.uuid,
         date: (
@@ -147,16 +142,16 @@ const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = ({
         urgency: entry?.urgency,
         actions: (
           <OverflowMenu flipped={true}>
-          <PickProcedureRequestActionMenu
-            closeModal={() => true}
-            order={entry}
-          />
+            <PickProcedureRequestActionMenu
+              closeModal={() => true}
+              order={entry}
+            />
             <ProcedureInstructionsActionMenu
               order={entry}
               closeModal={() => true}
             />
-          <RejectOrderMenuItem order={entry} />
-        </OverflowMenu>
+            <RejectOrderMenuItem order={entry} />
+          </OverflowMenu>
         ),
       }));
   }, [paginatedWorklistQueueEntries]);
@@ -222,7 +217,7 @@ const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = ({
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row, index) => {
+                {rows.map((row) => {
                   return (
                     <React.Fragment key={row.id}>
                       <TableRow {...getRowProps({ row })} key={row.id}>

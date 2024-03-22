@@ -1,6 +1,5 @@
-import { openmrsFetch, restBaseUrl, useConfig } from "@openmrs/esm-framework";
-import { useCallback } from "react";
-import useSWR, { mutate } from "swr";
+import { openmrsFetch, useConfig } from "@openmrs/esm-framework";
+import useSWR from "swr";
 import { ConfigObject } from "../config-schema";
 
 export interface Result {

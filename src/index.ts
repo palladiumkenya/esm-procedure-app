@@ -8,7 +8,6 @@ import { createLeftPanelLink } from "./left-panel-link";
 import worklistTile from "./procedure-tiles/worklist-tile.component";
 import referredTile from "./procedure-tiles/referred-tile.component";
 import completedTile from "./procedure-tiles/completed-tile.component";
-import testsOrdered from "./procedure-tiles/tests-ordered-tile.component";
 import workListProcedures from "./procedure-tabs/work-list-tab.component";
 import referredProcedures from "./procedure-tabs/referred-tab.component";
 import completedProcedures from "./procedure-tabs/completed-tab.component";
@@ -76,5 +75,5 @@ export const procedureInstructionsModalComponent = getSyncLifecycle(
 
 export const addProcedureToWorklistDialogComponent = getSyncLifecycle(
   addProcedureToWorklistDialog,
-   options
+  options
 );

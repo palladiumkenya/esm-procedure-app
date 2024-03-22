@@ -35,7 +35,7 @@ const AddProcedureToWorklistDialog: React.FC<
     const body = {
       fulfillerComment: "",
       fulfillerStatus: isReferredChecked ? "EXCEPTION" : "IN_PROGRESS",
-       // referralLocation: isReferredChecked ? referredLocation : "",
+      // referralLocation: isReferredChecked ? referredLocation : "",
     };
 
     updateOrder(order.uuid, body)
@@ -84,14 +84,17 @@ const AddProcedureToWorklistDialog: React.FC<
               <Checkbox
                 checked={isReferredChecked}
                 onChange={handleCheckboxChange}
-                labelText={t("referredProcedure","Referred")}
+                labelText={t("referredProcedure", "Referred")}
                 id="test-referred"
               />
               {isReferredChecked && (
                 <TextInput
                   type="text"
                   id="referredLocation"
-                  labelText={t("enterReferredLocation","Enter Referred Location")}
+                  labelText={t(
+                    "enterReferredLocation",
+                    "Enter Referred Location"
+                  )}
                   value={referredLocation}
                   onChange={(e) => setReferredLocation(e.target.value)}
                 />
