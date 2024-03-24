@@ -102,46 +102,8 @@ export function useReferralLocations() {
   };
 }
 
-// get specimen types
-export function useSpecimenTypes() {
-  const config = useConfig();
-  const { laboratorySpecimenTypeConcept } = config;
-
-  const apiUrl = `${restBaseUrl}/concept/${laboratorySpecimenTypeConcept}`;
-  const { data, error, isLoading } = useSWRImmutable<FetchResponse>(
-    apiUrl,
-    openmrsFetch
-  );
-
-  let specimenTypes = [];
-  if (data) {
-    if (data?.data?.setMembers?.length) {
-      specimenTypes = data.data.setMembers;
-    } else if (data?.data?.answers?.length) {
-      specimenTypes = data.data.answers;
-    }
-  }
-
-  return {
-    specimenTypes: specimenTypes,
-    isLoading,
-  };
-}
-
-// generate specimen id
-export async function GenerateSpecimenId(uuid: string) {
-  const abortController = new AbortController();
-  return openmrsFetch(`${restBaseUrl}/generatesampleId?uuid=${uuid}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    signal: abortController.signal,
-  });
-}
-
 // update Order
-export async function UpdateOrder(uuid: string, body: any) {
+export async function updateOrder(uuid: string, body: any) {
   const abortController = new AbortController();
   return openmrsFetch(`${restBaseUrl}/order/${uuid}/fulfillerdetails`, {
     method: "POST",
@@ -150,15 +112,5 @@ export async function UpdateOrder(uuid: string, body: any) {
     },
     signal: abortController.signal,
     body: body,
-  });
-}
-
-export async function GetOrderByUuid(uuid: string) {
-  const abortController = new AbortController();
-  return openmrsFetch(`${restBaseUrl}/order/${uuid}`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-    signal: abortController.signal,
   });
 }

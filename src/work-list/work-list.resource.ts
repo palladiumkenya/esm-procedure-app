@@ -1,6 +1,6 @@
-import { openmrsFetch, restBaseUrl, useConfig } from "@openmrs/esm-framework";
-import { useCallback } from "react";
-import useSWR, { mutate } from "swr";
+import { openmrsFetch, useConfig } from "@openmrs/esm-framework";
+import useSWR from "swr";
+import { ConfigObject } from "../config-schema";
 
 export interface Result {
   uuid: string;
@@ -122,36 +122,39 @@ export interface SpecimenSource {
   links: Link[];
 }
 
-export function useGetOrdersWorklist(fulfillerStatus: string) {
-  const { laboratoryOrderTypeUuid } = useConfig();
-  const orderTypeQuery =
-    laboratoryOrderTypeUuid !== null
-      ? `orderType=${laboratoryOrderTypeUuid}&`
-      : "";
+export function useGetOrdersWorklist(
+  activatedOnOrAfterDate: string,
+  fulfillerStatus: string
+) {
+  const config = useConfig() as ConfigObject;
 
-  const apiUrl = `${restBaseUrl}/order?${orderTypeQuery}fulfillerStatus=${fulfillerStatus}&v=full`;
-
-  const mutateOrders = useCallback(
-    () =>
-      mutate(
-        (key) =>
-          typeof key === "string" &&
-          key.startsWith(
-            `/ws/rest/v1/order?orderType=${laboratoryOrderTypeUuid}`
-          )
-      ),
-    [laboratoryOrderTypeUuid]
-  );
+  const apiUrl = `/ws/rest/v1/order?orderTypes=${config.procedureOrderTypeUuid}&activatedOnOrAfterDate=${activatedOnOrAfterDate}&isStopped=false&fulfillerStatus=${fulfillerStatus}&v=full
+  `;
 
   const { data, error, isLoading } = useSWR<
     { data: { results: Array<Result> } },
     Error
-  >(apiUrl, openmrsFetch, { refreshInterval: 3000 });
+  >(apiUrl, openmrsFetch);
+
+  const orders = data?.data?.results?.filter((order) => {
+    if (fulfillerStatus === "") {
+      return (
+        order.fulfillerStatus === null &&
+        order.dateStopped === null &&
+        order.action === "NEW"
+      );
+    } else if (fulfillerStatus === "IN_PROGRESS") {
+      return (
+        order.fulfillerStatus === "IN_PROGRESS" &&
+        order.dateStopped === null &&
+        order.action !== "DISCONTINUE"
+      );
+    }
+  });
 
   return {
-    workListEntries: data?.data ? data.data.results : [],
+    workListEntries: orders?.length > 0 ? orders : [],
     isLoading,
     isError: error,
-    mutate: mutateOrders,
   };
 }

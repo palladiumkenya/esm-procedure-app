@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useCallback } from "react";
 import {
   DataTable,
   DataTableSkeleton,
@@ -17,22 +17,48 @@ import {
   Tile,
   TableToolbarSearch,
   OverflowMenu,
+  OverflowMenuItem,
 } from "@carbon/react";
-import { OverflowMenuVertical } from "@carbon/react/icons";
 
 import { useTranslation } from "react-i18next";
-import { formatDate, parseDate, usePagination } from "@openmrs/esm-framework";
+import {
+  formatDate,
+  parseDate,
+  usePagination,
+  showModal,
+} from "@openmrs/esm-framework";
 import styles from "./procedure-queue.scss";
 import { useOrdersWorklist } from "../hooks/useOrdersWorklist";
+import PickProcedureRequestActionMenu from "./pick-procedure-request-menu.component";
 import ProcedureInstructionsActionMenu from "./procedure-instructions/procedure-instructions-menu.component";
 
 interface ProcedurePatientListProps {
   fulfillerStatus: string;
 }
+interface RejectOrderOverflowMenuItemProps {
+  order: any;
+}
 
-const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = ({
-  fulfillerStatus,
+const RejectOrderMenuItem: React.FC<RejectOrderOverflowMenuItemProps> = ({
+  order,
 }) => {
+  const handleRejectOrderModel = useCallback(() => {
+    const dispose = showModal("reject-order-dialog", {
+      closeModal: () => dispose(),
+      order,
+    });
+  }, [order]);
+  return (
+    <OverflowMenuItem
+      className={styles.rejectOrders}
+      itemText="Rejected Order"
+      onClick={handleRejectOrderModel}
+      hasDivider
+    />
+  );
+};
+
+const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = () => {
   const { t } = useTranslation();
 
   const OrderStatuses = [
@@ -99,7 +125,7 @@ const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = ({
           (item?.fulfillerStatus === null || item?.fulfillerStatus === "") &&
           item?.action === "NEW"
       )
-      .map((entry, index) => ({
+      .map((entry) => ({
         ...entry,
         id: entry?.uuid,
         date: (
@@ -116,10 +142,15 @@ const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = ({
         urgency: entry?.urgency,
         actions: (
           <OverflowMenu flipped={true}>
+            <PickProcedureRequestActionMenu
+              closeModal={() => true}
+              order={entry}
+            />
             <ProcedureInstructionsActionMenu
               order={entry}
               closeModal={() => true}
             />
+            <RejectOrderMenuItem order={entry} />
           </OverflowMenu>
         ),
       }));
@@ -186,7 +217,7 @@ const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = ({
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row, index) => {
+                {rows.map((row) => {
                   return (
                     <React.Fragment key={row.id}>
                       <TableRow {...getRowProps({ row })} key={row.id}>
