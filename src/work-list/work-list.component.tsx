@@ -202,7 +202,6 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
               <Scalpel size={16} {...props} />
             </Tooltip>
           )}
-          // renderIcon={(props) => <Scalpel size={16} {...props} />}
         />
       );
     };
