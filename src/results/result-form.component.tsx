@@ -1,6 +1,13 @@
 import React, { useMemo, useState } from "react";
 import styles from "./result-form.scss";
-import { Button, InlineLoading, ModalBody, ModalFooter, TextArea, FormLabel } from "@carbon/react";
+import {
+  Button,
+  InlineLoading,
+  ModalBody,
+  ModalFooter,
+  TextArea,
+  FormLabel,
+} from "@carbon/react";
 import { useTranslation } from "react-i18next";
 import { closeOverlay } from "../components/overlay/hook";
 import {
@@ -74,10 +81,7 @@ const PostProcedureForm: React.FC<ResultFormProps> = ({
           critical: true,
           title: t("saveReport", "Report updated sucessful"),
           kind: "success",
-          description: t(
-            "generateSuccessfully",
-            "Report saved successfully"
-          ),
+          description: t("generateSuccessfully", "Report saved successfully"),
         });
         closeOverlay();
       },

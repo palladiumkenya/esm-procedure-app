@@ -13,7 +13,6 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-  TabPanel,
   TableToolbar,
   TableToolbarContent,
   TableToolbarSearch,
@@ -53,8 +52,7 @@ interface ResultsOrderProps {
 }
 
 interface RejectOrderProps {
-  order: 
-  Result;
+  order: Result;
 }
 
 interface InstructionsProps {
@@ -171,7 +169,6 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
     );
   };
 
-
   // get picked orders
   const columns = [
     { id: 0, header: t("date", "Date"), key: "date" },
@@ -184,50 +181,53 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
   ];
 
   const tableRows = useMemo(() => {
-  const ResultsOrder: React.FC<ResultsOrderProps> = ({
-    order,
-    patientUuid,
-  }) => {
-    return (
-      <Button
-        kind="ghost"
-        onClick={() => {
-          launchOverlay(
-            t("postProcedureResultForm", "Procedure report form"),
-            <PostProcedureForm patientUuid={patientUuid} order={order} />
-          );
-        }}
-        renderIcon={(props) => (
-          <Tooltip align="top" label={t("procedureOutcome","Procedure Outcome")}>
-            <Scalpel size={16} {...props} />
-          </Tooltip>
-        )}
-        // renderIcon={(props) => <Scalpel size={16} {...props} />}
-      />
-    );
-  };
+    const ResultsOrder: React.FC<ResultsOrderProps> = ({
+      order,
+      patientUuid,
+    }) => {
+      return (
+        <Button
+          kind="ghost"
+          onClick={() => {
+            launchOverlay(
+              t("postProcedureResultForm", "Procedure report form"),
+              <PostProcedureForm patientUuid={patientUuid} order={order} />
+            );
+          }}
+          renderIcon={(props) => (
+            <Tooltip
+              align="top"
+              label={t("procedureOutcome", "Procedure Outcome")}
+            >
+              <Scalpel size={16} {...props} />
+            </Tooltip>
+          )}
+          // renderIcon={(props) => <Scalpel size={16} {...props} />}
+        />
+      );
+    };
 
-  const Instructions: React.FC<InstructionsProps> = ({ order }) => {
-    const launchProcedureInstructionsModal = useCallback(() => {
-      const dispose = showModal("radiology-instructions-modal", {
-        closeModal: () => dispose(),
-        order,
-      });
-    }, [order]);
-    return (
-      <Button
-        kind="ghost"
-        onClick={launchProcedureInstructionsModal}
-        renderIcon={(props) => (
-          <Tooltip align="top" label="Instructions">
-            <Information size={16} {...props} />
-          </Tooltip>
-        )}
-      />
-    );
-  };
+    const Instructions: React.FC<InstructionsProps> = ({ order }) => {
+      const launchProcedureInstructionsModal = useCallback(() => {
+        const dispose = showModal("radiology-instructions-modal", {
+          closeModal: () => dispose(),
+          order,
+        });
+      }, [order]);
+      return (
+        <Button
+          kind="ghost"
+          onClick={launchProcedureInstructionsModal}
+          renderIcon={(props) => (
+            <Tooltip align="top" label="Instructions">
+              <Information size={16} {...props} />
+            </Tooltip>
+          )}
+        />
+      );
+    };
 
-  return paginatedWorkListEntries
+    return paginatedWorkListEntries
       ?.filter((item) => item.fulfillerStatus === "IN_PROGRESS")
       .map((entry, index) => ({
         ...entry,
@@ -288,55 +288,7 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
           ),
         },
       }));
-    }, [paginatedWorkListEntries, t]);
-
-  // const tableRows = useMemo(() => {
-  //   return paginatedWorkListEntries
-  //     ?.filter((item) => item.fulfillerStatus === "IN_PROGRESS")
-  //     .map((entry, index) => ({
-  //       ...entry,
-  //       id: entry?.uuid,
-  //       date: formatDate(parseDate(entry?.dateActivated)),
-  //       patient: (
-  //         <ConfigurableLink
-  //           to={`\${openmrsSpaBase}/patient/${entry?.patient?.uuid}/chart/laboratory-orders`}
-  //         >
-  //           {entry?.patient?.display.split("-")[1]}
-  //         </ConfigurableLink>
-  //       ),
-  //       orderNumber: { content: <span>{entry?.orderNumber}</span> },
-  //       procedure: { content: <span>{entry?.concept.display}</span> },
-  //       action: { content: <span>{entry?.action}</span> },
-  //       status: {
-  //         content: (
-  //           <>
-  //             <Tag>
-  //               <span
-  //                 className={styles.statusContainer}
-  //                 style={{ color: `${getStatusColor(entry?.fulfillerStatus)}` }}
-  //               >
-  //                 <span>{entry?.fulfillerStatus}</span>
-  //               </span>
-  //             </Tag>
-  //           </>
-  //         ),
-  //       },
-  //       orderer: { content: <span>{entry.orderer.display}</span> },
-  //       orderType: { content: <span>{entry?.orderType?.display}</span> },
-  //       priority: { content: <span>{entry.priority}</span> },
-  //       actions: {
-  //         content: (
-  //           <Instructions order={entry}>
-  //             <ResultsOrder
-  //               patientUuid={entry?.patient?.uuid}
-  //               order={paginatedWorkListEntries[index]}
-  //             />
-  //             <RejectOrder order={paginatedWorkListEntries[index]} />
-  //           </>
-  //         ),
-  //       },
-  //     }));
-  // }, [paginatedWorkListEntries, t]);
+  }, [paginatedWorkListEntries, t]);
 
   if (isLoading) {
     return <DataTableSkeleton role="progressbar" />;

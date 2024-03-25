@@ -1,4 +1,4 @@
-import { openmrsFetch, restBaseUrl } from "@openmrs/esm-framework";
+import { openmrsFetch } from "@openmrs/esm-framework";
 import useSWR from "swr";
 import { updateOrder } from "../procedures-ordered/pick-procedure-order/add-to-worklist-dialog.resource";
 
