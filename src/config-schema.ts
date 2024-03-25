@@ -23,6 +23,11 @@ export const configSchema = {
     _description: "Procedure Order type UUID",
     _default: "4237a01f-29c5-4167-9d8e-96d6e590aa33",
   },
+  testOrderTypeUuid: {
+    _type: Type.String,
+    _description: "Test Order type UUID",
+    _default: "52a447d3-a64a-11e3-9aeb-50e549534c5e",
+  },
 };
 
 export type Config = {
@@ -32,4 +37,5 @@ export type Config = {
 
 export interface ConfigObject {
   procedureOrderTypeUuid: string;
+  testOrderTypeUuid: string;
 }

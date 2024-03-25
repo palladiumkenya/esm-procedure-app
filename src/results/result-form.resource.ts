@@ -1,5 +1,6 @@
-import { openmrsFetch, restBaseUrl } from "@openmrs/esm-framework";
+import { openmrsFetch } from "@openmrs/esm-framework";
 import useSWR from "swr";
+import { updateOrder } from "../procedures-ordered/pick-procedure-order/add-to-worklist-dialog.resource";
 
 export interface ConceptResponse {
   uuid: string;
@@ -305,7 +306,7 @@ export interface ObPayload {
 // get order concept
 export async function GetOrderConceptByUuid(uuid: string) {
   const abortController = new AbortController();
-  return openmrsFetch(`${restBaseUrl}/concept/${uuid}?v=full`, {
+  return openmrsFetch(`/ws/rest/v1/concept/${uuid}?v=full`, {
     headers: {
       "Content-Type": "application/json",
     },
@@ -314,7 +315,7 @@ export async function GetOrderConceptByUuid(uuid: string) {
 }
 
 export function useGetOrderConceptByUuid(uuid: string) {
-  const apiUrl = `${restBaseUrl}/concept/${uuid}?v=custom:(uuid,display,name,datatype,set,answers,hiNormal,hiAbsolute,hiCritical,lowNormal,lowAbsolute,lowCritical,units,setMembers:(uuid,display,answers,datatype,hiNormal,hiAbsolute,hiCritical,lowNormal,lowAbsolute,lowCritical,units))`;
+  const apiUrl = `/ws/rest/v1/concept/${uuid}?v=custom:(uuid,display,name,datatype,set,answers,hiNormal,hiAbsolute,hiCritical,lowNormal,lowAbsolute,lowCritical,units,setMembers:(uuid,display,answers,datatype,hiNormal,hiAbsolute,hiCritical,lowNormal,lowAbsolute,lowCritical,units))`;
 
   const { data, error, isLoading, isValidating, mutate } = useSWR<
     { data: ConceptResponse },
@@ -331,7 +332,7 @@ export function useGetOrderConceptByUuid(uuid: string) {
 
 export async function UpdateEncounter(uuid: string, payload: any) {
   const abortController = new AbortController();
-  return openmrsFetch(`${restBaseUrl}/encounter/${uuid}`, {
+  return openmrsFetch(`/ws/rest/v1/encounter/${uuid}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -341,32 +342,20 @@ export async function UpdateEncounter(uuid: string, payload: any) {
   });
 }
 
-//TODO: the calls to update order and observations for results should be transactional to allow for rollback
-export async function UpdateOrderResult(
-  encounterUuid: string,
-  obsPayload: any,
-  orderPayload: any
-) {
+export async function saveProcedureReport(reportPayload) {
   const abortController = new AbortController();
-  const updateOrderCall = await openmrsFetch(`${restBaseUrl}/order`, {
+  const updateResults = await openmrsFetch(`/ws/rest/v1/procedure`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     signal: abortController.signal,
-    body: orderPayload,
+    body: reportPayload,
   });
 
-  if (updateOrderCall.status === 201) {
-    return await openmrsFetch(`${restBaseUrl}/encounter/${encounterUuid}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      signal: abortController.signal,
-      body: obsPayload,
+  if (updateResults.status === 201 || updateResults.status === 200) {
+    return await updateOrder(reportPayload.procedureOrder, {
+      fulfillerStatus: "COMPLETED",
     });
-  } else {
-    // handle errors
   }
 }

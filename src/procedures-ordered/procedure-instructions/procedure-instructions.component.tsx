@@ -26,7 +26,7 @@ const ProcedureInstructionsModal: React.FC<ProcedureInstructionsModalProps> = ({
   const { t } = useTranslation();
 
   const tableData = [
-    { key: "Order Urgency", value: order.urgency },
+    { key: "Order Urgency", value: order.priority },
     {
       key: "Schedule date",
       value: order.scheduledDate || new Date().toLocaleDateString(),

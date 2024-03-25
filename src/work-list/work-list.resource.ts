@@ -20,7 +20,7 @@ export interface Result {
   orderReason: any;
   orderReasonNonCoded: any;
   orderType: OrderType;
-  urgency: string;
+  priority: string;
   instructions: any;
   commentToFulfiller: any;
   display: string;
@@ -128,8 +128,7 @@ export function useGetOrdersWorklist(
 ) {
   const config = useConfig() as ConfigObject;
 
-  const apiUrl = `/ws/rest/v1/order?orderTypes=${config.procedureOrderTypeUuid}&activatedOnOrAfterDate=${activatedOnOrAfterDate}&isStopped=false&fulfillerStatus=${fulfillerStatus}&v=full
-  `;
+  const apiUrl = `/ws/rest/v1/order?orderTypes=${config.testOrderTypeUuid}&activatedOnOrAfterDate=${activatedOnOrAfterDate}&isStopped=false&fulfillerStatus=${fulfillerStatus}&v=full`;
 
   const { data, error, isLoading } = useSWR<
     { data: { results: Array<Result> } },
