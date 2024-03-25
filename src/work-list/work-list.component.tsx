@@ -1,7 +1,6 @@
 import React, { useState, useMemo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { Scalpel, TrashCan, Information } from "@carbon/react/icons";
-
 import {
   DataTable,
   DataTableSkeleton,
@@ -24,7 +23,7 @@ import {
   DatePickerInput,
   Tooltip,
 } from "@carbon/react";
-import { Result, useGetOrdersWorklist } from "./work-list.resource";
+import { Result } from "./work-list.resource";
 import styles from "./work-list.scss";
 import {
   ConfigurableLink,

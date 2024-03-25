@@ -12,9 +12,9 @@ import {
   TableRow,
 } from "@carbon/react";
 import { ErrorState } from "@openmrs/esm-framework";
-import { Encounter } from "../../types/patient-queues";
 import styles from "../procedure-queue.scss";
 import PickProcedureRequestActionMenu from "../_pick-procedure-request-menu.component";
+import { Encounter } from "../../types";
 
 interface ProceduresProps {
   encounter: Encounter;

@@ -2,6 +2,7 @@ import {
   getAsyncLifecycle,
   defineConfigSchema,
   getSyncLifecycle,
+  translateFrom,
 } from "@openmrs/esm-framework";
 import { configSchema } from "./config-schema";
 import { createLeftPanelLink } from "./left-panel-link";
@@ -14,6 +15,8 @@ import completedProcedures from "./procedure-tabs/completed-tab.component";
 import orderedTile from "./procedure-tiles/procedures-ordered-tile.component";
 import addProcedureToWorklistDialog from "./procedures-ordered/pick-procedure-order/add-to-worklist-dialog.component";
 import procedureInstructionsModal from "./procedures-ordered/procedure-instructions/procedure-instructions.component";
+import { registerWorkspace } from "@openmrs/esm-patient-common-lib";
+import ProceduresOrderBasketPanelExtension from "./form/procedures-orders/procedures-order-basket-panel/procedures-order-basket-panel.extension";
 
 const moduleName = "@openmrs/esm-procedure-app";
 
@@ -77,3 +80,26 @@ export const addProcedureToWorklistDialogComponent = getSyncLifecycle(
   addProcedureToWorklistDialog,
   options
 );
+
+export const proceduresOrderPanel = getSyncLifecycle(
+  ProceduresOrderBasketPanelExtension,
+  options
+);
+
+// t('addProcedureOrderWorkspaceTitle', 'Add procedure order')
+registerWorkspace({
+  name: "add-procedures-order",
+  type: "order",
+  title: translateFrom(
+    moduleName,
+    "addProceduresOrderWorkspaceTitle",
+    "Add procedures order"
+  ),
+  load: getAsyncLifecycle(
+    () =>
+      import(
+        "./form/procedures-orders/add-procedures-order/add-procedures-order.workspace"
+      ),
+    options
+  ),
+});
