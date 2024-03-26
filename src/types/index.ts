@@ -416,7 +416,7 @@ export interface WaitTime {
   averageWaitTime: string;
 }
 
-export interface ProceduresOrderBasketItem extends OrderBasketItem {
+export interface ProcedureOrderBasketItem extends OrderBasketItem {
   testType?: {
     label: string;
     conceptUuid: string;

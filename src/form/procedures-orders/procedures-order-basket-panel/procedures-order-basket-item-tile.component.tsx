@@ -5,10 +5,10 @@ import { Button, ClickableTile, Tile } from "@carbon/react";
 import { TrashCan, Warning } from "@carbon/react/icons";
 import { useLayoutType } from "@openmrs/esm-framework";
 import styles from "./procedures-order-basket-item-tile.scss";
-import { type ProceduresOrderBasketItem } from "../../../types";
+import { type ProcedureOrderBasketItem } from "../../../types";
 
 export interface OrderBasketItemTileProps {
-  orderBasketItem: ProceduresOrderBasketItem;
+  orderBasketItem: ProcedureOrderBasketItem;
   onItemClick: () => void;
   onRemoveClick: () => void;
 }
@@ -86,7 +86,7 @@ export function ProceduresOrderBasketItemTile({
 function OrderActionLabel({
   orderBasketItem,
 }: {
-  orderBasketItem: ProceduresOrderBasketItem;
+  orderBasketItem: ProcedureOrderBasketItem;
 }) {
   const { t } = useTranslation();
 

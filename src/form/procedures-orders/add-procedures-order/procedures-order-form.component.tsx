@@ -40,12 +40,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { type ConfigObject } from "../../../config-schema";
 import styles from "./procedures-order-form.scss";
-import type { ProceduresOrderBasketItem, OrderFrequency } from "../../../types";
+import type { ProcedureOrderBasketItem, OrderFrequency } from "../../../types";
 import { useOrderConfig } from "../order-config";
 import { moduleName } from "../../../constants";
 
 export interface ProceduresOrderFormProps {
-  initialOrder: ProceduresOrderBasketItem;
+  initialOrder: ProcedureOrderBasketItem;
   closeWorkspace: DefaultWorkspaceProps["closeWorkspace"];
   closeWorkspaceWithSavedChanges: DefaultWorkspaceProps["closeWorkspaceWithSavedChanges"];
   promptBeforeClosing: DefaultWorkspaceProps["promptBeforeClosing"];
@@ -65,7 +65,7 @@ export function ProceduresOrderForm({
     isLoading: isLoadingOrderConfig,
     error: errorFetchingOrderConfig,
   } = useOrderConfig();
-  const { orders, setOrders } = useOrderBasket<ProceduresOrderBasketItem>(
+  const { orders, setOrders } = useOrderBasket<ProcedureOrderBasketItem>(
     "procedures",
     prepProceduresOrderPostData
   );
@@ -162,7 +162,7 @@ export function ProceduresOrderForm({
     control,
     handleSubmit,
     formState: { errors, defaultValues, isDirty },
-  } = useForm<ProceduresOrderBasketItem>({
+  } = useForm<ProcedureOrderBasketItem>({
     mode: "all",
     resolver: zodResolver(proceduresOrderFormSchema),
     defaultValues: {
@@ -180,7 +180,7 @@ export function ProceduresOrderForm({
   const { orderReasons } = useOrderReasons(orderReasonUuids);
 
   const handleFormSubmission = useCallback(
-    (data: ProceduresOrderBasketItem) => {
+    (data: ProcedureOrderBasketItem) => {
       data.action = "NEW";
       data.careSetting = careSettingUuid;
       data.orderer = session.currentProvider.uuid;
@@ -219,7 +219,7 @@ export function ProceduresOrderForm({
     });
   }, [closeWorkspace, orders, setOrders, defaultValues]);
 
-  const onError = (errors: FieldErrors<ProceduresOrderBasketItem>) => {
+  const onError = (errors: FieldErrors<ProcedureOrderBasketItem>) => {
     if (errors) {
       setShowErrorNotification(true);
     }
@@ -303,11 +303,9 @@ export function ProceduresOrderForm({
                       size="lg"
                       id="priorityInput"
                       titleText={t("priority", "Priority")}
-                      // selectedItem={priorityOptions.find((option) => option.value === value) || null}
                       selectedItem={selectedPriority}
                       items={priorityOptions}
                       onBlur={onBlur}
-                      // onChange={({ selectedItem }) => onChange(selectedItem?.value || '')}
                       onChange={handlePriorityChange}
                       invalid={errors.urgency?.message}
                       invalidText={errors.urgency?.message}
@@ -387,7 +385,6 @@ export function ProceduresOrderForm({
                       size="lg"
                       id="lateralityInput"
                       titleText={t("laterality", "Laterality")}
-                      // selectedItem={lateralityItems.find((option) => option.uuid === value) || null}
                       items={lateralityItems}
                       onBlur={onBlur}
                       onChange={({ selectedItem }) =>
@@ -419,7 +416,6 @@ export function ProceduresOrderForm({
                       size="lg"
                       id="bodySiteInput"
                       titleText={t("bodySite", "Body Site")}
-                      // selectedItem={lateralityItems.find((option) => option.uuid === value) || null}
                       items={bodySiteItems}
                       onBlur={onBlur}
                       onChange={({ selectedItem }) =>
@@ -483,7 +479,6 @@ export function ProceduresOrderForm({
                       size="lg"
                       id="specimenTypeInput"
                       titleText={t("specimenType", "Specimen Type")}
-                      // selectedItem={lateralityItems.find((option) => option.uuid === value) || null}
                       items={specimenTypeItems}
                       onBlur={onBlur}
                       onChange={({ selectedItem }) =>
@@ -491,7 +486,6 @@ export function ProceduresOrderForm({
                       }
                       invalid={errors.specimenType?.message}
                       invalidText={errors.specimenType?.message}
-                      // itemToString={(item) => item?.display}
                       itemToString={(item?: Concept) =>
                         item && item?.display ? `${item?.display}` : ""
                       }
@@ -514,8 +508,6 @@ export function ProceduresOrderForm({
                   id="numberOfRepeats"
                   label={t("numberOfRepeats", "Number Of Repeats")}
                   min={0}
-                  // onChange={(event) => field.onChange(parseInt(event.target.value || 0))}
-                  // value={field.value}
                   hideSteppers={false}
                 />
               </InputWrapper>

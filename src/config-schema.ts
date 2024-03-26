@@ -21,11 +21,6 @@ export const configSchema = {
   },
 };
 
-export type Config = {
-  casualGreeting: boolean;
-  whoToGreet: Array<string>;
-};
-
 export interface OrderReason {
   labTestUuid: string;
   required: boolean;

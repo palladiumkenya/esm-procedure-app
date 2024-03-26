@@ -28,10 +28,10 @@ import { prepProceduresOrderPostData } from "../api";
 import { type ProceduresType, useProceduresTypes } from "./useProceduresTypes";
 import { createEmptyLabOrder } from "./procedures-order";
 import styles from "./procedures-type-search.scss";
-import { type ProceduresOrderBasketItem } from "../../../types";
+import { type ProcedureOrderBasketItem } from "../../../types";
 
 export interface TestTypeSearchProps {
-  openLabForm: (searchResult: ProceduresOrderBasketItem) => void;
+  openLabForm: (searchResult: ProcedureOrderBasketItem) => void;
 }
 
 export function TestTypeSearch({ openLabForm }: TestTypeSearchProps) {
@@ -76,7 +76,7 @@ export function TestTypeSearch({ openLabForm }: TestTypeSearchProps) {
 
 interface TestTypeSearchResultsProps {
   searchTerm: string;
-  openOrderForm: (searchResult: ProceduresOrderBasketItem) => void;
+  openOrderForm: (searchResult: ProcedureOrderBasketItem) => void;
   focusAndClearSearchInput: () => void;
 }
 
@@ -188,7 +188,7 @@ function TestTypeSearchResults({
 
 interface TestTypeSearchResultItemProps {
   testType: ProceduresType;
-  openOrderForm: (searchResult: ProceduresOrderBasketItem) => void;
+  openOrderForm: (searchResult: ProcedureOrderBasketItem) => void;
 }
 
 const TestTypeSearchResultItem: React.FC<TestTypeSearchResultItemProps> = ({
@@ -197,7 +197,7 @@ const TestTypeSearchResultItem: React.FC<TestTypeSearchResultItemProps> = ({
 }) => {
   const isTablet = useLayoutType() === "tablet";
   const session = useSession();
-  const { orders, setOrders } = useOrderBasket<ProceduresOrderBasketItem>(
+  const { orders, setOrders } = useOrderBasket<ProcedureOrderBasketItem>(
     "procedures",
     prepProceduresOrderPostData
   );

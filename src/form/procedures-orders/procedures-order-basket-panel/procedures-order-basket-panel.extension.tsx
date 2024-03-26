@@ -14,12 +14,12 @@ import { ProceduresOrderBasketItemTile } from "./procedures-order-basket-item-ti
 import { prepProceduresOrderPostData } from "../api";
 import LabIcon from "./procedures-icon.component";
 import styles from "./procedures-order-basket-panel.scss";
-import { type ProceduresOrderBasketItem } from "../../../types";
+import { type ProcedureOrderBasketItem } from "../../../types";
 
 export default function ProceduresOrderBasketPanelExtension() {
   const { t } = useTranslation();
   const isTablet = useLayoutType() === "tablet";
-  const { orders, setOrders } = useOrderBasket<ProceduresOrderBasketItem>(
+  const { orders, setOrders } = useOrderBasket<ProcedureOrderBasketItem>(
     "procedures",
     prepProceduresOrderPostData
   );
@@ -31,11 +31,11 @@ export default function ProceduresOrderBasketPanelExtension() {
     revisedOrderBasketItems,
     discontinuedOrderBasketItems,
   } = useMemo(() => {
-    const incompleteOrderBasketItems: Array<ProceduresOrderBasketItem> = [];
-    const newOrderBasketItems: Array<ProceduresOrderBasketItem> = [];
-    const renewedOrderBasketItems: Array<ProceduresOrderBasketItem> = [];
-    const revisedOrderBasketItems: Array<ProceduresOrderBasketItem> = [];
-    const discontinuedOrderBasketItems: Array<ProceduresOrderBasketItem> = [];
+    const incompleteOrderBasketItems: Array<ProcedureOrderBasketItem> = [];
+    const newOrderBasketItems: Array<ProcedureOrderBasketItem> = [];
+    const renewedOrderBasketItems: Array<ProcedureOrderBasketItem> = [];
+    const revisedOrderBasketItems: Array<ProcedureOrderBasketItem> = [];
+    const discontinuedOrderBasketItems: Array<ProcedureOrderBasketItem> = [];
 
     orders.forEach((order) => {
       if (order?.isOrderIncomplete) {
@@ -80,7 +80,7 @@ export default function ProceduresOrderBasketPanelExtension() {
   }, []);
 
   const removeLabOrder = useCallback(
-    (order: ProceduresOrderBasketItem) => {
+    (order: ProcedureOrderBasketItem) => {
       const newOrders = [...orders];
       newOrders.splice(orders.indexOf(order), 1);
       setOrders(newOrders);

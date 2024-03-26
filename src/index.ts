@@ -50,13 +50,9 @@ export const procedureDashboardLink = getSyncLifecycle(
 );
 
 export const worklistTileComponent = getSyncLifecycle(worklistTile, options);
-
 export const referredTileComponent = getSyncLifecycle(referredTile, options);
-
 export const completedTileComponent = getSyncLifecycle(completedTile, options);
-
 export const OrderedTileComponent = getSyncLifecycle(orderedTile, options);
-
 export const worklistProceduresTabComponent = getSyncLifecycle(
   workListProcedures,
   options
@@ -66,7 +62,6 @@ export const referredProceduresTabComponent = getSyncLifecycle(
   referredProcedures,
   options
 );
-
 export const completedProceduresTabComponent = getSyncLifecycle(
   completedProcedures,
   options
@@ -75,7 +70,6 @@ export const procedureInstructionsModalComponent = getSyncLifecycle(
   procedureInstructionsModal,
   options
 );
-
 export const addProcedureToWorklistDialogComponent = getSyncLifecycle(
   addProcedureToWorklistDialog,
   options

@@ -19,15 +19,15 @@ import {
 import { TestTypeSearch } from "./procedures-type-search";
 import { ProceduresOrderForm } from "./procedures-order-form.component";
 import styles from "./add-procedures-order.scss";
-import { type ProceduresOrderBasketItem } from "../../../types";
+import { type ProcedureOrderBasketItem } from "../../../types";
 
-export interface AddProceduresOrderWorkspaceAdditionalProps {
+export interface AddProcedureOrderWorkspaceAdditionalProps {
   order?: OrderBasketItem;
 }
 
 export interface AddProceduresOrderWorkspace
   extends DefaultWorkspaceProps,
-    AddProceduresOrderWorkspaceAdditionalProps {}
+    AddProcedureOrderWorkspaceAdditionalProps {}
 
 export default function AddProceduresOrderWorkspace({
   order: initialOrder,
@@ -40,7 +40,7 @@ export default function AddProceduresOrderWorkspace({
 
   const { patient, isLoading: isLoadingPatient } = usePatient();
   const [currentLabOrder, setCurrentLabOrder] = useState(
-    initialOrder as ProceduresOrderBasketItem
+    initialOrder as ProcedureOrderBasketItem
   );
 
   const isTablet = useLayoutType() === "tablet";

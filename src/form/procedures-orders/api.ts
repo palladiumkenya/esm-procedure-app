@@ -13,7 +13,7 @@ import type {
   PatientOrderFetchResponse,
 } from "@openmrs/esm-patient-common-lib";
 import useSWRImmutable from "swr/immutable";
-import { type ProceduresOrderBasketItem } from "../../types";
+import { type ProcedureOrderBasketItem } from "../../types";
 
 export const careSettingUuid = "6f0c9a92-6f24-11e3-af88-005056821db0";
 /**
@@ -92,7 +92,7 @@ export function useOrderReasons(conceptUuids: Array<string>) {
 }
 
 export function prepProceduresOrderPostData(
-  order: ProceduresOrderBasketItem,
+  order: ProcedureOrderBasketItem,
   patientUuid: string,
   encounterUuid: string
 ): OrderPost {
@@ -153,7 +153,7 @@ export function getConceptReferenceUrls(conceptUuids: Array<string>) {
 }
 
 export type PostDataPrepLabOrderFunction = (
-  order: ProceduresOrderBasketItem,
+  order: ProcedureOrderBasketItem,
   patientUuid: string,
   encounterUuid: string
 ) => OrderPost;
