@@ -1,4 +1,6 @@
 import { OpenmrsResource } from "@openmrs/esm-framework";
+import { OrderBasketItem } from "@openmrs/esm-patient-common-lib";
+import { Link } from "./patient-queue";
 
 export enum SearchTypes {
   BASIC = "basic",
@@ -114,6 +116,9 @@ export interface Order {
   };
   quantity: number;
   quantityUnits: OpenmrsResource;
+  type: string;
+  display: string;
+  links: Link[];
 }
 
 export interface OrderItem {
@@ -410,3 +415,38 @@ export interface WaitTime {
   metric: string;
   averageWaitTime: string;
 }
+
+export interface ProcedureOrderBasketItem extends OrderBasketItem {
+  testType?: {
+    label: string;
+    conceptUuid: string;
+  };
+  labReferenceNumber?: string;
+  urgency?: string;
+  instructions?: string;
+  previousOrder?: string;
+  orderReason?: string;
+  scheduleDate?: string | Date;
+  // scheduleDate?: Date;
+  commentsToFulfiller?: string;
+  laterality?: string;
+  numberOfRepeats?: number;
+  frequency?: string;
+  bodySite?: string;
+  specimenSource?: string;
+  specimenType?: string;
+}
+
+export type OrderFrequency = CommonProceduresValueCoded;
+export type DurationUnit = CommonProceduresValueCoded;
+
+interface CommonProceduresProps {
+  value: string;
+  default?: boolean;
+}
+
+export interface CommonProceduresValueCoded extends CommonProceduresProps {
+  valueCoded: string;
+}
+
+export * from "./patient-queue";

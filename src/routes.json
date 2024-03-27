@@ -90,6 +90,12 @@
     {
       "name":"add-procedure-to-worklist-dialog",
       "component": "addProcedureToWorklistDialogComponent"
+    },
+    {
+      "name": "procedures-order-panel",
+      "component": "proceduresOrderPanel",
+      "slot": "order-basket-slot",
+      "order": 4
     }
   ],
   "pages": [
