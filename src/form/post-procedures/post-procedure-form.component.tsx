@@ -8,17 +8,15 @@ import {
   MultiSelect,
   Layer,
   FormLabel,
+  ButtonSet,
+  Button,
 } from "@carbon/react";
 import { useTranslation } from "react-i18next";
-import { ButtonSet } from "@carbon/react";
-import { Button } from "@carbon/react";
 import styles from "./post-procedure-form.scss";
-import { Controller, useForm, useWatch } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useProviders } from "./post-procedure.resource";
-
-type PostProcedureFormProps = {};
 
 const validationSchema = z.object({
   startDatetime: z.string({ required_error: "Start datetime is required" }),
@@ -43,7 +41,7 @@ const validationSchema = z.object({
 
 type PostProcedureFormSchema = z.infer<typeof validationSchema>;
 
-const PostProcedureForm: React.FC<PostProcedureFormProps> = () => {
+const PostProcedureForm: React.FC = () => {
   const { t } = useTranslation();
   const { isLoadingProviders, providers } = useProviders();
   const methods = useForm<PostProcedureFormSchema>({
@@ -55,9 +53,9 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = () => {
     formState: { errors },
     getValues,
   } = methods;
-  console.log(useWatch({ control, name: "participants" }));
+
   const onSubmit = (data: PostProcedureFormSchema) => {
-    console.log(data);
+    // Add logic to save the data
   };
 
   const onError = (error: any) => {
