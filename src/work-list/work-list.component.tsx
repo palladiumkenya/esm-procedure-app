@@ -190,7 +190,7 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
           onClick={() => {
             launchOverlay(
               t("postProcedureResultForm", "Procedure report form"),
-              <PostProcedureForm />
+              <PostProcedureForm patientUuid={patientUuid} procedure={order} />
             );
           }}
           renderIcon={(props) => (
@@ -286,7 +286,10 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
                 onClick={() =>
                   launchOverlay(
                     t("postProcedureForm", "Post procedure form"),
-                    <PostProcedureForm />
+                    <PostProcedureForm
+                      patientUuid={entry.patient.uuid}
+                      procedure={entry}
+                    />
                   )
                 }
               >

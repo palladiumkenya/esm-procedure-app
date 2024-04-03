@@ -1,5 +1,10 @@
-import React from "react";
-import { OpenmrsDatePicker } from "@openmrs/esm-framework";
+import React, { useCallback, useState } from "react";
+import {
+  OpenmrsDatePicker,
+  showSnackbar,
+  useDebounce,
+  useSession,
+} from "@openmrs/esm-framework";
 import {
   Form,
   Stack,
@@ -10,17 +15,27 @@ import {
   FormLabel,
   ButtonSet,
   Button,
+  Search,
+  InlineLoading,
+  Tile,
 } from "@carbon/react";
 import { useTranslation } from "react-i18next";
 import styles from "./post-procedure-form.scss";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useProviders } from "./post-procedure.resource";
+import {
+  savePostProcedure,
+  useConditionsSearch,
+  useProviders,
+} from "./post-procedure.resource";
+import { CodedCondition, ProcedurePayload } from "../../types";
+import { Result } from "../../work-list/work-list.resource";
+import dayjs from "dayjs";
 
 const validationSchema = z.object({
-  startDatetime: z.string({ required_error: "Start datetime is required" }),
-  endDatetime: z.string({ required_error: "End datetime is required" }),
+  startDatetime: z.date({ required_error: "Start datetime is required" }),
+  endDatetime: z.date({ required_error: "End datetime is required" }),
   outcome: z.string({ required_error: "Outcome is required" }),
   procedureReport: z.string({ required_error: "Procedure report is required" }),
   participants: z.array(
@@ -34,28 +49,100 @@ const validationSchema = z.object({
     }),
     { required_error: "Participants are required" }
   ),
-  complications: z.array(
-    z.string({ required_error: "Complications are required" })
-  ),
+  complications: z.string({ required_error: "Complications are required" }),
 });
 
 type PostProcedureFormSchema = z.infer<typeof validationSchema>;
 
-const PostProcedureForm: React.FC = () => {
+type PostProcedureFormProps = {
+  patientUuid: string;
+  procedure: Result;
+};
+
+const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
+  patientUuid,
+  procedure,
+}) => {
+  const { sessionLocation } = useSession();
   const { t } = useTranslation();
-  const { isLoadingProviders, providers } = useProviders();
-  const methods = useForm<PostProcedureFormSchema>({
-    defaultValues: {},
-    resolver: zodResolver(validationSchema),
-  });
+  const { providers } = useProviders();
+  const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebounce(searchTerm);
+  const { searchResults, isSearching } =
+    useConditionsSearch(debouncedSearchTerm);
+  const [selectedCondition, setSelectedCondition] =
+    useState<CodedCondition>(null);
+
+  const handleSearchTermChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setSearchTerm(event.target.value);
+
   const {
     control,
     formState: { errors },
-    getValues,
-  } = methods;
+    handleSubmit,
+  } = useForm<PostProcedureFormSchema>({
+    defaultValues: {},
+    resolver: zodResolver(validationSchema),
+  });
 
-  const onSubmit = (data: PostProcedureFormSchema) => {
-    // Add logic to save the data
+  const handleConditionChange = useCallback(
+    (selectedCondition: CodedCondition) => {
+      setSelectedCondition(selectedCondition);
+    },
+    []
+  );
+
+  const onSubmit = async (data: PostProcedureFormSchema) => {
+    const payload: ProcedurePayload = {
+      patient: patientUuid,
+      procedureOrder: procedure.uuid,
+      concept: procedure.concept.uuid,
+      procedureReason: procedure.orderReason?.uuid,
+      category: procedure.orderType?.uuid,
+      bodySite: procedure?.specimenSource?.uuid,
+      status: "COMPLETED",
+      outcome: data.outcome,
+      location: sessionLocation?.uuid,
+      startDatetime: dayjs(data.startDatetime).format("YYYY-MM-DDTHH:mm:ssZ"),
+      endDatetime: dayjs(data.endDatetime).format("YYYY-MM-DDTHH:mm:ssZ"),
+      procedureReport: data.procedureReport,
+      complications: [
+        {
+          condition: {
+            coded: selectedCondition.concept.uuid,
+          },
+          patient: patientUuid,
+          clinicalStatus: "ACTIVE",
+          verificationStatus: "CONFIRMED",
+          onsetDate: dayjs().format("YYYY-MM-DDTHH:mm:ssZ"),
+          additionalDetail: "",
+        },
+      ],
+    };
+
+    try {
+      const response = await savePostProcedure(payload);
+      response.status === 201 &&
+        showSnackbar({
+          title: t("procedureSaved", "Procedure saved"),
+          subtitle: t(
+            "procedureSavedSuccessfully",
+            "Procedure saved successfully"
+          ),
+          timeoutInMs: 5000,
+          isLowContrast: true,
+          kind: "success",
+        });
+    } catch (error) {
+      console.error(error);
+      showSnackbar({
+        title: t("error", "Error"),
+        subtitle: t("errorSavingProcedure", "Error saving procedure"),
+        timeoutInMs: 5000,
+        isLowContrast: true,
+        kind: "error",
+      });
+    }
   };
 
   const onError = (error: any) => {
@@ -64,7 +151,7 @@ const PostProcedureForm: React.FC = () => {
 
   return (
     <Form
-      onSubmit={methods.handleSubmit(onSubmit, onError)}
+      onSubmit={handleSubmit(onSubmit, onError)}
       className={styles.formContainer}
     >
       <Stack gap={4}>
@@ -109,12 +196,22 @@ const PostProcedureForm: React.FC = () => {
           </FormLabel>
           <Controller
             control={control}
-            name="endDatetime"
+            name="outcome"
             render={({ field: { onChange } }) => (
               <ComboBox
-                onChange={onChange}
+                onChange={({ selectedItem }) => onChange(selectedItem.id)}
                 id="outcome"
-                items={[]}
+                items={[
+                  {
+                    id: "PARTIALLY_SUCCESSFUL",
+                    text: t("partiallySuccessful", "Partially success"),
+                  },
+                  {
+                    id: "NOT_SUCCESSFUL",
+                    text: t("notSuccessfully", "Not successful"),
+                  },
+                  { id: "SUCCESSFUL", text: t("successful", "Successful") },
+                ]}
                 itemToString={(item) => (item ? item.text : "")}
                 titleText={t("outcome", "Outcome")}
                 placeholder={t("selectOutcome", "Select outcome")}
@@ -157,8 +254,8 @@ const PostProcedureForm: React.FC = () => {
             render={({ field: { onChange } }) => (
               <MultiSelect
                 id="participants"
-                label={t("participants", "Participants")}
                 titleText={t("participants", "Participants")}
+                label={t("selectParticipants", "Select participants")}
                 items={providers}
                 onChange={({ selectedItems }) => onChange(selectedItems)}
                 itemToString={(item) => (item ? item.display : "")}
@@ -174,24 +271,73 @@ const PostProcedureForm: React.FC = () => {
           <FormLabel className={styles.formLabel}>
             {t("complications", "Complications")}
           </FormLabel>
-          <Controller
-            control={control}
-            name="complications"
-            render={({ field: { onChange } }) => (
-              <MultiSelect
-                id="complications"
-                label={t("complications", "Complications")}
-                titleText={t("complications", "Complications")}
-                placeholder={t("selectComplications", "Select complications")}
-                items={[]}
-                onChange={({ selectedItems }) => onChange(selectedItems)}
-                itemToString={(item) => (item ? item.text : "")}
-                selectionFeedback="top-after-reopen"
-                invalid={!!errors.complications}
-                invalidText={errors.complications?.message}
-              />
-            )}
-          />
+          <div>
+            <Controller
+              name="complications"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <Search
+                  autoFocus
+                  size="md"
+                  id="conditionsSearch"
+                  labelText={t("enterCondition", "Enter condition")}
+                  placeholder={t("searchConditions", "Search conditions")}
+                  onChange={(e) => {
+                    onChange(e);
+                    handleSearchTermChange(e);
+                  }}
+                  onClear={() => {
+                    setSearchTerm("");
+                    setSelectedCondition(null);
+                  }}
+                  value={(() => {
+                    if (selectedCondition) {
+                      return selectedCondition.display;
+                    }
+                    if (debouncedSearchTerm) {
+                      return value;
+                    }
+                  })()}
+                />
+              )}
+            />
+            {(() => {
+              if (!debouncedSearchTerm || selectedCondition) return null;
+              if (isSearching)
+                return (
+                  <InlineLoading
+                    className={styles.loader}
+                    description={t("searching", "Searching") + "..."}
+                  />
+                );
+              if (searchResults && searchResults.length) {
+                return (
+                  <ul className={styles.conditionsList}>
+                    {searchResults?.map((searchResult) => (
+                      <li
+                        role="menuitem"
+                        className={styles.condition}
+                        key={searchResult?.concept?.uuid}
+                        onClick={() => handleConditionChange(searchResult)}
+                      >
+                        {searchResult.display}
+                      </li>
+                    ))}
+                  </ul>
+                );
+              }
+              return (
+                <Layer>
+                  <Tile className={styles.emptyResults}>
+                    <span>
+                      {t("noResultsFor", "No results for")}{" "}
+                      <strong>"{debouncedSearchTerm}"</strong>
+                    </span>
+                  </Tile>
+                </Layer>
+              );
+            })()}
+          </div>
         </Layer>
       </Stack>
       <ButtonSet className={styles.buttonSetContainer}>

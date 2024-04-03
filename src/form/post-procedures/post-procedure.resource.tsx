@@ -3,7 +3,9 @@ import {
   OpenmrsResource,
   openmrsFetch,
   restBaseUrl,
+  useConfig,
 } from "@openmrs/esm-framework";
+import { CodedCondition, ProcedurePayload } from "../../types";
 
 type Provider = {
   uuid: string;
@@ -23,3 +25,30 @@ export const useProviders = () => {
     loadingProvidersError: error,
   };
 };
+
+export const savePostProcedure = async (postProcedure: ProcedurePayload) => {
+  const response = await openmrsFetch(`${restBaseUrl}/procedure`, {
+    method: "POST",
+    body: JSON.stringify(postProcedure),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return response;
+};
+
+export function useConditionsSearch(conditionToLookup: string) {
+  const config = useConfig();
+  const conditionConceptClassUuid = config?.conditionConceptClassUuid;
+  const conditionsSearchUrl = `${restBaseUrl}/conceptsearch?conceptClasses=${conditionConceptClassUuid}&q=${conditionToLookup}`;
+  const { data, error, isLoading } = useSWR<
+    { data: { results: Array<CodedCondition> } },
+    Error
+  >(conditionToLookup ? conditionsSearchUrl : null, openmrsFetch);
+
+  return {
+    searchResults: data?.data?.results ?? [],
+    error: error,
+    isSearching: isLoading,
+  };
+}
