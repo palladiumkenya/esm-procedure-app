@@ -450,3 +450,53 @@ export interface CommonProceduresValueCoded extends CommonProceduresProps {
 }
 
 export * from "./patient-queue";
+
+export type CodedCondition = {
+  concept: {
+    uuid: string;
+    display: string;
+  };
+  conceptName: {
+    uuid: string;
+    display: string;
+  };
+  display: string;
+};
+
+export type ProcedurePayload = {
+  patient: string;
+  procedureOrder: string;
+  concept: string;
+  procedureReason: string;
+  category: string;
+  bodySite: string;
+  status: string;
+  outcome: string;
+  location: string;
+  startDatetime: string;
+  endDatetime: string;
+  procedureReport: string;
+  complications: Array<{
+    condition: {
+      coded: string;
+    };
+    patient: string;
+    clinicalStatus: string;
+    verificationStatus: string;
+    onsetDate: string;
+    additionalDetail: string;
+  }>;
+  encounters?: Array<{
+    encounterDatetime: string;
+    encounterProviders: Array<{
+      provider: string;
+      encounterRole: string;
+    }>;
+    patient: string;
+    encounterType: string;
+    obs: Array<{
+      concept: string;
+      value: number;
+    }>;
+  }>;
+};

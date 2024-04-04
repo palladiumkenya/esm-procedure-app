@@ -37,10 +37,10 @@ import {
   showSnackbar,
 } from "@openmrs/esm-framework";
 import { launchOverlay } from "../components/overlay/hook";
-import PostProcedureForm from "../results/result-form.component";
 import { getStatusColor } from "../utils/functions";
 import Overlay from "../components/overlay/overlay.component";
 import { useOrdersWorklist } from "../hooks/useOrdersWorklist";
+import PostProcedureForm from "../form/post-procedures/post-procedure-form.component";
 interface WorklistProps {
   fulfillerStatus: string;
 }
@@ -190,7 +190,7 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
           onClick={() => {
             launchOverlay(
               t("postProcedureResultForm", "Procedure report form"),
-              <PostProcedureForm patientUuid={patientUuid} order={order} />
+              <PostProcedureForm patientUuid={patientUuid} procedure={order} />
             );
           }}
           renderIcon={(props) => (
@@ -282,6 +282,19 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
                 order={paginatedWorkListEntries[index]}
               />
               <RejectOrder order={paginatedWorkListEntries[index]} />
+              <Button
+                onClick={() =>
+                  launchOverlay(
+                    t("postProcedureForm", "Post procedure form"),
+                    <PostProcedureForm
+                      patientUuid={entry.patient.uuid}
+                      procedure={entry}
+                    />
+                  )
+                }
+              >
+                {t("postProcedureForm", "Post procedure form")}
+              </Button>
             </>
           ),
         },

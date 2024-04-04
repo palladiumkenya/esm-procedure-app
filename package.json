@@ -7,7 +7,7 @@
   "main": "src/index.ts",
   "source": true,
   "scripts": {
-    "start": "openmrs develop",
+    "start": "openmrs develop --backend https://dev.kenyahmis.org --port 8050 --config-url https://dev.kenyahmis.org/openmrs/spa/config.json",
     "serve": "webpack serve --mode=development",
     "build": "webpack --mode production",
     "analyze": "webpack --mode=production --env analyze=true",
@@ -86,6 +86,7 @@
     "@typescript-eslint/eslint-plugin": "^5.61.0",
     "@typescript-eslint/parser": "^5.61.0",
     "css-loader": "^6.8.1",
+    "dayjs": "^1.11.10",
     "dotenv": "^16.0.3",
     "eslint": "^8.44.0",
     "eslint-config-prettier": "^8.8.0",
