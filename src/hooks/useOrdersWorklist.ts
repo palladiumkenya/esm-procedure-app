@@ -40,6 +40,20 @@ export function useOrdersWorklist(
         order.action !== "DISCONTINUE" &&
         order.concept.conceptClass.uuid === ProcedureConceptClass_UUID
       );
+    } else if (fulfillerStatus === "EXCEPTION") {
+      return (
+        order.fulfillerStatus === "EXCEPTION" &&
+        order.dateStopped === null &&
+        order.action !== "DISCONTINUE" &&
+        order.concept.conceptClass.uuid === ProcedureConceptClass_UUID
+      );
+    } else if (fulfillerStatus === "DECLINED") {
+      return (
+        order.fulfillerStatus === "DECLINED" &&
+        order.dateStopped === null &&
+        order.action !== "DISCONTINUE" &&
+        order.concept.conceptClass.uuid === ProcedureConceptClass_UUID
+      );
     }
   });
 

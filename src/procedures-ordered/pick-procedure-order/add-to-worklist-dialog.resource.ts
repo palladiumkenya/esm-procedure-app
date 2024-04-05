@@ -4,8 +4,6 @@ import {
   restBaseUrl,
   useConfig,
 } from "@openmrs/esm-framework";
-import { useMemo } from "react";
-import useSWR from "swr";
 import useSWRImmutable from "swr/immutable";
 
 export interface QueueRoomsResponse {
@@ -91,7 +89,7 @@ export function useReferralLocations() {
   const config = useConfig();
   const { laboratoryReferalDestinationUuid } = config;
   const apiUrl = `${restBaseUrl}/concept/${laboratoryReferalDestinationUuid}`;
-  const { data, error, isLoading } = useSWRImmutable<FetchResponse>(
+  const { data, isLoading } = useSWRImmutable<FetchResponse>(
     apiUrl,
     openmrsFetch
   );

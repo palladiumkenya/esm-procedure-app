@@ -26,13 +26,12 @@ const ProcedureInstructionsModal: React.FC<ProcedureInstructionsModalProps> = ({
   const { t } = useTranslation();
 
   const tableData = [
-    { key: "Order Urgency", value: order.priority },
+    { key: "Ordered Procedure", value: order.display },
+    { key: "Order Urgency", value: order.urgency },
     {
       key: "Schedule date",
       value: order.scheduledDate || new Date().toLocaleDateString(),
     },
-    { key: "Body Site", value: order.display },
-    { key: "Laterality", value: order.laterality },
     { key: "Number of repeats", value: order.numberOfRepeats },
     { key: "Frequency", value: order.frequency?.display },
   ];
@@ -62,6 +61,12 @@ const ProcedureInstructionsModal: React.FC<ProcedureInstructionsModalProps> = ({
                 <b>Instructions</b>
               </p>
               <p className={styles.instructions}>{order.instructions}</p>
+            </Tile>
+            <Tile>
+              <p>
+                <b>Orderer comments</b>
+              </p>
+              <p className={styles.instructions}>{order.commentToFulfiller}</p>
             </Tile>
           </section>
         </div>

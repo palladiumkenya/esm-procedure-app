@@ -18,9 +18,8 @@ import {
   TableToolbarSearch,
 } from "@carbon/react";
 import { useOrdersWorklist } from "../hooks/useOrdersWorklist";
-import { formatDate, parseDate, usePagination } from "@openmrs/esm-framework";
+import { usePagination } from "@openmrs/esm-framework";
 import { useSearchResults } from "../hooks/useSearchResults";
-import { Result } from "../work-list/work-list.resource";
 
 interface CompletedListProps {
   fulfillerStatus: string;
@@ -43,7 +42,7 @@ export const CompletedList: React.FC<CompletedListProps> = ({
   } = usePagination(searchResults, currentPageSize);
 
   const pageSizes = [10, 20, 30, 40, 50];
-  const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
+  const [expandedRows] = useState<Set<string>>(new Set());
 
   const rows = useMemo(() => {
     return paginatedResults
@@ -69,10 +68,11 @@ export const CompletedList: React.FC<CompletedListProps> = ({
   const tableColumns = [
     { id: 0, header: t("date", "Date"), key: "date" },
     { id: 1, header: t("orderNumber", "Procedure Number"), key: "orderNumber" },
-    { id: 2, header: t("procedure", "Procedure"), key: "procedure" },
-    { id: 3, header: t("patient", "Patient"), key: "patient" },
-    { id: 4, header: t("priority", "Priority"), key: "urgency" },
-    { id: 5, header: t("orderer", "Orderer"), key: "orderer" },
+    { id: 2, header: t("patient", "Patient"), key: "patient" },
+    { id: 3, header: t("procedure", "Procedure"), key: "procedure" },
+    { id: 4, header: t("status", "Status"), key: "status" },
+    { id: 5, header: t("urgency", "Priority"), key: "urgency" },
+    { id: 6, header: t("orderer", "Orderer"), key: "orderer" },
   ];
 
   return isLoading ? (

@@ -12,7 +12,7 @@ const WorklistTileComponent = () => {
     <SummaryTile
       label={t("inProgress", "In progress")}
       value={worklistCount}
-      headerLabel={t("worklist", "Ex-Worklist")}
+      headerLabel={t("worklist", "Worklist")}
     />
   );
 };

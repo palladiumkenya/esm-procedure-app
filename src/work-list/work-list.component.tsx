@@ -171,12 +171,14 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
   // get picked orders
   const columns = [
     { id: 0, header: t("date", "Date"), key: "date" },
-    { id: 1, header: t("orderNumber", "Procedure Number"), key: "orderNumber" },
-    { id: 2, header: t("procedure", "Procedure"), key: "procedure" },
-    { id: 3, header: t("patient", "Patient"), key: "patient" },
-    { id: 4, header: t("priority", "Priority"), key: "priority" },
-    { id: 5, header: t("orderer", "Orderer"), key: "orderer" },
-    { id: 6, header: t("actions", "Actions"), key: "actions" },
+    { id: 1, header: t("orderNumber", "Order Number"), key: "orderNumber" },
+    { id: 2, header: t("patient", "Patient"), key: "patient" },
+    { id: 3, header: t("procedure", "Procedure"), key: "procedure" },
+    { id: 4, header: t("status", "Status"), key: "status" },
+    { id: 5, header: t("urgency", "Priority"), key: "urgency" },
+    { id: 10, header: t("start", "Start"), key: "start" },
+    { id: 6, header: t("orderer", "Orderer"), key: "orderer" },
+    { id: 7, header: t("actions", "Actions"), key: "actions" },
   ];
 
   const tableRows = useMemo(() => {
@@ -207,7 +209,7 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
 
     const Instructions: React.FC<InstructionsProps> = ({ order }) => {
       const launchProcedureInstructionsModal = useCallback(() => {
-        const dispose = showModal("radiology-instructions-modal", {
+        const dispose = showModal("procedure-instructions-modal", {
           closeModal: () => dispose(),
           order,
         });
@@ -265,7 +267,7 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
         },
         orderer: { content: <span>{entry.orderer.display}</span> },
         orderType: { content: <span>{entry?.orderType?.display}</span> },
-        priority: { content: <span>{entry.priority}</span> },
+        priority: { content: <span>{entry.urgency}</span> },
         start: {
           content: (
             <>

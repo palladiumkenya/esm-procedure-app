@@ -109,9 +109,9 @@ const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = () => {
   const columns = [
     { id: 0, header: t("date", "Date"), key: "date" },
     { id: 1, header: t("orderNumber", "Procedure Number"), key: "orderNumber" },
-    { id: 2, header: t("procedure", "Procedure"), key: "procedure" },
-    { id: 3, header: t("patient", "Patient"), key: "patient" },
-    { id: 4, header: t("priority", "Priority"), key: "priority" },
+    { id: 2, header: t("patient", "Patient"), key: "patient" },
+    { id: 3, header: t("procedure", "Procedure"), key: "procedure" },
+    { id: 4, header: t("urgency", "Priority"), key: "urgency" },
     { id: 5, header: t("orderer", "Orderer"), key: "orderer" },
     { id: 6, header: t("actions", "Actions"), key: "actions" },
   ];
@@ -136,7 +136,7 @@ const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = () => {
         patient: entry?.patient?.display.split("-")[1],
         orderNumber: entry?.orderNumber,
         procedure: entry?.concept.display,
-        priority: entry?.priority,
+        priority: entry?.urgency,
         action: entry?.action,
         orderer: entry?.orderer?.display,
         actions: (

@@ -3,18 +3,18 @@ import { useTranslation } from "react-i18next";
 import SummaryTile from "../summary-tiles/summary-tile.component";
 import { useProcedureOrderStats } from "../summary-tiles/procedure-summary.resource";
 
-const CompletedTileComponent = () => {
+const NotDoneTileComponent = () => {
   const { t } = useTranslation();
 
-  const { count: completedCount } = useProcedureOrderStats("COMPLETED");
+  const { count: declinedCount } = useProcedureOrderStats("DECLINED");
 
   return (
     <SummaryTile
-      label={t("completed", "Completed")}
-      value={completedCount}
-      headerLabel={t("proceduresCompleted", "Completed")}
+      label={t("notDone", "Not Done")}
+      value={declinedCount}
+      headerLabel={t("notDone", "Not Done")}
     />
   );
 };
 
-export default CompletedTileComponent;
+export default NotDoneTileComponent;
