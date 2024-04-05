@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import SummaryTile from "../summary-tiles/summary-tile.component";
 import { useProcedureOrderStats } from "../summary-tiles/procedure-summary.resource";
 
-const ReferredTileComponent = () => {
+const OrderedTileComponent = () => {
   const { t } = useTranslation();
 
   const { count: testOrderedCount } = useProcedureOrderStats("");
@@ -12,9 +12,9 @@ const ReferredTileComponent = () => {
     <SummaryTile
       label={t("orders", "Orders")}
       value={testOrderedCount}
-      headerLabel={t("proceduresOrdered", "Ordered")}
+      headerLabel={t("proceduresOrdered", "Active Orders")}
     />
   );
 };
 
-export default ReferredTileComponent;
+export default OrderedTileComponent;

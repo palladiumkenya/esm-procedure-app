@@ -20,7 +20,7 @@ export interface Result {
   orderReason: any;
   orderReasonNonCoded: any;
   orderType: OrderType;
-  priority: string;
+  urgency: string;
   instructions: any;
   commentToFulfiller: any;
   display: string;

@@ -32,7 +32,7 @@ const ProcedureOrdersTabs: React.FC = () => {
             aria-label="Procedure tabs"
             contained
           >
-            <Tab>{t("proceduresOrdered", "Ordered")}</Tab>
+            <Tab>{t("proceduresOrdered", "Active Orders")}</Tab>
             {tabExtensions
               .filter((extension) => Object.keys(extension.meta).length > 0)
               .map((extension, index) => {

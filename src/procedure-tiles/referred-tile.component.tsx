@@ -1,17 +1,19 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import SummaryTile from "../summary-tiles/summary-tile.component";
+import { useProcedureOrderStats } from "../summary-tiles/procedure-summary.resource";
 
-const ReferredTileComponent = () => {
+const ReferredOutTileComponent = () => {
   const { t } = useTranslation();
+  const { count: referredOutCount } = useProcedureOrderStats("EXCEPTION");
 
   return (
     <SummaryTile
-      label={t("referred", "Referred")}
-      value={0}
-      headerLabel={t("referredProcedures", "Referred")}
+      label={t("referredOut", "Referred Out")}
+      value={referredOutCount}
+      headerLabel={t("referredOut", "Referred Out")}
     />
   );
 };
 
-export default ReferredTileComponent;
+export default ReferredOutTileComponent;

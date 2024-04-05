@@ -6,17 +6,20 @@ import {
 } from "@openmrs/esm-framework";
 import { configSchema } from "./config-schema";
 import { createLeftPanelLink } from "./left-panel-link";
+import orderedTile from "./procedure-tiles/procedures-ordered-tile.component";
 import worklistTile from "./procedure-tiles/worklist-tile.component";
-import referredTile from "./procedure-tiles/referred-tile.component";
+import referredOutTile from "./procedure-tiles/referred-tile.component";
 import completedTile from "./procedure-tiles/completed-tile.component";
+import notDoneTile from "./procedure-tiles/not-done-tile.component";
 import workListProcedures from "./procedure-tabs/work-list-tab.component";
 import referredProcedures from "./procedure-tabs/referred-tab.component";
 import completedProcedures from "./procedure-tabs/completed-tab.component";
-import orderedTile from "./procedure-tiles/procedures-ordered-tile.component";
+import notDoneProcedures from "./procedure-tabs/not-done-tab.component";
 import addProcedureToWorklistDialog from "./procedures-ordered/pick-procedure-order/add-to-worklist-dialog.component";
 import procedureInstructionsModal from "./procedures-ordered/procedure-instructions/procedure-instructions.component";
 import { registerWorkspace } from "@openmrs/esm-patient-common-lib";
 import ProceduresOrderBasketPanelExtension from "./form/procedures-orders/procedures-order-basket-panel/procedures-order-basket-panel.extension";
+import rejectOrderDialogComponent from "./procedures-ordered/reject-order-dialog/reject-order-dialog.component";
 
 const moduleName = "@openmrs/esm-procedure-app";
 
@@ -49,10 +52,20 @@ export const procedureDashboardLink = getSyncLifecycle(
   options
 );
 
+// Modals
+export const rejectOrderDialog = getSyncLifecycle(
+  rejectOrderDialogComponent,
+  options
+);
+
 export const worklistTileComponent = getSyncLifecycle(worklistTile, options);
-export const referredTileComponent = getSyncLifecycle(referredTile, options);
+export const referredOutTileComponent = getSyncLifecycle(
+  referredOutTile,
+  options
+);
 export const completedTileComponent = getSyncLifecycle(completedTile, options);
 export const OrderedTileComponent = getSyncLifecycle(orderedTile, options);
+export const notDoneTileComponent = getSyncLifecycle(notDoneTile, options);
 export const worklistProceduresTabComponent = getSyncLifecycle(
   workListProcedures,
   options
@@ -64,6 +77,10 @@ export const referredProceduresTabComponent = getSyncLifecycle(
 );
 export const completedProceduresTabComponent = getSyncLifecycle(
   completedProcedures,
+  options
+);
+export const notDoneProceduresTabComponent = getSyncLifecycle(
+  notDoneProcedures,
   options
 );
 export const procedureInstructionsModalComponent = getSyncLifecycle(
