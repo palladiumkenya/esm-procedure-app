@@ -433,6 +433,7 @@ export interface ProcedureOrderBasketItem extends OrderBasketItem {
   frequency?: string;
   specimenSource?: string;
   specimenType?: string;
+  scheduleDate?: Date;
 }
 
 export type OrderFrequency = CommonProceduresValueCoded;

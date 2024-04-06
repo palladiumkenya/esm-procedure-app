@@ -5,7 +5,7 @@ import { type ProceduresType } from "./useProceduresTypes";
 export const priorityOptions = [
   { value: "ROUTINE", label: "Routine" },
   { value: "STAT", label: "Stat" },
-  { value: "SCHEDULED", label: "Scheduled" },
+  { value: "ON_SCHEDULED_DATE", label: "Scheduled" },
 ];
 // TODO add priority option `{ value: "ON_SCHEDULED_DATE", label: "On scheduled date" }` once the form supports a date.
 
