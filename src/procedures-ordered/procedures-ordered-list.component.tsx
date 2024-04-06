@@ -51,7 +51,7 @@ const RejectOrderMenuItem: React.FC<RejectOrderOverflowMenuItemProps> = ({
   return (
     <OverflowMenuItem
       className={styles.rejectOrders}
-      itemText="Rejected Order"
+      itemText="Reject Order"
       onClick={handleRejectOrderModel}
       hasDivider
     />

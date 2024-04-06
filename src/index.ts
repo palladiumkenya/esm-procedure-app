@@ -19,7 +19,7 @@ import addProcedureToWorklistDialog from "./procedures-ordered/pick-procedure-or
 import procedureInstructionsModal from "./procedures-ordered/procedure-instructions/procedure-instructions.component";
 import { registerWorkspace } from "@openmrs/esm-patient-common-lib";
 import ProceduresOrderBasketPanelExtension from "./form/procedures-orders/procedures-order-basket-panel/procedures-order-basket-panel.extension";
-import rejectOrderDialogComponent from "./procedures-ordered/reject-order-dialog/reject-order-dialog.component";
+import RejectOrderDialog from "./procedures-ordered/reject-order-dialog/reject-order-dialog.component";
 
 const moduleName = "@openmrs/esm-procedure-app";
 
@@ -53,10 +53,7 @@ export const procedureDashboardLink = getSyncLifecycle(
 );
 
 // Modals
-export const rejectOrderDialog = getSyncLifecycle(
-  rejectOrderDialogComponent,
-  options
-);
+export const rejectOrderDialog = getSyncLifecycle(RejectOrderDialog, options);
 
 export const worklistTileComponent = getSyncLifecycle(worklistTile, options);
 export const referredOutTileComponent = getSyncLifecycle(
