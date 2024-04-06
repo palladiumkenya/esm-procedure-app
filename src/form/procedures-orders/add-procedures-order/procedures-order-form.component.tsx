@@ -135,11 +135,13 @@ export function ProceduresOrderForm({
             )
           )
       : z.string().optional(),
-    // scheduleDate: z.union([z.date(), z.string()]).optional(),
-    scheduleDate: z.date().optional(),
+    scheduleDate: z.union([z.string(), z.date(), z.string().optional()]),
     commentsToFulfiller: z.string().optional(),
-    numberOfRepeats: z.number().optional(),
+    numberOfRepeats: z.string().optional(),
     previousOrder: z.string().optional(),
+    specimenSource: z.string().optional(),
+    specimenType: z.string().optional(),
+    frequency: z.string().optional(),
   });
 
   const orderFrequencies: Array<OrderFrequency> = useMemo(
@@ -218,16 +220,7 @@ export function ProceduresOrderForm({
     promptBeforeClosing(() => isDirty);
   }, [isDirty]);
 
-  const [selectedPriority, setSelectedPriority] = useState("");
   const [showScheduleDate, setShowScheduleDate] = useState(false);
-
-  const handlePriorityChange = (event) => {
-    const selectedValue = event.selectedItem ? event.selectedItem.label : "";
-    setSelectedPriority(selectedValue);
-    console.warn("Selected value is: ", selectedValue);
-    // Set the state to show the TextInput based on the selected option
-    setShowScheduleDate(selectedValue === "Scheduled");
-  };
 
   return (
     <>
@@ -292,10 +285,19 @@ export function ProceduresOrderForm({
                       size="lg"
                       id="priorityInput"
                       titleText={t("priority", "Priority")}
-                      selectedItem={selectedPriority}
+                      selectedItem={
+                        priorityOptions.find(
+                          (option) => option.value === value
+                        ) || null
+                      }
                       items={priorityOptions}
                       onBlur={onBlur}
-                      onChange={handlePriorityChange}
+                      onChange={({ selectedItem }) => {
+                        onChange(selectedItem?.value || "");
+                        setShowScheduleDate(
+                          selectedItem?.label === "Scheduled"
+                        );
+                      }}
                       invalid={errors.urgency?.message}
                       invalidText={errors.urgency?.message}
                     />
@@ -315,7 +317,6 @@ export function ProceduresOrderForm({
                       render={({ field: { onBlur, value, onChange, ref } }) => (
                         <DatePicker
                           datePickerType="single"
-                          maxDate={new Date().toISOString()}
                           value={value}
                           onChange={([newStartDate]) => onChange(newStartDate)}
                           onBlur={onBlur}
@@ -374,14 +375,18 @@ export function ProceduresOrderForm({
                       size="lg"
                       id="specimenSourceInput"
                       titleText={t("specimenSource", "Specimen Source")}
-                      // selectedItem={lateralityItems.find((option) => option.uuid === value) || null}
+                      selectedItem={
+                        specimenSourceItems?.find(
+                          (option) => option.uuid === value
+                        ) || null
+                      }
                       items={specimenSourceItems}
                       onBlur={onBlur}
                       onChange={({ selectedItem }) =>
                         onChange(selectedItem?.value || "")
                       }
-                      invalid={errors.laterality?.message}
-                      invalidText={errors.laterality?.message}
+                      invalid={errors.specimenSource?.message}
+                      invalidText={errors.specimenSource?.message}
                       itemToString={(item) => item?.display}
                       disabled={isLoadingSpecimenSourceItems}
                       placeholder={
@@ -406,6 +411,11 @@ export function ProceduresOrderForm({
                       size="lg"
                       id="specimenTypeInput"
                       titleText={t("specimenType", "Specimen Type")}
+                      selectedItem={
+                        specimenTypeItems?.find(
+                          (option) => option.uuid === value
+                        ) || null
+                      }
                       items={specimenTypeItems}
                       onBlur={onBlur}
                       onChange={({ selectedItem }) =>
@@ -431,11 +441,23 @@ export function ProceduresOrderForm({
           <Grid className={styles.gridRow}>
             <Column lg={16} md={8} sm={4}>
               <InputWrapper>
-                <NumberInput
-                  id="numberOfRepeats"
-                  label={t("numberOfRepeats", "Number Of Repeats")}
-                  min={0}
-                  hideSteppers={false}
+                <Controller
+                  name="numberOfRepeats"
+                  control={control}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <NumberInput
+                      enableCounter
+                      id="numberOfRepeats"
+                      label={t("numberOfRepeats", "Number Of Repeats")}
+                      min={0}
+                      hideSteppers={false}
+                      value={value}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                      invalid={errors.numberOfRepeats?.message}
+                      invalidText={errors.numberOfRepeats?.message}
+                    />
+                  )}
                 />
               </InputWrapper>
             </Column>

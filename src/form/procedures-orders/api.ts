@@ -15,6 +15,13 @@ import type {
 import useSWRImmutable from "swr/immutable";
 import { type ProcedureOrderBasketItem } from "../../types";
 
+export interface ProcedureOrderPost extends OrderPost {
+  scheduledDate?: Date | string;
+  commentToFulfiller?: string;
+  specimenSource?: string;
+  specimenType?: string;
+  numberOfRepeats?: string;
+}
 export const careSettingUuid = "6f0c9a92-6f24-11e3-af88-005056821db0";
 /**
  * SWR-based data fetcher for patient orders.
@@ -95,7 +102,7 @@ export function prepProceduresOrderPostData(
   order: ProcedureOrderBasketItem,
   patientUuid: string,
   encounterUuid: string
-): OrderPost {
+): ProcedureOrderPost {
   if (order.action === "NEW" || order.action === "RENEW") {
     return {
       action: "NEW",
@@ -105,6 +112,11 @@ export function prepProceduresOrderPostData(
       orderer: order.orderer,
       encounter: encounterUuid,
       concept: order.testType.conceptUuid,
+      specimenSource: order.specimenSource,
+      specimenType: order.specimenType,
+      frequency: order.frequency,
+      numberOfRepeats: order.numberOfRepeats,
+      commentToFulfiller: order.commentsToFulfiller,
       instructions: order.instructions,
       orderReason: order.orderReason,
     };
@@ -117,6 +129,11 @@ export function prepProceduresOrderPostData(
       orderer: order.orderer,
       encounter: encounterUuid,
       concept: order.testType.conceptUuid,
+      specimenSource: order.specimenSource,
+      specimenType: order.specimenType,
+      frequency: order.frequency,
+      numberOfRepeats: order.numberOfRepeats,
+      commentToFulfiller: order.commentsToFulfiller,
       instructions: order.instructions,
       orderReason: order.orderReason,
       previousOrder: order.previousOrder,
@@ -130,6 +147,11 @@ export function prepProceduresOrderPostData(
       orderer: order.orderer,
       encounter: encounterUuid,
       concept: order.testType.conceptUuid,
+      specimenSource: order.specimenSource,
+      specimenType: order.specimenType,
+      frequency: order.frequency,
+      numberOfRepeats: order.numberOfRepeats,
+      commentToFulfiller: order.commentsToFulfiller,
       orderReason: order.orderReason,
       previousOrder: order.previousOrder,
     };

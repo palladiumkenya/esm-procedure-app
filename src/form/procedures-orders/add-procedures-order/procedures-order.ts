@@ -15,10 +15,8 @@ export function createEmptyLabOrder(
 ): ProcedureOrderBasketItem {
   return {
     action: "NEW",
-    urgency: priorityOptions[0].value,
     display: testType.label,
     testType,
     orderer,
-    scheduleDate: new Date(),
   };
 }
