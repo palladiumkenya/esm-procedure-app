@@ -76,16 +76,6 @@ export function ProceduresOrderForm({
   } = useProceduresTypes();
   const [showErrorNotification, setShowErrorNotification] = useState(false);
   const {
-    items: { answers: lateralityItems },
-    isLoading: isLoadingLaterality,
-    isError: errorFetchingLaterality,
-  } = useConceptById("160594AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-  const {
-    items: { answers: bodySiteItems },
-    isLoading: isLoadingBodySiteItems,
-    isError: errorFetchingBodySiteItems,
-  } = useConceptById("162668AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-  const {
     items: { answers: specimenSourceItems },
     isLoading: isLoadingSpecimenSourceItems,
     isError: errorFetchingSpecimenSourceItems,
@@ -148,7 +138,6 @@ export function ProceduresOrderForm({
     // scheduleDate: z.union([z.date(), z.string()]).optional(),
     scheduleDate: z.date().optional(),
     commentsToFulfiller: z.string().optional(),
-    laterality: z.string().optional(),
     numberOfRepeats: z.number().optional(),
     previousOrder: z.string().optional(),
   });
@@ -374,68 +363,6 @@ export function ProceduresOrderForm({
               </Column>
             </Grid>
           )}
-          <Grid className={styles.gridRow}>
-            <Column lg={16} md={8} sm={4}>
-              <InputWrapper>
-                <Controller
-                  name="laterality"
-                  control={control}
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <ComboBox
-                      size="lg"
-                      id="lateralityInput"
-                      titleText={t("laterality", "Laterality")}
-                      items={lateralityItems}
-                      onBlur={onBlur}
-                      onChange={({ selectedItem }) =>
-                        onChange(selectedItem?.value || "")
-                      }
-                      invalid={errors.laterality?.message}
-                      invalidText={errors.laterality?.message}
-                      itemToString={(item) => item?.display}
-                      disabled={isLoadingLaterality}
-                      placeholder={
-                        isLoadingOrderConfig
-                          ? `${t("loading", "Loading")}...`
-                          : t("testTypePlaceholder", "Select one")
-                      }
-                    />
-                  )}
-                />
-              </InputWrapper>
-            </Column>
-          </Grid>
-          <Grid className={styles.gridRow}>
-            <Column lg={16} md={8} sm={4}>
-              <InputWrapper>
-                <Controller
-                  name="bodySite"
-                  control={control}
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <ComboBox
-                      size="lg"
-                      id="bodySiteInput"
-                      titleText={t("bodySite", "Body Site")}
-                      items={bodySiteItems}
-                      onBlur={onBlur}
-                      onChange={({ selectedItem }) =>
-                        onChange(selectedItem?.value || "")
-                      }
-                      invalid={errors.laterality?.message}
-                      invalidText={errors.laterality?.message}
-                      itemToString={(item) => item?.display}
-                      disabled={isLoadingBodySiteItems}
-                      placeholder={
-                        isLoadingBodySiteItems
-                          ? `${t("loading", "Loading")}...`
-                          : t("testTypePlaceholder", "Select one")
-                      }
-                    />
-                  )}
-                />
-              </InputWrapper>
-            </Column>
-          </Grid>
           <Grid className={styles.gridRow}>
             <Column lg={16} md={8} sm={4}>
               <InputWrapper>
