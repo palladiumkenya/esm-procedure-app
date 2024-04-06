@@ -13,6 +13,7 @@ import {
 import { useTranslation } from "react-i18next";
 import styles from "./instructions.scss";
 import { Result } from "../../work-list/work-list.resource";
+import { formatDate, parseDate } from "@openmrs/esm-framework";
 
 interface ProcedureInstructionsModalProps {
   order: Result;
@@ -30,7 +31,9 @@ const ProcedureInstructionsModal: React.FC<ProcedureInstructionsModalProps> = ({
     { key: "Order Urgency", value: order.urgency },
     {
       key: "Schedule date",
-      value: order.scheduledDate || new Date().toLocaleDateString(),
+      value: order.scheduledDate
+        ? formatDate(parseDate(order.scheduledDate))
+        : new Date().toLocaleDateString(),
     },
     { key: "Number of repeats", value: order.numberOfRepeats },
     { key: "Frequency", value: order.frequency?.display },

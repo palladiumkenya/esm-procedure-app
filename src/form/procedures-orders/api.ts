@@ -15,6 +15,13 @@ import type {
 import useSWRImmutable from "swr/immutable";
 import { type ProcedureOrderBasketItem } from "../../types";
 
+export interface ProcedureOrderPost extends OrderPost {
+  scheduledDate?: Date | string;
+  commentToFulfilleON_SCHEDULED_DATEr?: string;
+  specimenSource?: string;
+  specimenType?: string;
+  numberOfRepeats?: string;
+}
 export const careSettingUuid = "6f0c9a92-6f24-11e3-af88-005056821db0";
 /**
  * SWR-based data fetcher for patient orders.
@@ -95,9 +102,10 @@ export function prepProceduresOrderPostData(
   order: ProcedureOrderBasketItem,
   patientUuid: string,
   encounterUuid: string
-): OrderPost {
+): ProcedureOrderPost {
+  let payload = {};
   if (order.action === "NEW" || order.action === "RENEW") {
-    return {
+    payload = {
       action: "NEW",
       type: "procedureorder",
       patient: patientUuid,
@@ -105,11 +113,21 @@ export function prepProceduresOrderPostData(
       orderer: order.orderer,
       encounter: encounterUuid,
       concept: order.testType.conceptUuid,
+      specimenSource: order.specimenSource,
+      specimenType: order.specimenType,
+      frequency: order.frequency,
+      numberOfRepeats: order.numberOfRepeats,
+      urgency: order.urgency,
+      commentToFulfiller: order.commentsToFulfiller,
       instructions: order.instructions,
       orderReason: order.orderReason,
     };
+    if (order.urgency === "ON_SCHEDULED_DATE") {
+      payload["scheduledDate"] = order.scheduleDate;
+    }
+    return payload;
   } else if (order.action === "REVISE") {
-    return {
+    payload = {
       action: "REVISE",
       type: "procedureorder",
       patient: patientUuid,
@@ -117,12 +135,22 @@ export function prepProceduresOrderPostData(
       orderer: order.orderer,
       encounter: encounterUuid,
       concept: order.testType.conceptUuid,
+      specimenSource: order.specimenSource,
+      specimenType: order.specimenType,
+      frequency: order.frequency,
+      numberOfRepeats: order.numberOfRepeats,
+      urgency: order.urgency,
+      commentToFulfiller: order.commentsToFulfiller,
       instructions: order.instructions,
       orderReason: order.orderReason,
       previousOrder: order.previousOrder,
     };
+    if (order.urgency === "ON_SCHEDULED_DATE") {
+      payload["scheduledDate"] = order.scheduleDate;
+    }
+    return payload;
   } else if (order.action === "DISCONTINUE") {
-    return {
+    payload = {
       action: "DISCONTINUE",
       type: "procedureorder",
       patient: patientUuid,
@@ -130,9 +158,19 @@ export function prepProceduresOrderPostData(
       orderer: order.orderer,
       encounter: encounterUuid,
       concept: order.testType.conceptUuid,
+      specimenSource: order.specimenSource,
+      specimenType: order.specimenType,
+      frequency: order.frequency,
+      urgency: order.urgency,
+      numberOfRepeats: order.numberOfRepeats,
+      commentToFulfiller: order.commentsToFulfiller,
       orderReason: order.orderReason,
       previousOrder: order.previousOrder,
     };
+    if (order.urgency === "ON_SCHEDULED_DATE") {
+      payload["scheduledDate"] = order.scheduleDate;
+    }
+    return payload;
   } else {
     throw new Error(`Unknown order action: ${order.action}.`);
   }
