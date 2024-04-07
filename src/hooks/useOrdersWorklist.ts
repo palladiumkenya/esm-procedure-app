@@ -9,7 +9,7 @@ export function useOrdersWorklist(
   const config = useConfig() as ConfigObject;
 
   const responseFormat =
-    "custom:(uuid,orderNumber,patient:ref,concept:(uuid,display,conceptClass:(uuid)),action,careSetting,orderer:ref,urgency,instructions,commentToFulfiller,display,fulfillerStatus,dateStopped,scheduledDate,dateActivated,procedures)";
+    "custom:(uuid,orderNumber,patient:ref,concept:(uuid,display,conceptClass:(uuid)),action,careSetting,orderer:ref,urgency,instructions,commentToFulfiller,display,fulfillerStatus,dateStopped,scheduledDate,dateActivated)";
   const orderTypeParam = `orderTypes=${config.procedureOrderTypeUuid}&activatedOnOrAfterDate=${activatedOnOrAfterDate}&isStopped=false&fulfillerStatus=${fulfillerStatus}&v=${responseFormat}`;
   const apiUrl = `/ws/rest/v1/order?${orderTypeParam}`;
 
