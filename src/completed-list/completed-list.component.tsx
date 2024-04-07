@@ -1,25 +1,35 @@
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  Table,
-  TableHead,
-  TableRow,
-  TableHeader,
-  TableBody,
-  TableCell,
   DataTable,
   DataTableSkeleton,
   Pagination,
-  OverflowMenu,
-  OverflowMenuItem,
+  Table,
+  TableBody,
+  TableCell,
   TableContainer,
+  TableHead,
+  TableHeader,
+  TableRow,
   TableToolbar,
   TableToolbarContent,
   TableToolbarSearch,
+  Layer,
+  Tag,
+  Tile,
+  DatePicker,
+  DatePickerInput,
 } from "@carbon/react";
+import styles from "./completed-list.scss";
+import {
+  ConfigurableLink,
+  formatDate,
+  parseDate,
+  usePagination,
+} from "@openmrs/esm-framework";
+import { getStatusColor } from "../utils/functions";
+import Overlay from "../components/overlay/overlay.component";
 import { useOrdersWorklist } from "../hooks/useOrdersWorklist";
-import { usePagination } from "@openmrs/esm-framework";
-import { useSearchResults } from "../hooks/useSearchResults";
 
 interface CompletedListProps {
   fulfillerStatus: string;
@@ -29,130 +39,194 @@ export const CompletedList: React.FC<CompletedListProps> = ({
   fulfillerStatus,
 }) => {
   const { t } = useTranslation();
-  const [currentPageSize, setCurrentPageSize] = useState<number>(10);
-  const { workListEntries, isLoading } = useOrdersWorklist("", fulfillerStatus);
-  const [searchString, setSearchString] = useState<string>("");
 
-  const searchResults = useSearchResults(workListEntries, searchString);
-
+  // eslint-disable-next-line prefer-const
+  let { workListEntries, isLoading } = useOrdersWorklist("", fulfillerStatus);
+  // console.log("workListEntries ", workListEntries);
+  workListEntries = workListEntries.filter(
+    (order) => order?.procedures[0]?.status == "COMPLETED"
+  );
+  const [activatedOnOrAfterDate, setActivatedOnOrAfterDate] = useState("");
+  const pageSizes = [10, 20, 30, 40, 50];
+  const [currentPageSize, setPageSize] = useState(10);
   const {
     goTo,
-    results: paginatedResults,
+    results: paginatedWorkListEntries,
     currentPage,
-  } = usePagination(searchResults, currentPageSize);
+  } = usePagination(workListEntries, currentPageSize);
 
-  const pageSizes = [10, 20, 30, 40, 50];
-  const [expandedRows] = useState<Set<string>>(new Set());
-
-  const rows = useMemo(() => {
-    return paginatedResults
-      ?.filter((item) => item.action === "COMPLETED")
-      .map((entry) => ({
-        ...entry,
-        //TODO: add action items here
-        actions: (
-          <OverflowMenu flipped={true}>
-            <OverflowMenuItem
-              itemText="Pick Order"
-              onClick={() => "Pick Order"}
-            />
-            <OverflowMenuItem
-              itemText="Rejected Order"
-              onClick={() => "Rejected Order"}
-            />
-          </OverflowMenu>
-        ),
-      }));
-  }, [paginatedResults]);
-
-  const tableColumns = [
+  // get picked orders
+  const columns = [
     { id: 0, header: t("date", "Date"), key: "date" },
-    { id: 1, header: t("orderNumber", "Procedure Number"), key: "orderNumber" },
+    { id: 1, header: t("orderNumber", "Order Number"), key: "orderNumber" },
     { id: 2, header: t("patient", "Patient"), key: "patient" },
     { id: 3, header: t("procedure", "Procedure"), key: "procedure" },
     { id: 4, header: t("status", "Status"), key: "status" },
     { id: 5, header: t("urgency", "Priority"), key: "urgency" },
     { id: 6, header: t("orderer", "Orderer"), key: "orderer" },
+    { id: 7, header: t("actions", "Actions"), key: "actions" },
   ];
 
-  return isLoading ? (
-    <DataTableSkeleton />
-  ) : (
-    <div>
-      <DataTable
-        rows={rows}
-        headers={tableColumns}
-        useZebraStyles
-        overflowMenuOnHover={true}
-      >
-        {({ rows, headers, getTableProps, getHeaderProps, getRowProps }) => (
-          <>
-            <TableContainer>
-              <TableToolbar
-                style={{
-                  position: "static",
-                  height: "3rem",
-                  overflow: "visible",
-                  margin: 0,
-                  // TODO: add background color to the toolbar
-                }}
-              >
-                <TableToolbarContent style={{ margin: 0 }}>
-                  <TableToolbarSearch
-                    style={{ backgroundColor: "#f4f4f4" }}
-                    onChange={(event) => setSearchString(event.target.value)}
-                  />
-                </TableToolbarContent>
-              </TableToolbar>
-              <Table {...getTableProps()}>
-                <TableHead>
-                  <TableRow>
-                    {headers.map((header) => (
-                      <TableHeader {...getHeaderProps({ header })}>
-                        {header.header}
-                      </TableHeader>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map((row) => (
-                    <React.Fragment key={row.id}>
-                      <TableRow {...getRowProps({ row })}>
-                        {row.cells.map((cell) => (
-                          <TableCell key={cell.id}>{cell.value}</TableCell>
-                        ))}
-                      </TableRow>
-                      {expandedRows.has(row.id) && (
-                        <TableRow>
-                          <TableCell
-                            colSpan={tableColumns.length + 1}
-                          ></TableCell>
-                        </TableRow>
-                      )}
-                    </React.Fragment>
-                  ))}
-                </TableBody>
-              </Table>
-              <Pagination
-                forwardText="Next page"
-                backwardText="Previous page"
-                page={currentPage}
-                pageSize={currentPageSize}
-                pageSizes={pageSizes}
-                totalItems={workListEntries?.length}
-                onChange={({ pageSize, page }) => {
-                  if (pageSize !== currentPageSize) {
-                    setCurrentPageSize(pageSize);
-                  }
-                  if (page !== currentPage) {
-                    goTo(page);
-                  }
-                }}
-              />
-            </TableContainer>
-          </>
-        )}
-      </DataTable>
-    </div>
-  );
+  const tableRows = useMemo(() => {
+    return paginatedWorkListEntries
+      ?.filter((item) => item.fulfillerStatus === "IN_PROGRESS")
+      .map((entry, index) => ({
+        ...entry,
+        id: entry.uuid,
+        date: {
+          content: (
+            <>
+              <span>{formatDate(parseDate(entry.dateActivated))}</span>
+            </>
+          ),
+        },
+        patient: {
+          content: (
+            <ConfigurableLink
+              to={`\${openmrsSpaBase}/patient/${entry.patient.uuid}/chart/laboratory-orders`}
+            >
+              {entry.patient.display.split("-")[1]}
+            </ConfigurableLink>
+          ),
+        },
+        orderNumber: { content: <span>{entry.orderNumber}</span> },
+        procedure: { content: <span>{entry.concept.display}</span> },
+        action: { content: <span>{entry.action}</span> },
+        status: {
+          content: (
+            <>
+              <Tag>
+                <span
+                  className={styles.statusContainer}
+                  style={{ color: `${getStatusColor("COMPLETED")}` }}
+                >
+                  <span>Completed</span>
+                </span>
+              </Tag>
+            </>
+          ),
+        },
+        orderer: { content: <span>{entry.orderer.display}</span> },
+        orderType: { content: <span>{entry?.orderType?.display}</span> },
+        priority: { content: <span>{entry.urgency}</span> },
+        actions: "--",
+      }));
+  }, [paginatedWorkListEntries, t]);
+
+  if (isLoading) {
+    return <DataTableSkeleton role="progressbar" />;
+  }
+
+  if (paginatedWorkListEntries?.length >= 0) {
+    return (
+      <>
+        <div>
+          <div className={styles.headerBtnContainer}></div>
+          <DataTable rows={tableRows} headers={columns} useZebraStyles>
+            {({
+              rows,
+              headers,
+              getHeaderProps,
+              getTableProps,
+              getRowProps,
+              onInputChange,
+            }) => (
+              <TableContainer className={styles.tableContainer}>
+                <TableToolbar
+                  style={{
+                    position: "static",
+                  }}
+                >
+                  <TableToolbarContent>
+                    <Layer style={{ margin: "5px" }}>
+                      <DatePicker dateFormat="Y-m-d" datePickerType="single">
+                        <DatePickerInput
+                          labelText={""}
+                          id="activatedOnOrAfterDate"
+                          placeholder="YYYY-MM-DD"
+                          onChange={(event) => {
+                            setActivatedOnOrAfterDate(event.target.value);
+                          }}
+                          type="date"
+                          value={activatedOnOrAfterDate}
+                        />
+                      </DatePicker>
+                    </Layer>
+                    <Layer>
+                      <TableToolbarSearch
+                        onChange={onInputChange}
+                        placeholder={t("searchThisList", "Search this list")}
+                        size="sm"
+                      />
+                    </Layer>
+                  </TableToolbarContent>
+                </TableToolbar>
+                <Table
+                  {...getTableProps()}
+                  className={styles.activePatientsTable}
+                >
+                  <TableHead>
+                    <TableRow>
+                      {headers.map((header) => (
+                        <TableHeader {...getHeaderProps({ header })}>
+                          {header.header?.content ?? header.header}
+                        </TableHeader>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {rows.map((row, index) => {
+                      return (
+                        <React.Fragment key={row.id}>
+                          <TableRow {...getRowProps({ row })} key={row.id}>
+                            {row.cells.map((cell) => (
+                              <TableCell key={cell.id}>
+                                {cell.value?.content ?? cell.value}
+                              </TableCell>
+                            ))}
+                          </TableRow>
+                        </React.Fragment>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+                {rows.length === 0 ? (
+                  <div className={styles.tileContainer}>
+                    <Tile className={styles.tile}>
+                      <div className={styles.tileContent}>
+                        <p className={styles.content}>
+                          {t(
+                            "noWorklistsToDisplay",
+                            "No worklists procedures to display"
+                          )}
+                        </p>
+                      </div>
+                    </Tile>
+                  </div>
+                ) : null}
+                <Pagination
+                  forwardText="Next page"
+                  backwardText="Previous page"
+                  page={currentPage}
+                  pageSize={currentPageSize}
+                  pageSizes={pageSizes}
+                  totalItems={workListEntries?.length}
+                  className={styles.pagination}
+                  onChange={({ pageSize, page }) => {
+                    if (pageSize !== currentPageSize) {
+                      setPageSize(pageSize);
+                    }
+                    if (page !== currentPage) {
+                      goTo(page);
+                    }
+                  }}
+                />
+              </TableContainer>
+            )}
+          </DataTable>
+        </div>
+        <Overlay />
+      </>
+    );
+  }
 };

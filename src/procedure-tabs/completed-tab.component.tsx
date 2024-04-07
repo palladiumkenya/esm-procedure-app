@@ -4,7 +4,7 @@ import { CompletedList } from "../completed-list/completed-list.component";
 const CompletedComponent = () => {
   return (
     <div>
-      <CompletedList fulfillerStatus={"COMPLETED"} />
+      <CompletedList fulfillerStatus={"IN_PROGRESS"} />
     </div>
   );
 };
