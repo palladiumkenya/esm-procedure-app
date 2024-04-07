@@ -32,6 +32,7 @@ import {
 import { CodedCondition, ProcedurePayload } from "../../types";
 import { Result } from "../../work-list/work-list.resource";
 import dayjs from "dayjs";
+import { closeOverlay } from "../../components/overlay/hook";
 
 const validationSchema = z.object({
   startDatetime: z.date({ required_error: "Start datetime is required" }),
@@ -49,7 +50,7 @@ const validationSchema = z.object({
     }),
     { required_error: "Participants are required" }
   ),
-  complications: z.string({ required_error: "Complications are required" }),
+  complications: z.string().optional(),
 });
 
 type PostProcedureFormSchema = z.infer<typeof validationSchema>;
@@ -93,29 +94,48 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
   );
 
   const onSubmit = async (data: PostProcedureFormSchema) => {
+    const participants = [];
+    data.participants.forEach((p) => {
+      const provider = {
+        provider: p.uuid,
+        encounterRole: "a0b03050-c99b-11e0-9572-0800200c9a66",
+      };
+      participants.push(provider);
+    });
+    const complications = [];
+    if (selectedCondition) {
+      complications.push({
+        condition: {
+          coded: selectedCondition.concept.uuid,
+        },
+        patient: patientUuid,
+        clinicalStatus: "ACTIVE",
+        verificationStatus: "CONFIRMED",
+        onsetDate: dayjs().format("YYYY-MM-DDTHH:mm:ssZ"),
+        additionalDetail: "",
+      });
+    }
+
     const payload: ProcedurePayload = {
       patient: patientUuid,
       procedureOrder: procedure.uuid,
       concept: procedure.concept.uuid,
       procedureReason: procedure.orderReason?.uuid,
       category: procedure.orderType?.uuid,
-      bodySite: procedure?.specimenSource?.uuid,
       status: "COMPLETED",
       outcome: data.outcome,
       location: sessionLocation?.uuid,
       startDatetime: dayjs(data.startDatetime).format("YYYY-MM-DDTHH:mm:ssZ"),
       endDatetime: dayjs(data.endDatetime).format("YYYY-MM-DDTHH:mm:ssZ"),
       procedureReport: data.procedureReport,
-      complications: [
+      complications: complications,
+      encounters: [
         {
-          condition: {
-            coded: selectedCondition.concept.uuid,
-          },
+          encounterDatetime: new Date(),
           patient: patientUuid,
-          clinicalStatus: "ACTIVE",
-          verificationStatus: "CONFIRMED",
-          onsetDate: dayjs().format("YYYY-MM-DDTHH:mm:ssZ"),
-          additionalDetail: "",
+          encounterType: "d1059fb9-a079-4feb-a749-eedd709ae542",
+          encounterProviders: participants,
+          obs: [],
         },
       ],
     };
@@ -133,6 +153,7 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
           isLowContrast: true,
           kind: "success",
         });
+      closeOverlay();
     } catch (error) {
       console.error(error);
       showSnackbar({
@@ -142,6 +163,7 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
         isLowContrast: true,
         kind: "error",
       });
+      closeOverlay();
     }
   };
 
@@ -202,6 +224,7 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
                 onChange={({ selectedItem }) => onChange(selectedItem.id)}
                 id="outcome"
                 items={[
+                  { id: "SUCCESSFUL", text: t("successful", "Successful") },
                   {
                     id: "PARTIALLY_SUCCESSFUL",
                     text: t("partiallySuccessful", "Partially success"),
@@ -210,7 +233,6 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
                     id: "NOT_SUCCESSFUL",
                     text: t("notSuccessfully", "Not successful"),
                   },
-                  { id: "SUCCESSFUL", text: t("successful", "Successful") },
                 ]}
                 itemToString={(item) => (item ? item.text : "")}
                 titleText={t("outcome", "Outcome")}
