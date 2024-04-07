@@ -32,6 +32,7 @@ export interface Result {
   clinicalHistory: any;
   frequency: any;
   numberOfRepeats: any;
+  procedures: any;
   links: Link[];
   type: string;
   resourceVersion: string;

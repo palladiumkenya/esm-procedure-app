@@ -468,7 +468,6 @@ export type ProcedurePayload = {
   concept: string;
   procedureReason: string;
   category: string;
-  bodySite: string;
   status: string;
   outcome: string;
   location: string;
@@ -486,7 +485,7 @@ export type ProcedurePayload = {
     additionalDetail: string;
   }>;
   encounters?: Array<{
-    encounterDatetime: string;
+    encounterDatetime: Date;
     encounterProviders: Array<{
       provider: string;
       encounterRole: string;
