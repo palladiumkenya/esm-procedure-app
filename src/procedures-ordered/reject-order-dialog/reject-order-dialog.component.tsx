@@ -38,7 +38,7 @@ const RejectOrderDialog: React.FC<RejectOrderDialogProps> = ({
       () => {
         showSnackbar({
           isLowContrast: true,
-          title: t("rejectOrder", "Reject Order"),
+          title: t("rejectOrder", "Rejected Order"),
           kind: "success",
           subtitle: t(
             "successfullyrejected",
@@ -75,7 +75,7 @@ const RejectOrderDialog: React.FC<RejectOrderDialogProps> = ({
           <div className={styles.modalBody}>
             <section className={styles.section}>
               <h5 className={styles.section}>
-                {order?.accessionNumber} &nbsp; · &nbsp;{order?.fulfillerStatus}{" "}
+                {order?.accessionNumber} &nbsp; . &nbsp;{order?.fulfillerStatus}{" "}
                 &nbsp; · &nbsp;
                 {order?.orderNumber}
                 &nbsp;

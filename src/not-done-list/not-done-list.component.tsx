@@ -20,21 +20,28 @@ import {
   Tile,
   DatePicker,
   DatePickerInput,
+  Button,
+  Tooltip,
 } from "@carbon/react";
 import styles from "../work-list/work-list.scss";
 import {
   ConfigurableLink,
   formatDate,
   parseDate,
+  showModal,
   usePagination,
 } from "@openmrs/esm-framework";
 import { getStatusColor } from "../utils/functions";
 import Overlay from "../components/overlay/overlay.component";
 import { useOrdersWorklist } from "../hooks/useOrdersWorklist";
+import { Result } from "../work-list/work-list.resource";
 interface WorklistProps {
   fulfillerStatus: string;
 }
 
+interface RejectionProps {
+  order: Result;
+}
 const NotDoneList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
   const { t } = useTranslation();
 
@@ -65,6 +72,26 @@ const NotDoneList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
   ];
 
   const tableRows = useMemo(() => {
+    const RejectionReason: React.FC<RejectionProps> = ({ order }) => {
+      const launchProcedureRejectionModal = useCallback(() => {
+        const dispose = showModal("procedure-reject-reason-modal", {
+          closeModal: () => dispose(),
+          order,
+        });
+      }, [order]);
+      return (
+        <Button
+          kind="ghost"
+          onClick={launchProcedureRejectionModal}
+          renderIcon={(props) => (
+            <Tooltip align="top" label="Instructions">
+              <Information size={16} {...props} />
+            </Tooltip>
+          )}
+        />
+      );
+    };
+
     return paginatedWorkListEntries
       ?.filter((item) => item.fulfillerStatus === "DECLINED")
       .map((entry) => ({
@@ -106,6 +133,13 @@ const NotDoneList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
         orderer: { content: <span>{entry.orderer.display}</span> },
         orderType: { content: <span>{entry?.orderType?.display}</span> },
         priority: { content: <span>{entry.urgency}</span> },
+        fulfillerComment: {
+          content: (
+            <>
+              <RejectionReason order={entry} />
+            </>
+          ),
+        },
       }));
   }, [paginatedWorkListEntries, t]);
 
