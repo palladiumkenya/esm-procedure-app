@@ -105,7 +105,10 @@
       "name":"procedure-instructions-modal",
       "component": "procedureInstructionsModalComponent"
     },
-  
+    {
+      "name":"procedure-reject-reason-modal",
+      "component": "procedureRejectModalComponent"
+    },
     {
       "name":"add-procedure-to-worklist-dialog",
       "component": "addProcedureToWorklistDialogComponent"
