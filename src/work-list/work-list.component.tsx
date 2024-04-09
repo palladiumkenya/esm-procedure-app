@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { Scalpel, TrashCan, Information } from "@carbon/react/icons";
+import { TrashCan, Information } from "@carbon/react/icons";
 import {
   DataTable,
   DataTableSkeleton,
@@ -45,11 +45,6 @@ interface WorklistProps {
   fulfillerStatus: string;
 }
 
-interface ResultsOrderProps {
-  order: Result;
-  patientUuid: string;
-}
-
 interface RejectOrderProps {
   order: Result;
 }
@@ -61,11 +56,8 @@ interface InstructionsProps {
 const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
   const { t } = useTranslation();
 
-  // eslint-disable-next-line prefer-const
-  let { workListEntries, isLoading } = useOrdersWorklist("", fulfillerStatus);
-  // workListEntries = workListEntries.filter(
-  //   (order) => order?.procedures?.length == 0
-  // );
+  const { workListEntries, isLoading } = useOrdersWorklist("", fulfillerStatus);
+
   const [activatedOnOrAfterDate, setActivatedOnOrAfterDate] = useState("");
   const pageSizes = [10, 20, 30, 40, 50];
   const [currentPageSize, setPageSize] = useState(10);
@@ -186,31 +178,6 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
   ];
 
   const tableRows = useMemo(() => {
-    const ResultsOrder: React.FC<ResultsOrderProps> = ({
-      order,
-      patientUuid,
-    }) => {
-      return (
-        <Button
-          kind="ghost"
-          onClick={() => {
-            launchOverlay(
-              t("postProcedureResultForm", "Procedure report form"),
-              <PostProcedureForm patientUuid={patientUuid} procedure={order} />
-            );
-          }}
-          renderIcon={(props) => (
-            <Tooltip
-              align="top"
-              label={t("procedureOutcome", "Procedure Outcome")}
-            >
-              <Scalpel size={16} {...props} />
-            </Tooltip>
-          )}
-        />
-      );
-    };
-
     const Instructions: React.FC<InstructionsProps> = ({ order }) => {
       const launchProcedureInstructionsModal = useCallback(() => {
         const dispose = showModal("procedure-instructions-modal", {
@@ -283,10 +250,6 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
           content: (
             <>
               <Instructions order={entry} />
-              <ResultsOrder
-                patientUuid={entry.patient.uuid}
-                order={paginatedWorkListEntries[index]}
-              />
               <RejectOrder order={paginatedWorkListEntries[index]} />
               <Button
                 onClick={() =>
