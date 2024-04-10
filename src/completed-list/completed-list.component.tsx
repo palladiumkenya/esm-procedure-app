@@ -42,10 +42,9 @@ export const CompletedList: React.FC<CompletedListProps> = ({
 
   // eslint-disable-next-line prefer-const
   let { workListEntries, isLoading } = useOrdersWorklist("", fulfillerStatus);
-  // temporarily remove procedures references
-  // workListEntries = workListEntries.filter(
-  //   (order) => order?.procedures[0]?.status == "COMPLETED"
-  // );
+  workListEntries = workListEntries.filter(
+    (order) => order?.procedures[0]?.status == "COMPLETED"
+  );
   const [activatedOnOrAfterDate, setActivatedOnOrAfterDate] = useState("");
   const pageSizes = [10, 20, 30, 40, 50];
   const [currentPageSize, setPageSize] = useState(10);
