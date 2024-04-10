@@ -57,6 +57,10 @@ interface RejectOrderProps {
 interface InstructionsProps {
   order: Result;
 }
+interface ResultsOrderProps {
+  order: Result;
+  patientUuid: string;
+}
 
 const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
   const { t } = useTranslation();
@@ -288,19 +292,6 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
                 order={paginatedWorkListEntries[index]}
               />
               <RejectOrder order={paginatedWorkListEntries[index]} />
-              <Button
-                onClick={() =>
-                  launchOverlay(
-                    t("postProcedureForm", "Post procedure form"),
-                    <PostProcedureForm
-                      patientUuid={entry.patient.uuid}
-                      procedure={entry}
-                    />
-                  )
-                }
-              >
-                {t("postProcedureForm", "Post procedure form")}
-              </Button>
             </>
           ),
         },

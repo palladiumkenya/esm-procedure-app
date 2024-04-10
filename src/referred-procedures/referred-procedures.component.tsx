@@ -192,7 +192,7 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
           onClick={() => {
             launchOverlay(
               t("postProcedureResultForm", "Procedure report form"),
-              <PostProcedureForm patientUuid={patientUuid} order={order} />
+              <PostProcedureForm patientUuid={patientUuid} procedure={order} />
             );
           }}
           renderIcon={(props) => (
