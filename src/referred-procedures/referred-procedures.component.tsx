@@ -37,7 +37,7 @@ import {
   showSnackbar,
 } from "@openmrs/esm-framework";
 import { launchOverlay } from "../components/overlay/hook";
-import PostProcedureForm from "../form/post-procedures/post-procedure-form.component";
+import PostProcedureForm from "../results/result-form.component";
 import { getStatusColor } from "../utils/functions";
 import Overlay from "../components/overlay/overlay.component";
 import { useOrdersWorklist } from "../hooks/useOrdersWorklist";
@@ -176,6 +176,7 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
     { id: 3, header: t("procedure", "Procedure"), key: "procedure" },
     { id: 4, header: t("status", "Status"), key: "status" },
     { id: 5, header: t("urgency", "Priority"), key: "urgency" },
+    { id: 10, header: t("start", "Start"), key: "start" },
     { id: 6, header: t("orderer", "Orderer"), key: "orderer" },
     { id: 7, header: t("actions", "Actions"), key: "actions" },
   ];

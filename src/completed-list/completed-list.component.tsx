@@ -63,11 +63,12 @@ export const CompletedList: React.FC<CompletedListProps> = ({
     { id: 4, header: t("status", "Status"), key: "status" },
     { id: 5, header: t("urgency", "Priority"), key: "urgency" },
     { id: 6, header: t("orderer", "Orderer"), key: "orderer" },
+    { id: 7, header: t("actions", "Actions"), key: "actions" },
   ];
 
   const tableRows = useMemo(() => {
     return paginatedWorkListEntries
-      ?.filter((item) => item.fulfillerStatus === "COMPLETED")
+      ?.filter((item) => item.fulfillerStatus === "IN_PROGRESS")
       .map((entry, index) => ({
         ...entry,
         id: entry.uuid,
@@ -107,6 +108,7 @@ export const CompletedList: React.FC<CompletedListProps> = ({
         orderer: { content: <span>{entry.orderer.display}</span> },
         orderType: { content: <span>{entry?.orderType?.display}</span> },
         priority: { content: <span>{entry.urgency}</span> },
+        actions: "--",
       }));
   }, [paginatedWorkListEntries, t]);
 
