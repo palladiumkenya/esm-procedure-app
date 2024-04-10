@@ -21,47 +21,47 @@
       "slot": "procedure-dashboard-slot"
     },
     {
-        "name": "procedures-ordered-tile-component",
+        "name": "ordered-tile-component",
         "slot": "procedure-tiles-slot",
-        "component": "orderedProceduresTileComponent",
+        "component": "OrderedTileComponent",
         "meta": {
             "name": "proceduresOrderedTileSlot",
             "title": "Active Orders"
         }
     },
     {
-      "name": "procedures-worklist-tile-component",
+      "name": "worklist-tile-component",
       "slot": "procedure-tiles-slot",
-      "component": "worklistProceduresTileComponent",
+      "component": "worklistTileComponent",
       "meta": {
-          "name": "worklistProceduresTileSlot",
+          "name": "worklisTileSlot",
           "title": "Worklist"
       }
   },
   {
     "name": "referred-tile-component",
     "slot": "procedure-tiles-slot",
-    "component": "referredOutProceduresTileComponent",
+    "component": "referredOutTileComponent",
     "meta": {
-      "name": "referredProceduresTileSlot",
+      "name": "referredTileSlot",
       "title": "Referred Out"
     }
   },
   {
     "name": "not-done-tile-component",
     "slot": "procedure-tiles-slot",
-    "component": "notDoneProceduresTileComponent",
+    "component": "notDoneTileComponent",
     "meta": {
-      "name": "notDoneProceduresTileSlot",
+      "name": "notDoneTileSlot",
       "title": "Not Done"
     }
   },
   {
     "name": "completed-tile-component",
     "slot": "procedure-tiles-slot",
-    "component": "completedProceduresTileComponent",
+    "component": "completedTileComponent",
     "meta": {
-        "name": "completedProceduresTileSlot",
+        "name": "completedTileSlot",
         "title": "Completed"
     }
 },
