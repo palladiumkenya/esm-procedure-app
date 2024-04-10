@@ -181,6 +181,31 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
   ];
 
   const tableRows = useMemo(() => {
+    const ResultsOrder: React.FC<ResultsOrderProps> = ({
+      order,
+      patientUuid,
+    }) => {
+      return (
+        <Button
+          kind="ghost"
+          onClick={() => {
+            launchOverlay(
+              t("postProcedureResultForm", "Procedure report form"),
+              <PostProcedureForm patientUuid={patientUuid} procedure={order} />
+            );
+          }}
+          renderIcon={(props) => (
+            <Tooltip
+              align="top"
+              label={t("procedureOutcome", "Procedure Outcome")}
+            >
+              <Scalpel size={16} {...props} />
+            </Tooltip>
+          )}
+        />
+      );
+    };
+
     const Instructions: React.FC<InstructionsProps> = ({ order }) => {
       const launchProcedureInstructionsModal = useCallback(() => {
         const dispose = showModal("procedure-instructions-modal", {
@@ -242,23 +267,21 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
         orderer: { content: <span>{entry.orderer.display}</span> },
         orderType: { content: <span>{entry?.orderType?.display}</span> },
         priority: { content: <span>{entry.urgency}</span> },
+        start: {
+          content: (
+            <>
+              <StartOrder order={paginatedWorkListEntries[index]} />
+            </>
+          ),
+        },
         actions: {
           content: (
             <>
               <Instructions order={entry} />
-              <Button
-                onClick={() =>
-                  launchOverlay(
-                    t("postProcedureForm", "Post procedure form"),
-                    <PostProcedureForm
-                      patientUuid={entry.patient.uuid}
-                      procedure={entry}
-                    />
-                  )
-                }
-              >
-                {t("postProcedureForm", "Post procedure form")}
-              </Button>
+              <ResultsOrder
+                patientUuid={entry.patient.uuid}
+                order={paginatedWorkListEntries[index]}
+              />
               <RejectOrder order={paginatedWorkListEntries[index]} />
             </>
           ),
