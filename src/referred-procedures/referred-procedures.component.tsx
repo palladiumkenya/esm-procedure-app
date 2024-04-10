@@ -37,7 +37,7 @@ import {
   showSnackbar,
 } from "@openmrs/esm-framework";
 import { launchOverlay } from "../components/overlay/hook";
-import PostProcedureForm from "../results/result-form.component";
+import PostProcedureForm from "../form/post-procedures/post-procedure-form.component";
 import { getStatusColor } from "../utils/functions";
 import Overlay from "../components/overlay/overlay.component";
 import { useOrdersWorklist } from "../hooks/useOrdersWorklist";
@@ -176,37 +176,11 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
     { id: 3, header: t("procedure", "Procedure"), key: "procedure" },
     { id: 4, header: t("status", "Status"), key: "status" },
     { id: 5, header: t("urgency", "Priority"), key: "urgency" },
-    { id: 10, header: t("start", "Start"), key: "start" },
     { id: 6, header: t("orderer", "Orderer"), key: "orderer" },
     { id: 7, header: t("actions", "Actions"), key: "actions" },
   ];
 
   const tableRows = useMemo(() => {
-    const ResultsOrder: React.FC<ResultsOrderProps> = ({
-      order,
-      patientUuid,
-    }) => {
-      return (
-        <Button
-          kind="ghost"
-          onClick={() => {
-            launchOverlay(
-              t("postProcedureResultForm", "Procedure report form"),
-              <PostProcedureForm patientUuid={patientUuid} order={order} />
-            );
-          }}
-          renderIcon={(props) => (
-            <Tooltip
-              align="top"
-              label={t("procedureOutcome", "Procedure Outcome")}
-            >
-              <Scalpel size={16} {...props} />
-            </Tooltip>
-          )}
-        />
-      );
-    };
-
     const Instructions: React.FC<InstructionsProps> = ({ order }) => {
       const launchProcedureInstructionsModal = useCallback(() => {
         const dispose = showModal("procedure-instructions-modal", {
@@ -268,21 +242,23 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
         orderer: { content: <span>{entry.orderer.display}</span> },
         orderType: { content: <span>{entry?.orderType?.display}</span> },
         priority: { content: <span>{entry.urgency}</span> },
-        start: {
-          content: (
-            <>
-              <StartOrder order={paginatedWorkListEntries[index]} />
-            </>
-          ),
-        },
         actions: {
           content: (
             <>
               <Instructions order={entry} />
-              <ResultsOrder
-                patientUuid={entry.patient.uuid}
-                order={paginatedWorkListEntries[index]}
-              />
+              <Button
+                onClick={() =>
+                  launchOverlay(
+                    t("postProcedureForm", "Post procedure form"),
+                    <PostProcedureForm
+                      patientUuid={entry.patient.uuid}
+                      procedure={entry}
+                    />
+                  )
+                }
+              >
+                {t("postProcedureForm", "Post procedure form")}
+              </Button>
               <RejectOrder order={paginatedWorkListEntries[index]} />
             </>
           ),

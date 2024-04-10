@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import SummaryTile from "../summary-tiles/summary-tile.component";
 import { useProcedureOrderStats } from "../summary-tiles/procedure-summary.resource";
 
-const WorklistTileComponent = () => {
+const WorklistProceduresTileComponent = () => {
   const { t } = useTranslation();
 
   const { count: worklistCount } = useProcedureOrderStats("IN_PROGRESS");
@@ -17,4 +17,4 @@ const WorklistTileComponent = () => {
   );
 };
 
-export default WorklistTileComponent;
+export default WorklistProceduresTileComponent;
