@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { TrashCan, Information } from "@carbon/react/icons";
+import { Scalpel, TrashCan, Information } from "@carbon/react/icons";
 import {
   DataTable,
   DataTableSkeleton,
@@ -51,6 +51,10 @@ interface RejectOrderProps {
 
 interface InstructionsProps {
   order: Result;
+}
+interface ResultsOrderProps {
+  order: Result;
+  patientUuid: string;
 }
 
 const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
@@ -178,6 +182,31 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
   ];
 
   const tableRows = useMemo(() => {
+    const ResultsOrder: React.FC<ResultsOrderProps> = ({
+      order,
+      patientUuid,
+    }) => {
+      return (
+        <Button
+          kind="ghost"
+          onClick={() => {
+            launchOverlay(
+              t("postProcedureResultForm", "Procedure report form"),
+              <PostProcedureForm patientUuid={patientUuid} procedure={order} />
+            );
+          }}
+          renderIcon={(props) => (
+            <Tooltip
+              align="top"
+              label={t("procedureOutcome", "Procedure Outcome")}
+            >
+              <Scalpel size={16} {...props} />
+            </Tooltip>
+          )}
+        />
+      );
+    };
+
     const Instructions: React.FC<InstructionsProps> = ({ order }) => {
       const launchProcedureInstructionsModal = useCallback(() => {
         const dispose = showModal("procedure-instructions-modal", {
@@ -250,20 +279,11 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
           content: (
             <>
               <Instructions order={entry} />
+              <ResultsOrder
+                patientUuid={entry.patient.uuid}
+                order={paginatedWorkListEntries[index]}
+              />
               <RejectOrder order={paginatedWorkListEntries[index]} />
-              <Button
-                onClick={() =>
-                  launchOverlay(
-                    t("postProcedureForm", "Post procedure form"),
-                    <PostProcedureForm
-                      patientUuid={entry.patient.uuid}
-                      procedure={entry}
-                    />
-                  )
-                }
-              >
-                {t("postProcedureForm", "Post procedure form")}
-              </Button>
             </>
           ),
         },
