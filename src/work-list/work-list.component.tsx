@@ -79,9 +79,9 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
     currentPage,
   } = usePagination(workListEntries, currentPageSize);
 
-  const RejectOrder: React.FC<RejectOrderProps> = ({ order }) => {
+  const RejectProcedureOrder: React.FC<RejectOrderProps> = ({ order }) => {
     const launchRejectOrderModal = useCallback(() => {
-      const dispose = showModal("reject-order-dialog", {
+      const dispose = showModal("reject-procedure-order-dialog", {
         closeModal: () => dispose(),
         order,
       });
@@ -291,7 +291,7 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
                 patientUuid={entry.patient.uuid}
                 order={paginatedWorkListEntries[index]}
               />
-              <RejectOrder order={paginatedWorkListEntries[index]} />
+              <RejectProcedureOrder order={paginatedWorkListEntries[index]} />
             </>
           ),
         },

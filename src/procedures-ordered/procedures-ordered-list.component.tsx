@@ -43,7 +43,7 @@ const RejectOrderMenuItem: React.FC<RejectOrderOverflowMenuItemProps> = ({
   order,
 }) => {
   const handleRejectOrderModel = useCallback(() => {
-    const dispose = showModal("reject-order-dialog", {
+    const dispose = showModal("reject-procedure-order-dialog", {
       closeModal: () => dispose(),
       order,
     });

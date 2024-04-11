@@ -114,8 +114,8 @@
       "component": "addProcedureToWorklistDialogComponent"
     },
     {
-      "name": "reject-order-dialog",
-      "component": "rejectOrderDialog"
+      "name": "reject-procedure-order-dialog",
+      "component": "rejectProcedureOrderDialogComponent"
     },
     {
       "name": "procedures-order-panel",

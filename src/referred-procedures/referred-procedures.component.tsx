@@ -73,7 +73,7 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
 
   const RejectOrder: React.FC<RejectOrderProps> = ({ order }) => {
     const launchRejectOrderModal = useCallback(() => {
-      const dispose = showModal("reject-order-dialog", {
+      const dispose = showModal("reject-procedure-order-dialog", {
         closeModal: () => dispose(),
         order,
       });
