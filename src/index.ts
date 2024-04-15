@@ -22,7 +22,7 @@ import ProceduresOrderBasketPanelExtension from "./form/procedures-orders/proced
 import rejectProcedureOrderDialog from "./procedures-ordered/reject-order-dialog/reject-procedure-order-dialog.component";
 import procedureRejectReasonModal from "./procedures-ordered/reject-reason/procedure-reject-reason.component";
 
-const moduleName = "@openmrs/esm-procedure-app";
+const moduleName = "@kenyaemr/esm-procedure-app";
 
 const options = {
   featureName: "root-world",

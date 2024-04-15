@@ -10,8 +10,8 @@ on:
       - created
 
 env:
-  ESM_NAME: "@openmrs/esm-procedure-management-app"
-  JS_NAME: "openmrs-esm-procedure-management-app.js"
+  ESM_NAME: "@kenyaemr/esm-procedure-app"
+  JS_NAME: "kenyaemr-esm-procedure-app.js"
 
 jobs:
   build:

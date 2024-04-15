@@ -1,9 +1,9 @@
 {
-  "name": "@openmrs/esm-procedure-app",
+  "name": "@kenyaemr/esm-procedure-app",
   "version": "3.0.0",
   "license": "MPL-2.0",
   "description": "An OpenMRS seed application for building microfrontends",
-  "browser": "dist/openmrs-esm-procedure-app.js",
+  "browser": "dist/kenyaemr-esm-procedure-app.js",
   "main": "src/index.ts",
   "source": true,
   "scripts": {
