@@ -2,6 +2,7 @@ import React, { useCallback, useState } from "react";
 import {
   OpenmrsDatePicker,
   showSnackbar,
+  useConfig,
   useDebounce,
   useSession,
 } from "@openmrs/esm-framework";
@@ -78,6 +79,11 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
     setSearchTerm(event.target.value);
 
   const {
+    procedureComplicationGroupingConceptUuid,
+    procedureComplicationConceptUuid,
+  } = useConfig();
+
+  const {
     control,
     formState: { errors },
     handleSubmit,
@@ -107,11 +113,11 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
       complications.push({
         groupMembers: [
           {
-            concept: "120198AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            concept: procedureComplicationConceptUuid,
             value: selectedCondition.concept.uuid,
           },
         ],
-        concept: "120202AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        concept: procedureComplicationGroupingConceptUuid,
       });
     }
 

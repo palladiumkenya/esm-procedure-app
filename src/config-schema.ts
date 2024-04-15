@@ -24,6 +24,16 @@ export const configSchema = {
     _description: "The concept class UUID for conditions",
     _default: "8d4918b0-c2cc-11de-8d13-0010c6dffd0f",
   },
+  procedureComplicationGroupingConceptUuid: {
+    _type: Type.ConceptUuid,
+    _description: "The concept UUID for grouping procedure complications obs",
+    _default: "120202AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  },
+  procedureComplicationConceptUuid: {
+    _type: Type.ConceptUuid,
+    _description: "The concept UUID for capturing procedure complications",
+    _default: "120198AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  },
 };
 
 export interface OrderReason {
