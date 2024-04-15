@@ -105,14 +105,13 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
     const complications = [];
     if (selectedCondition) {
       complications.push({
-        condition: {
-          coded: selectedCondition.concept.uuid,
-        },
-        patient: patientUuid,
-        clinicalStatus: "ACTIVE",
-        verificationStatus: "CONFIRMED",
-        onsetDate: dayjs().format("YYYY-MM-DDTHH:mm:ssZ"),
-        additionalDetail: "",
+        groupMembers: [
+          {
+            concept: "120198AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            value: selectedCondition.concept.uuid,
+          },
+        ],
+        concept: "120202AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
       });
     }
 
@@ -128,14 +127,13 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
       startDatetime: dayjs(data.startDatetime).format("YYYY-MM-DDTHH:mm:ssZ"),
       endDatetime: dayjs(data.endDatetime).format("YYYY-MM-DDTHH:mm:ssZ"),
       procedureReport: data.procedureReport,
-      complications: complications,
       encounters: [
         {
           encounterDatetime: new Date(),
           patient: patientUuid,
           encounterType: "d1059fb9-a079-4feb-a749-eedd709ae542",
           encounterProviders: participants,
-          obs: [],
+          obs: complications,
         },
       ],
     };
