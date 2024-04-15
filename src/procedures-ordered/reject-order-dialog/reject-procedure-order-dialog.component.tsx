@@ -14,12 +14,12 @@ import { Result } from "../../work-list/work-list.resource";
 import { showNotification, showSnackbar } from "@openmrs/esm-framework";
 import { mutate } from "swr";
 import { updateOrder } from "../pick-procedure-order/add-to-worklist-dialog.resource";
-interface RejectOrderDialogProps {
+interface RejectProcedureOrderDialogProps {
   order: Result;
   closeModal: () => void;
 }
 
-const RejectOrderDialog: React.FC<RejectOrderDialogProps> = ({
+const RejectProcedureOrderDialog: React.FC<RejectProcedureOrderDialogProps> = ({
   order,
   closeModal,
 }) => {
@@ -109,4 +109,4 @@ const RejectOrderDialog: React.FC<RejectOrderDialogProps> = ({
   );
 };
 
-export default RejectOrderDialog;
+export default RejectProcedureOrderDialog;
