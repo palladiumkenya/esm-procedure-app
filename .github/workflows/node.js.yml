@@ -103,7 +103,7 @@ jobs:
       - name: Pre-release
         run: yarn config set npmAuthToken "${NODE_AUTH_TOKEN}" && yarn npm publish --access public --tag next
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN_KENYAEMR }}
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
