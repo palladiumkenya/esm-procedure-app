@@ -364,7 +364,7 @@ export function ProceduresOrderForm({
               </Column>
             </Grid>
           )}
-          <Grid className={styles.gridRow}>
+          <Grid className={styles.gridRowHidden}>
             <Column lg={16} md={8} sm={4}>
               <InputWrapper>
                 <Controller
@@ -400,7 +400,7 @@ export function ProceduresOrderForm({
               </InputWrapper>
             </Column>
           </Grid>
-          <Grid className={styles.gridRow}>
+          <Grid className={styles.gridRowHidden}>
             <Column lg={16} md={8} sm={4}>
               <InputWrapper>
                 <Controller
@@ -432,6 +432,30 @@ export function ProceduresOrderForm({
                           ? `${t("loading", "Loading")}...`
                           : t("testTypePlaceholder", "Select one")
                       }
+                    />
+                  )}
+                />
+              </InputWrapper>
+            </Column>
+          </Grid>
+          <Grid className={styles.gridRow}>
+            <Column lg={16} md={8} sm={4}>
+              <InputWrapper>
+                <Controller
+                  name="bodySite"
+                  control={control}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextArea
+                      enableCounter
+                      id="bodySite"
+                      size="lg"
+                      labelText={t("bodySite", "Body Site")}
+                      value={value}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                      maxCount={500}
+                      invalid={errors.bodySite?.message}
+                      invalidText={errors.bodySite?.message}
                     />
                   )}
                 />
