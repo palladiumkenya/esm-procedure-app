@@ -152,3 +152,20 @@
     color: colors.$red-60;
     margin-left: 0.125rem;
 }
+
+
+.complicationService {
+  padding: 1rem 0.75rem;
+}
+
+
+.complicationsList {
+  background-color: $ui-02;
+  max-height: 14rem;
+  overflow-y: auto;
+  border: 1px solid $ui-03;
+
+  li:hover {
+    background-color: $ui-03;
+  }
+}
