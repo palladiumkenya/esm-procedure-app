@@ -12,7 +12,7 @@ import { type ConfigObject } from "../../../config-schema";
 import { type Concept } from "../api";
 
 type ConceptResult = FetchResponse<Concept>;
-type ConceptResults = FetchResponse<{ results: Array<Concept> }>;
+type ConceptResults = FetchResponse<{ setMembers: Array<Concept> }>;
 
 export interface ProceduresType {
   label: string;
@@ -40,7 +40,7 @@ function useProceduresConceptsSWR(labOrderableConcepts?: Array<string>) {
     () =>
       labOrderableConcepts
         ? labOrderableConcepts.map((c) => `${restBaseUrl}/concept/${c}`)
-        : `${restBaseUrl}/concept?s=byConceptClass&conceptClass=8d490bf4-c2cc-11de-8d13-0010c6dffd0f`,
+        : `${restBaseUrl}/concept/165418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA?v=custom:setMembers`,
     (labOrderableConcepts ? openmrsFetchMultiple : openmrsFetch) as any,
     {
       shouldRetryOnError(err) {
@@ -53,7 +53,7 @@ function useProceduresConceptsSWR(labOrderableConcepts?: Array<string>) {
     if (isLoading || error) return null;
     return labOrderableConcepts
       ? (data as Array<ConceptResult>)?.flatMap((d) => d.data.setMembers)
-      : (data as ConceptResults)?.data.results ?? ([] as Concept[]);
+      : (data as ConceptResults)?.data.setMembers ?? ([] as Concept[]);
   }, [data, isLoading, error]);
 
   return {
