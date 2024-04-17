@@ -142,6 +142,7 @@ export function ProceduresOrderForm({
     specimenSource: z.string().optional(),
     specimenType: z.string().optional(),
     frequency: z.string().optional(),
+    bodySite: z.string().optional(),
   });
 
   const orderFrequencies: Array<OrderFrequency> = useMemo(

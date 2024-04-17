@@ -121,6 +121,7 @@ export function prepProceduresOrderPostData(
       commentToFulfiller: order.commentsToFulfiller,
       instructions: order.instructions,
       orderReason: order.orderReason,
+      bodySite: order.bodySite,
     };
     if (order.urgency === "ON_SCHEDULED_DATE") {
       payload["scheduledDate"] = order.scheduleDate;
