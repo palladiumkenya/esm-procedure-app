@@ -2,6 +2,7 @@ import React, { useCallback, useState } from "react";
 import {
   OpenmrsDatePicker,
   showSnackbar,
+  useConfig,
   useDebounce,
   useSession,
 } from "@openmrs/esm-framework";
@@ -78,6 +79,11 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
     setSearchTerm(event.target.value);
 
   const {
+    procedureComplicationGroupingConceptUuid,
+    procedureComplicationConceptUuid,
+  } = useConfig();
+
+  const {
     control,
     formState: { errors },
     handleSubmit,
@@ -105,14 +111,13 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
     const complications = [];
     if (selectedCondition) {
       complications.push({
-        condition: {
-          coded: selectedCondition.concept.uuid,
-        },
-        patient: patientUuid,
-        clinicalStatus: "ACTIVE",
-        verificationStatus: "CONFIRMED",
-        onsetDate: dayjs().format("YYYY-MM-DDTHH:mm:ssZ"),
-        additionalDetail: "",
+        groupMembers: [
+          {
+            concept: procedureComplicationConceptUuid,
+            value: selectedCondition.concept.uuid,
+          },
+        ],
+        concept: procedureComplicationGroupingConceptUuid,
       });
     }
 
@@ -128,14 +133,13 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
       startDatetime: dayjs(data.startDatetime).format("YYYY-MM-DDTHH:mm:ssZ"),
       endDatetime: dayjs(data.endDatetime).format("YYYY-MM-DDTHH:mm:ssZ"),
       procedureReport: data.procedureReport,
-      complications: complications,
       encounters: [
         {
           encounterDatetime: new Date(),
           patient: patientUuid,
           encounterType: "d1059fb9-a079-4feb-a749-eedd709ae542",
           encounterProviders: participants,
-          obs: [],
+          obs: complications,
         },
       ],
     };

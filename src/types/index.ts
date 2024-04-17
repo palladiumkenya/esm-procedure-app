@@ -474,16 +474,6 @@ export type ProcedurePayload = {
   startDatetime: string;
   endDatetime: string;
   procedureReport: string;
-  complications: Array<{
-    condition: {
-      coded: string;
-    };
-    patient: string;
-    clinicalStatus: string;
-    verificationStatus: string;
-    onsetDate: string;
-    additionalDetail: string;
-  }>;
   encounters?: Array<{
     encounterDatetime: Date;
     encounterProviders: Array<{
