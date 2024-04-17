@@ -121,15 +121,11 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
   const onSubmit = async (data: PostProcedureFormSchema) => {
     const participants = [];
     if (selectedProvider) {
-      participants.push({
-        groupMembers: [
-          {
-            concept: procedureParticipantsConceptUuid,
-            value: selectedProvider.concept.uuid,
-          },
-        ],
-        concept: procedureParticipantsGroupingConceptUuid,
-      });
+      const provider = {
+        provider: selectedProvider.concept.uuid,
+        encounterRole: "a0b03050-c99b-11e0-9572-0800200c9a66",
+      };
+      participants.push(provider);
     }
     const complications = [];
     if (selectedCondition) {
