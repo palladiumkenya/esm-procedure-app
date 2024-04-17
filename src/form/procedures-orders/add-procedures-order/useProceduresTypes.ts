@@ -36,11 +36,12 @@ function openmrsFetchMultiple(urls: Array<string>) {
 
 function useProceduresConceptsSWR(labOrderableConcepts?: Array<string>) {
   console.warn("Here: ", labOrderableConcepts);
+  const config = useConfig() as ConfigObject;
   const { data, isLoading, error } = useSWRImmutable(
     () =>
       labOrderableConcepts
         ? labOrderableConcepts.map((c) => `${restBaseUrl}/concept/${c}`)
-        : `${restBaseUrl}/concept/165418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA?v=custom:setMembers`,
+        : `${restBaseUrl}/concept/${config.procedureConceptSetUuid}?v=custom:setMembers`,
     (labOrderableConcepts ? openmrsFetchMultiple : openmrsFetch) as any,
     {
       shouldRetryOnError(err) {
