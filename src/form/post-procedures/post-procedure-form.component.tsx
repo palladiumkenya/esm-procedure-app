@@ -11,7 +11,6 @@ import {
   Stack,
   ComboBox,
   TextArea,
-  MultiSelect,
   Layer,
   FormLabel,
   ButtonSet,
@@ -35,7 +34,12 @@ import { CodedProvider, CodedCondition, ProcedurePayload } from "../../types";
 import { Result } from "../../work-list/work-list.resource";
 import dayjs from "dayjs";
 import { closeOverlay } from "../../components/overlay/hook";
-import {  type ConfigObject, StringPath, encounterRole, encounterType } from "../../config-schema";
+import {
+  type ConfigObject,
+  StringPath,
+  encounterRole,
+  encounterType,
+} from "../../config-schema";
 
 const validationSchema = z.object({
   startDatetime: z.date({ required_error: "Start datetime is required" }),
