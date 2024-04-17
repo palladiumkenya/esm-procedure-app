@@ -92,6 +92,10 @@ export function ProceduresOrderForm({
     ) || {}
   ).required;
 
+  const {
+    items: { answers: bodySiteItems },
+  } = useConceptById("162668AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+
   const proceduresOrderFormSchema = z.object({
     instructions: z.string().optional(),
     urgency: z.string().refine((value) => value !== "", {
@@ -139,8 +143,6 @@ export function ProceduresOrderForm({
     commentsToFulfiller: z.string().optional(),
     numberOfRepeats: z.string().optional(),
     previousOrder: z.string().optional(),
-    specimenSource: z.string().optional(),
-    specimenType: z.string().optional(),
     frequency: z.string().optional(),
     bodySite: z.string().optional(),
   });
@@ -365,80 +367,6 @@ export function ProceduresOrderForm({
               </Column>
             </Grid>
           )}
-          <Grid className={styles.gridRowHidden}>
-            <Column lg={16} md={8} sm={4}>
-              <InputWrapper>
-                <Controller
-                  name="specimenSource"
-                  control={control}
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <ComboBox
-                      size="lg"
-                      id="specimenSourceInput"
-                      titleText={t("specimenSource", "Specimen Source")}
-                      selectedItem={
-                        specimenSourceItems?.find(
-                          (option) => option.uuid === value
-                        ) || null
-                      }
-                      items={specimenSourceItems}
-                      onBlur={onBlur}
-                      onChange={({ selectedItem }) =>
-                        onChange(selectedItem?.value || "")
-                      }
-                      invalid={errors.specimenSource?.message}
-                      invalidText={errors.specimenSource?.message}
-                      itemToString={(item) => item?.display}
-                      disabled={isLoadingSpecimenSourceItems}
-                      placeholder={
-                        isLoadingSpecimenSourceItems
-                          ? `${t("loading", "Loading")}...`
-                          : t("testTypePlaceholder", "Select one")
-                      }
-                    />
-                  )}
-                />
-              </InputWrapper>
-            </Column>
-          </Grid>
-          <Grid className={styles.gridRowHidden}>
-            <Column lg={16} md={8} sm={4}>
-              <InputWrapper>
-                <Controller
-                  name="specimenType"
-                  control={control}
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <ComboBox
-                      size="lg"
-                      id="specimenTypeInput"
-                      titleText={t("specimenType", "Specimen Type")}
-                      selectedItem={
-                        specimenTypeItems?.find(
-                          (option) => option.uuid === value
-                        ) || null
-                      }
-                      items={specimenTypeItems}
-                      onBlur={onBlur}
-                      onChange={({ selectedItem }) =>
-                        onChange(selectedItem?.value || "")
-                      }
-                      invalid={errors.specimenType?.message}
-                      invalidText={errors.specimenType?.message}
-                      itemToString={(item?: Concept) =>
-                        item && item?.display ? `${item?.display}` : ""
-                      }
-                      disabled={isLoadingSpecimenTypeItems}
-                      placeholder={
-                        isLoadingSpecimenTypeItems
-                          ? `${t("loading", "Loading")}...`
-                          : t("testTypePlaceholder", "Select one")
-                      }
-                    />
-                  )}
-                />
-              </InputWrapper>
-            </Column>
-          </Grid>
           <Grid className={styles.gridRow}>
             <Column lg={16} md={8} sm={4}>
               <InputWrapper>
@@ -446,18 +374,24 @@ export function ProceduresOrderForm({
                   name="bodySite"
                   control={control}
                   render={({ field: { onChange, onBlur, value } }) => (
-                    <TextArea
-                      enableCounter
-                      id="bodySite"
-                      size="lg"
-                      labelText={t("bodySite", "Body Site")}
-                      value={value}
-                      onChange={onChange}
-                      onBlur={onBlur}
-                      maxCount={500}
-                      invalid={errors.bodySite?.message}
-                      invalidText={errors.bodySite?.message}
-                    />
+                    <ComboBox
+                    size="lg"
+                    id="bodySiteInput"
+                    titleText={t("bodySite", "Body Site")}
+                    selectedItem={
+                      bodySiteItems?.find(
+                        (option) => option.uuid === value
+                      ) || null
+                    }
+                    items={bodySiteItems}
+                    onBlur={onBlur}
+                    onChange={({ selectedItem }) =>
+                      onChange(selectedItem?.uuid || "")
+                    }
+                    invalid={errors.bodySite?.message}
+                    invalidText={errors.bodySite?.message}
+                    itemToString={(item) => item?.display}
+                  />
                   )}
                 />
               </InputWrapper>
