@@ -73,3 +73,10 @@ export interface ConfigObject {
   procedureParticipantsGroupingConceptUuid: string;
   procedureParticipantsConceptUuid: string;
 }
+
+export const StringPath =
+  "M24 9.4L22.6 8 16 14.6 9.4 8 8 9.4 14.6 16 8 22.6 9.4 24 16 17.4 22.6 24 24 22.6 17.4 16 24 9.4z";
+
+export const encounterRole = "a0b03050-c99b-11e0-9572-0800200c9a66";
+
+export const encounterType = "d1059fb9-a079-4feb-a749-eedd709ae542";

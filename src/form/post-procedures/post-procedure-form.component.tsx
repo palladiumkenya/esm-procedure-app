@@ -11,7 +11,6 @@ import {
   Stack,
   ComboBox,
   TextArea,
-  MultiSelect,
   Layer,
   FormLabel,
   ButtonSet,
@@ -19,6 +18,7 @@ import {
   Search,
   InlineLoading,
   Tile,
+  Tag,
 } from "@carbon/react";
 import { useTranslation } from "react-i18next";
 import styles from "./post-procedure-form.scss";
@@ -34,7 +34,12 @@ import { CodedProvider, CodedCondition, ProcedurePayload } from "../../types";
 import { Result } from "../../work-list/work-list.resource";
 import dayjs from "dayjs";
 import { closeOverlay } from "../../components/overlay/hook";
-import { type ConfigObject } from "../../config-schema";
+import {
+  type ConfigObject,
+  StringPath,
+  encounterRole,
+  encounterType,
+} from "../../config-schema";
 
 const validationSchema = z.object({
   startDatetime: z.date({ required_error: "Start datetime is required" }),
@@ -85,8 +90,24 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
     useConditionsSearch(debouncedSearchTerm);
   const [selectedCondition, setSelectedCondition] =
     useState<CodedCondition>(null);
-  const handleSearchTermChange = (event: React.ChangeEvent<HTMLInputElement>) =>
-    setSearchTerm(event.target.value);
+
+  const handleSearchInputChange = (event) => {
+    const value = event.target.value;
+    setSearchTerm(value);
+    if (!value) {
+      setSelectedCondition(null);
+      setShowItems(false);
+    } else {
+      setShowItems(true);
+    }
+  };
+
+  const [showItems, setShowItems] = useState(false);
+  const [selectedItems, setSelectedItems] = useState([]);
+
+  const handleSelect = useCallback((item: CodedCondition) => {
+    setSelectedCondition(item);
+  }, []);
 
   const {
     procedureComplicationGroupingConceptUuid,
@@ -111,19 +132,12 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
     []
   );
 
-  const handleConditionChange = useCallback(
-    (selectedCondition: CodedCondition) => {
-      setSelectedCondition(selectedCondition);
-    },
-    []
-  );
-
   const onSubmit = async (data: PostProcedureFormSchema) => {
     const participants = [];
     if (selectedProvider) {
       const provider = {
         provider: selectedProvider.concept.uuid,
-        encounterRole: "a0b03050-c99b-11e0-9572-0800200c9a66",
+        encounterRole: encounterRole,
       };
       participants.push(provider);
     }
@@ -156,7 +170,7 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
         {
           encounterDatetime: new Date(),
           patient: patientUuid,
-          encounterType: "d1059fb9-a079-4feb-a749-eedd709ae542",
+          encounterType: encounterType,
           encounterProviders: participants,
           obs: complications,
         },
@@ -366,71 +380,78 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
             {t("complications", "Complications")}
           </FormLabel>
           <div>
-            <Controller
-              name="complications"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <Search
-                  autoFocus
-                  size="md"
-                  id="conditionsSearch"
-                  labelText={t("enterCondition", "Enter condition")}
-                  placeholder={t("searchConditions", "Search conditions")}
-                  onChange={(e) => {
-                    onChange(e);
-                    handleSearchTermChange(e);
-                  }}
-                  onClear={() => {
-                    setSearchTerm("");
-                    setSelectedCondition(null);
-                  }}
-                  value={(() => {
-                    if (selectedCondition) {
-                      return selectedCondition.display;
-                    }
-                    if (debouncedSearchTerm) {
-                      return value;
-                    }
-                  })()}
-                />
-              )}
-            />
-            {(() => {
-              if (!debouncedSearchTerm || selectedCondition) return null;
-              if (isSearching)
-                return (
-                  <InlineLoading
-                    className={styles.loader}
-                    description={t("searching", "Searching") + "..."}
-                  />
-                );
-              if (searchResults && searchResults.length) {
-                return (
-                  <ul className={styles.conditionsList}>
-                    {searchResults?.map((searchResult) => (
-                      <li
-                        role="menuitem"
-                        className={styles.condition}
-                        key={searchResult?.concept?.uuid}
-                        onClick={() => handleConditionChange(searchResult)}
+            {selectedItems?.map(
+              (item) =>
+                (
+                  <>
+                    <Tag
+                      style={{ display: "inline-flex", alignItems: "center" }}
+                    >
+                      <span style={{ marginRight: "8px" }}>{item.display}</span>
+                      <svg
+                        focusable="false"
+                        fill="currentColor"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 32 32"
+                        aria-hidden="true"
+                        onClick={() =>
+                          setSelectedItems((prevItems) =>
+                            prevItems.filter((i) => i !== item)
+                          )
+                        }
                       >
-                        {searchResult.display}
-                      </li>
-                    ))}
-                  </ul>
-                );
-              }
-              return (
-                <Layer>
-                  <Tile className={styles.emptyResults}>
-                    <span>
-                      {t("noResultsFor", "No results for")}{" "}
-                      <strong>"{debouncedSearchTerm}"</strong>
+                        <path d={StringPath}></path>
+                      </svg>
+                    </Tag>
+                  </>
+                ) ?? "-"
+            )}
+          </div>
+          <div>
+            <Search
+              autoFocus
+              size="md"
+              id="conditionsSearch"
+              placeholder={t("complications", "complications")}
+              labelText={t("enterCondition", "Enter condition")}
+              onChange={handleSearchInputChange}
+              onClear={() => setSearchTerm("")}
+            />
+            {searchResults?.length === 0 ? (
+              <div className={styles.filterEmptyState}>
+                <Layer level={0}>
+                  <Tile className={styles.filterEmptyStateTile}>
+                    <span className={styles.filterEmptyStateContent}>
+                      <strong>{debouncedSearchTerm}</strong>
                     </span>
                   </Tile>
                 </Layer>
-              );
-            })()}
+              </div>
+            ) : (
+              showItems && (
+                <ul className={styles.complicationsList}>
+                  {searchResults.map((item) => (
+                    <li
+                      key={item?.concept?.uuid}
+                      role="menuitem"
+                      tabIndex={0}
+                      className={styles.complicationService}
+                      onClick={() => {
+                        handleSelect(item);
+                        setSelectedItems((prevItems) => [...prevItems, item]);
+                        setShowItems(false);
+                      }}
+                    >
+                      {item.display}
+                    </li>
+                  ))}
+                </ul>
+              )
+            )}
+            {isSearching && (
+              <InlineLoading description="Loading complications..." />
+            )}
           </div>
         </Layer>
       </Stack>
@@ -447,3 +468,6 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
 };
 
 export default PostProcedureForm;
+function setValue(arg0: string, arg1: CodedCondition[]) {
+  throw new Error("Function not implemented.");
+}
