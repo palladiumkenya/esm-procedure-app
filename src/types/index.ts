@@ -462,6 +462,18 @@ export type CodedCondition = {
   display: string;
 };
 
+export type CodedProvider = {
+  concept: {
+    uuid: string;
+    display: string;
+  };
+  conceptName: {
+    uuid: string;
+    display: string;
+  };
+  display: string;
+};
+
 export type ProcedurePayload = {
   patient: string;
   procedureOrder: string;

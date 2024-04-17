@@ -5,7 +5,7 @@ import {
   restBaseUrl,
   useConfig,
 } from "@openmrs/esm-framework";
-import { CodedCondition, ProcedurePayload } from "../../types";
+import { CodedProvider, CodedCondition, ProcedurePayload } from "../../types";
 
 type Provider = {
   uuid: string;
@@ -50,5 +50,19 @@ export function useConditionsSearch(conditionToLookup: string) {
     searchResults: data?.data?.results ?? [],
     error: error,
     isSearching: isLoading,
+  };
+}
+
+export function useProvidersSearch(providerToLookup: string) {
+  const providerSearchUrl = `${restBaseUrl}/provider?v=custom:(uuid,display,person:(uuid,display))&q=${providerToLookup}`;
+  const { data, error, isLoading } = useSWR<
+    { data: { results: Array<CodedProvider> } },
+    Error
+  >(providerToLookup ? providerSearchUrl : null, openmrsFetch);
+
+  return {
+    providerSearchResults: data?.data?.results ?? [],
+    error: error,
+    isProviderSearching: isLoading,
   };
 }

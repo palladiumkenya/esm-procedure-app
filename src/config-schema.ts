@@ -39,6 +39,16 @@ export const configSchema = {
     _description: "The concept UUID for capturing procedure complications",
     _default: "120198AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
   },
+  procedureParticipantsGroupingConceptUuid: {
+    _type: Type.ConceptUuid,
+    _description: "The concept UUID for grouping procedure participants obs",
+    _default: "120202AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  },
+  procedureParticipantsConceptUuid: {
+    _type: Type.ConceptUuid,
+    _description: "The concept UUID for capturing procedure participants",
+    _default: "120198AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  },
 };
 
 export interface OrderReason {
@@ -58,4 +68,8 @@ export interface ConfigObject {
     labOrderableConcepts: Array<string>;
   };
   conditionConceptClassUuid: string;
+  procedureComplicationGroupingConceptUuid: string;
+  procedureComplicationConceptUuid: string;
+  procedureParticipantsGroupingConceptUuid: string;
+  procedureParticipantsConceptUuid: string;
 }
