@@ -375,23 +375,23 @@ export function ProceduresOrderForm({
                   control={control}
                   render={({ field: { onChange, onBlur, value } }) => (
                     <ComboBox
-                    size="lg"
-                    id="bodySiteInput"
-                    titleText={t("bodySite", "Body Site")}
-                    selectedItem={
-                      bodySiteItems?.find(
-                        (option) => option.uuid === value
-                      ) || null
-                    }
-                    items={bodySiteItems}
-                    onBlur={onBlur}
-                    onChange={({ selectedItem }) =>
-                      onChange(selectedItem?.uuid || "")
-                    }
-                    invalid={errors.bodySite?.message}
-                    invalidText={errors.bodySite?.message}
-                    itemToString={(item) => item?.display}
-                  />
+                      size="lg"
+                      id="bodySiteInput"
+                      titleText={t("bodySite", "Body Site")}
+                      selectedItem={
+                        bodySiteItems?.find(
+                          (option) => option.uuid === value
+                        ) || null
+                      }
+                      items={bodySiteItems}
+                      onBlur={onBlur}
+                      onChange={({ selectedItem }) =>
+                        onChange(selectedItem?.uuid || "")
+                      }
+                      invalid={errors.bodySite?.message}
+                      invalidText={errors.bodySite?.message}
+                      itemToString={(item) => item?.display}
+                    />
                   )}
                 />
               </InputWrapper>
