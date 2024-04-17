@@ -34,12 +34,7 @@ import { CodedProvider, CodedCondition, ProcedurePayload } from "../../types";
 import { Result } from "../../work-list/work-list.resource";
 import dayjs from "dayjs";
 import { closeOverlay } from "../../components/overlay/hook";
-import {
-  type ConfigObject,
-  StringPath,
-  encounterRole,
-  encounterType,
-} from "../../config-schema";
+import { type ConfigObject, StringPath } from "../../config-schema";
 
 const validationSchema = z.object({
   startDatetime: z.date({ required_error: "Start datetime is required" }),
@@ -112,6 +107,8 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
   const {
     procedureComplicationGroupingConceptUuid,
     procedureComplicationConceptUuid,
+    procedureResultEncounterType,
+    procedureResultEncounterRole,
     procedureParticipantsGroupingConceptUuid,
     procedureParticipantsConceptUuid,
   } = useConfig<ConfigObject>();
@@ -137,7 +134,7 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
     if (selectedProvider) {
       const provider = {
         provider: selectedProvider.concept.uuid,
-        encounterRole: encounterRole,
+        encounterRole: procedureResultEncounterRole,
       };
       participants.push(provider);
     }
@@ -170,7 +167,7 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
         {
           encounterDatetime: new Date(),
           patient: patientUuid,
-          encounterType: encounterType,
+          encounterType: procedureResultEncounterType,
           encounterProviders: participants,
           obs: complications,
         },
