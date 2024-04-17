@@ -28,12 +28,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   savePostProcedure,
   useConditionsSearch,
-  useProviders,
+  useProvidersSearch,
 } from "./post-procedure.resource";
-import { CodedCondition, ProcedurePayload } from "../../types";
+import { CodedProvider, CodedCondition, ProcedurePayload } from "../../types";
 import { Result } from "../../work-list/work-list.resource";
 import dayjs from "dayjs";
 import { closeOverlay } from "../../components/overlay/hook";
+import { type ConfigObject } from "../../config-schema";
 
 const validationSchema = z.object({
   startDatetime: z.date({ required_error: "Start datetime is required" }),
@@ -67,21 +68,32 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
 }) => {
   const { sessionLocation } = useSession();
   const { t } = useTranslation();
-  const { providers } = useProviders();
+
+  const [providerSearchTerm, setProviderSearchTerm] = useState("");
+  const debouncedProviderSearchTerm = useDebounce(providerSearchTerm);
+  const { providerSearchResults, isProviderSearching } = useProvidersSearch(
+    debouncedProviderSearchTerm
+  );
+  const [selectedProvider, setSelectedProvider] = useState<CodedProvider>(null);
+  const handleProviderSearchTermChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => setProviderSearchTerm(event.target.value);
+
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm);
   const { searchResults, isSearching } =
     useConditionsSearch(debouncedSearchTerm);
   const [selectedCondition, setSelectedCondition] =
     useState<CodedCondition>(null);
-
   const handleSearchTermChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setSearchTerm(event.target.value);
 
   const {
     procedureComplicationGroupingConceptUuid,
     procedureComplicationConceptUuid,
-  } = useConfig();
+    procedureParticipantsGroupingConceptUuid,
+    procedureParticipantsConceptUuid,
+  } = useConfig<ConfigObject>();
 
   const {
     control,
@@ -92,6 +104,13 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
     resolver: zodResolver(validationSchema),
   });
 
+  const handleProviderChange = useCallback(
+    (selectedProvider: CodedProvider) => {
+      setSelectedProvider(selectedProvider);
+    },
+    []
+  );
+
   const handleConditionChange = useCallback(
     (selectedCondition: CodedCondition) => {
       setSelectedCondition(selectedCondition);
@@ -101,13 +120,13 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
 
   const onSubmit = async (data: PostProcedureFormSchema) => {
     const participants = [];
-    data.participants.forEach((p) => {
+    if (selectedProvider) {
       const provider = {
-        provider: p.uuid,
+        provider: selectedProvider.concept.uuid,
         encounterRole: "a0b03050-c99b-11e0-9572-0800200c9a66",
       };
       participants.push(provider);
-    });
+    }
     const complications = [];
     if (selectedCondition) {
       complications.push({
@@ -274,24 +293,73 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
           <FormLabel className={styles.formLabel}>
             {t("participants", "Participants")}
           </FormLabel>
-          <Controller
-            control={control}
-            name="participants"
-            render={({ field: { onChange } }) => (
-              <MultiSelect
-                id="participants"
-                titleText={t("participants", "Participants")}
-                label={t("selectParticipants", "Select participants")}
-                items={providers}
-                onChange={({ selectedItems }) => onChange(selectedItems)}
-                itemToString={(item) => (item ? item.display : "")}
-                selectionFeedback="top-after-reopen"
-                placeholder={t("selectParticipants", "Select participants")}
-                invalid={!!errors.participants}
-                invalidText={errors.participants?.message}
-              />
-            )}
-          />
+          <div>
+            <Controller
+              name="participants"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <Search
+                  autoFocus
+                  size="md"
+                  id="conditionsSearch"
+                  labelText={t("enterParticipants", "Enter participants")}
+                  placeholder={t("searchParticipants", "Search participants")}
+                  onChange={(e) => {
+                    onChange(e);
+                    handleProviderSearchTermChange(e);
+                  }}
+                  onClear={() => {
+                    setProviderSearchTerm("");
+                    setSelectedProvider(null);
+                  }}
+                  value={(() => {
+                    if (selectedProvider) {
+                      return selectedProvider.display;
+                    }
+                    if (debouncedProviderSearchTerm) {
+                      return value;
+                    }
+                  })()}
+                />
+              )}
+            />
+            {(() => {
+              if (!debouncedProviderSearchTerm || selectedProvider) return null;
+              if (isProviderSearching)
+                return (
+                  <InlineLoading
+                    className={styles.loader}
+                    description={t("searching", "Searching") + "..."}
+                  />
+                );
+              if (providerSearchResults && providerSearchResults.length) {
+                return (
+                  <ul className={styles.conditionsList}>
+                    {providerSearchResults?.map((searchResult) => (
+                      <li
+                        role="menuitem"
+                        className={styles.condition}
+                        key={searchResult?.concept?.uuid}
+                        onClick={() => handleProviderChange(searchResult)}
+                      >
+                        {searchResult.display}
+                      </li>
+                    ))}
+                  </ul>
+                );
+              }
+              return (
+                <Layer>
+                  <Tile className={styles.emptyResults}>
+                    <span>
+                      {t("noResultsFor", "No results for")}{" "}
+                      <strong>"{debouncedProviderSearchTerm}"</strong>
+                    </span>
+                  </Tile>
+                </Layer>
+              );
+            })()}
+          </div>
         </Layer>
         <Layer>
           <FormLabel className={styles.formLabel}>
