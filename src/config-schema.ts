@@ -6,6 +6,11 @@ export const configSchema = {
     _description: "Procedure Order type UUID",
     _default: "4237a01f-29c5-4167-9d8e-96d6e590aa33",
   },
+  procedureConceptSetUuid: {
+    _type: Type.String,
+    _description: "Procedure Concept SET UUID",
+    _default: "165418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  },
   testOrderTypeUuid: {
     _type: Type.String,
     _description: "Test Order type UUID",
@@ -44,6 +49,7 @@ export interface OrderReason {
 
 export interface ConfigObject {
   procedureOrderTypeUuid: string;
+  procedureConceptSetUuid: string;
   testOrderTypeUuid: string;
   labTestsWithOrderReasons: Array<OrderReason>;
   showPrintButton: boolean;
