@@ -463,14 +463,7 @@ export type CodedCondition = {
 };
 
 export type CodedProvider = {
-  concept: {
-    uuid: string;
-    display: string;
-  };
-  conceptName: {
-    uuid: string;
-    display: string;
-  };
+  uuid: string;
   display: string;
 };
 
