@@ -92,6 +92,10 @@ export function ProceduresOrderForm({
     ) || {}
   ).required;
 
+  const {
+    items: { answers: bodySiteItems },
+  } = useConceptById("162668AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+
   const proceduresOrderFormSchema = z.object({
     instructions: z.string().optional(),
     urgency: z.string().refine((value) => value !== "", {
@@ -139,9 +143,8 @@ export function ProceduresOrderForm({
     commentsToFulfiller: z.string().optional(),
     numberOfRepeats: z.string().optional(),
     previousOrder: z.string().optional(),
-    specimenSource: z.string().optional(),
-    specimenType: z.string().optional(),
     frequency: z.string().optional(),
+    bodySite: z.string().optional(),
   });
 
   const orderFrequencies: Array<OrderFrequency> = useMemo(
@@ -368,70 +371,26 @@ export function ProceduresOrderForm({
             <Column lg={16} md={8} sm={4}>
               <InputWrapper>
                 <Controller
-                  name="specimenSource"
+                  name="bodySite"
                   control={control}
                   render={({ field: { onChange, onBlur, value } }) => (
                     <ComboBox
                       size="lg"
-                      id="specimenSourceInput"
-                      titleText={t("specimenSource", "Specimen Source")}
+                      id="bodySiteInput"
+                      titleText={t("bodySite", "Body Site")}
                       selectedItem={
-                        specimenSourceItems?.find(
+                        bodySiteItems?.find(
                           (option) => option.uuid === value
                         ) || null
                       }
-                      items={specimenSourceItems}
+                      items={bodySiteItems}
                       onBlur={onBlur}
                       onChange={({ selectedItem }) =>
-                        onChange(selectedItem?.value || "")
+                        onChange(selectedItem?.uuid || "")
                       }
-                      invalid={errors.specimenSource?.message}
-                      invalidText={errors.specimenSource?.message}
+                      invalid={errors.bodySite?.message}
+                      invalidText={errors.bodySite?.message}
                       itemToString={(item) => item?.display}
-                      disabled={isLoadingSpecimenSourceItems}
-                      placeholder={
-                        isLoadingSpecimenSourceItems
-                          ? `${t("loading", "Loading")}...`
-                          : t("testTypePlaceholder", "Select one")
-                      }
-                    />
-                  )}
-                />
-              </InputWrapper>
-            </Column>
-          </Grid>
-          <Grid className={styles.gridRow}>
-            <Column lg={16} md={8} sm={4}>
-              <InputWrapper>
-                <Controller
-                  name="specimenType"
-                  control={control}
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <ComboBox
-                      size="lg"
-                      id="specimenTypeInput"
-                      titleText={t("specimenType", "Specimen Type")}
-                      selectedItem={
-                        specimenTypeItems?.find(
-                          (option) => option.uuid === value
-                        ) || null
-                      }
-                      items={specimenTypeItems}
-                      onBlur={onBlur}
-                      onChange={({ selectedItem }) =>
-                        onChange(selectedItem?.value || "")
-                      }
-                      invalid={errors.specimenType?.message}
-                      invalidText={errors.specimenType?.message}
-                      itemToString={(item?: Concept) =>
-                        item && item?.display ? `${item?.display}` : ""
-                      }
-                      disabled={isLoadingSpecimenTypeItems}
-                      placeholder={
-                        isLoadingSpecimenTypeItems
-                          ? `${t("loading", "Loading")}...`
-                          : t("testTypePlaceholder", "Select one")
-                      }
                     />
                   )}
                 />

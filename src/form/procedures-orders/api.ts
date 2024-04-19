@@ -113,14 +113,13 @@ export function prepProceduresOrderPostData(
       orderer: order.orderer,
       encounter: encounterUuid,
       concept: order.testType.conceptUuid,
-      specimenSource: order.specimenSource,
-      specimenType: order.specimenType,
       frequency: order.frequency,
       numberOfRepeats: order.numberOfRepeats,
       urgency: order.urgency,
       commentToFulfiller: order.commentsToFulfiller,
       instructions: order.instructions,
       orderReason: order.orderReason,
+      bodySite: order.bodySite,
     };
     if (order.urgency === "ON_SCHEDULED_DATE") {
       payload["scheduledDate"] = order.scheduleDate;
