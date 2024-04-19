@@ -99,8 +99,6 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
     procedureComplicationConceptUuid,
     procedureResultEncounterType,
     procedureResultEncounterRole,
-    procedureParticipantsGroupingConceptUuid,
-    procedureParticipantsConceptUuid,
   } = useConfig<ConfigObject>();
 
   const {
