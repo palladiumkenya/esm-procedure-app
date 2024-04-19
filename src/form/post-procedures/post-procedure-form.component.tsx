@@ -76,6 +76,17 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
   const [selectedCondition, setSelectedCondition] =
     useState<CodedCondition>(null);
 
+  const handleParticipantSearchInputChange = (event) => {
+    const value = event.target.value;
+    setProviderSearchTerm(value);
+    if (!value) {
+      setSelectedProvider(null);
+      setShowParticipants(false);
+    } else {
+      setShowParticipants(true);
+    }
+  };
+
   const handleSearchInputChange = (event) => {
     const value = event.target.value;
     setSearchTerm(value);
@@ -87,8 +98,15 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
     }
   };
 
+  const [showParticipants, setShowParticipants] = useState(false);
+  const [selectedParticipants, setSelectedParticipants] = useState([]);
+
   const [showItems, setShowItems] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
+
+  const handleParticipantSelect = useCallback((item: CodedProvider) => {
+    setSelectedProvider(item);
+  }, []);
 
   const handleSelect = useCallback((item: CodedCondition) => {
     setSelectedCondition(item);
@@ -121,25 +139,26 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
 
   const onSubmit = async (data: PostProcedureFormSchema) => {
     const participants = [];
-    if (selectedProvider) {
+    selectedParticipants.forEach((p) => {
       const provider = {
-        provider: selectedProvider.uuid,
+        provider: p.uuid,
         encounterRole: procedureResultEncounterRole,
       };
       participants.push(provider);
-    }
+    });
     const complications = [];
-    if (selectedCondition) {
-      complications.push({
+    selectedItems.forEach((p) => {
+      const complication = {
         groupMembers: [
           {
             concept: procedureComplicationConceptUuid,
-            value: selectedCondition.concept.uuid,
+            value: p.concept.uuid,
           },
         ],
         concept: procedureComplicationGroupingConceptUuid,
-      });
-    }
+      };
+      complications.push(complication);
+    });
 
     const payload: ProcedurePayload = {
       patient: patientUuid,
@@ -295,71 +314,81 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
             {t("participants", "Participants")}
           </FormLabel>
           <div>
-            <Controller
-              name="participants"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <Search
-                  autoFocus
-                  size="md"
-                  id="conditionsSearch"
-                  labelText={t("enterParticipants", "Enter participants")}
-                  placeholder={t("searchParticipants", "Search participants")}
-                  onChange={(e) => {
-                    onChange(e);
-                    handleProviderSearchTermChange(e);
-                  }}
-                  onClear={() => {
-                    setProviderSearchTerm("");
-                    setSelectedProvider(null);
-                  }}
-                  value={(() => {
-                    if (selectedProvider) {
-                      return selectedProvider.display;
-                    }
-                    if (debouncedProviderSearchTerm) {
-                      return value;
-                    }
-                  })()}
-                />
-              )}
-            />
-            {(() => {
-              if (!debouncedProviderSearchTerm || selectedProvider) return null;
-              if (isProviderSearching)
-                return (
-                  <InlineLoading
-                    className={styles.loader}
-                    description={t("searching", "Searching") + "..."}
-                  />
-                );
-              if (providerSearchResults && providerSearchResults.length) {
-                return (
-                  <ul className={styles.conditionsList}>
-                    {providerSearchResults?.map((searchResult) => (
-                      <li
-                        role="menuitem"
-                        className={styles.condition}
-                        key={searchResult?.uuid}
-                        onClick={() => handleProviderChange(searchResult)}
+            {selectedParticipants?.map(
+              (item) =>
+                (
+                  <>
+                    <Tag
+                      style={{ display: "inline-flex", alignItems: "center" }}
+                    >
+                      <span style={{ marginRight: "8px" }}>{item.display}</span>
+                      <svg
+                        focusable="false"
+                        fill="currentColor"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 32 32"
+                        aria-hidden="true"
+                        onClick={() =>
+                          setSelectedParticipants((prevItems) =>
+                            prevItems.filter((i) => i !== item)
+                          )
+                        }
                       >
-                        {searchResult.display}
-                      </li>
-                    ))}
-                  </ul>
-                );
-              }
-              return (
-                <Layer>
-                  <Tile className={styles.emptyResults}>
-                    <span>
-                      {t("noResultsFor", "No results for")}{" "}
-                      <strong>"{debouncedProviderSearchTerm}"</strong>
+                        <path d={StringPath}></path>
+                      </svg>
+                    </Tag>
+                  </>
+                ) ?? "-"
+            )}
+          </div>
+          <div>
+            <Search
+              autoFocus
+              size="md"
+              id="participantsSearch"
+              placeholder={t("participants", "Participants")}
+              labelText={t("enterParticipant", "Enter Participant")}
+              onChange={handleParticipantSearchInputChange}
+              onClear={() => setProviderSearchTerm("")}
+            />
+            {providerSearchResults?.length === 0 ? (
+              <div className={styles.filterEmptyState}>
+                <Layer level={0}>
+                  <Tile className={styles.filterEmptyStateTile}>
+                    <span className={styles.filterEmptyStateContent}>
+                      <strong>{debouncedProviderSearchTerm}</strong>
                     </span>
                   </Tile>
                 </Layer>
-              );
-            })()}
+              </div>
+            ) : (
+              showParticipants && (
+                <ul className={styles.participantsList}>
+                  {providerSearchResults.map((item) => (
+                    <li
+                      key={item?.uuid}
+                      role="menuitem"
+                      tabIndex={0}
+                      className={styles.participantService}
+                      onClick={() => {
+                        handleParticipantSelect(item);
+                        setSelectedParticipants((prevItems) => [
+                          ...prevItems,
+                          item,
+                        ]);
+                        setShowParticipants(false);
+                      }}
+                    >
+                      {item.display}
+                    </li>
+                  ))}
+                </ul>
+              )
+            )}
+            {isProviderSearching && (
+              <InlineLoading description="Loading participants..." />
+            )}
           </div>
         </Layer>
         <Layer>
@@ -455,6 +484,3 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
 };
 
 export default PostProcedureForm;
-function setValue(arg0: string, arg1: CodedCondition[]) {
-  throw new Error("Function not implemented.");
-}
