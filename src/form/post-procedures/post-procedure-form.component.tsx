@@ -152,7 +152,7 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
         groupMembers: [
           {
             concept: procedureComplicationConceptUuid,
-            value: p.concept.uuid,
+            valueCoded: p.concept.uuid,
           },
         ],
         concept: procedureComplicationGroupingConceptUuid,
