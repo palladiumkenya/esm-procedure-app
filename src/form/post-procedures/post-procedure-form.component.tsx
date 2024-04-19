@@ -35,6 +35,8 @@ import { Result } from "../../work-list/work-list.resource";
 import dayjs from "dayjs";
 import { closeOverlay } from "../../components/overlay/hook";
 import { type ConfigObject, StringPath } from "../../config-schema";
+import { updateOrder } from "../../procedures-ordered/pick-procedure-order/add-to-worklist-dialog.resource";
+import { mutate } from "swr";
 
 const validationSchema = z.object({
   startDatetime: z.date({ required_error: "Start datetime is required" }),
@@ -180,10 +182,32 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
         },
       ],
     };
-
+    const body = {
+      fulfillerComment: "",
+      fulfillerStatus: "COMPLETED",
+    };
     try {
       const response = await savePostProcedure(payload);
-      response.status === 201 &&
+      if (
+        response.status === 201 &&
+        (procedure?.numberOfRepeats === null ||
+          procedure?.procedures?.length === procedure?.numberOfRepeats)
+      ) {
+        updateOrder(procedure.uuid, body) &&
+          showSnackbar({
+            title: t("procedureSaved", "Procedure saved"),
+            subtitle: t(
+              "procedureSavedSuccessfully",
+              "Procedure saved successfully"
+            ),
+            timeoutInMs: 5000,
+            isLowContrast: true,
+            kind: "success",
+          });
+      } else if (
+        response.status === 201 &&
+        procedure?.procedures?.length < procedure?.numberOfRepeats
+      ) {
         showSnackbar({
           title: t("procedureSaved", "Procedure saved"),
           subtitle: t(
@@ -194,6 +218,12 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
           isLowContrast: true,
           kind: "success",
         });
+      }
+      mutate(
+        (key) => typeof key === "string" && key.startsWith("/ws/rest/v1/order"),
+        undefined,
+        { revalidate: true }
+      );
       closeOverlay();
     } catch (error) {
       console.error(error);

@@ -41,6 +41,7 @@ import { getStatusColor } from "../utils/functions";
 import Overlay from "../components/overlay/overlay.component";
 import { useOrdersWorklist } from "../hooks/useOrdersWorklist";
 import PostProcedureForm from "../form/post-procedures/post-procedure-form.component";
+import { mutate } from "swr";
 interface WorklistProps {
   fulfillerStatus: string;
 }
@@ -65,11 +66,7 @@ interface ResultsOrderProps {
 const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
   const { t } = useTranslation();
 
-  // eslint-disable-next-line prefer-const
-  let { workListEntries, isLoading } = useOrdersWorklist("", fulfillerStatus);
-  workListEntries = workListEntries.filter(
-    (order) => order?.procedures?.length == 0
-  );
+  const { workListEntries, isLoading } = useOrdersWorklist("", fulfillerStatus);
   const [activatedOnOrAfterDate, setActivatedOnOrAfterDate] = useState("");
   const pageSizes = [10, 20, 30, 40, 50];
   const [currentPageSize, setPageSize] = useState(10);
@@ -132,7 +129,12 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
             ),
             kind: "success",
           });
-
+          mutate(
+            (key) =>
+              typeof key === "string" && key.startsWith("/ws/rest/v1/order"),
+            undefined,
+            { revalidate: true }
+          );
           // Update button style on successful POST
           setButtonStyle({
             borderRadius: "80px",
@@ -256,7 +258,16 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
             </ConfigurableLink>
           ),
         },
-        orderNumber: { content: <span>{entry.orderNumber}</span> },
+        orderNumber: {
+          content: (
+            <span>
+              {entry.orderNumber}
+              {entry.numberOfRepeats > 0
+                ? `(${entry.procedures?.length}/${entry.numberOfRepeats + 1})`
+                : ""}
+            </span>
+          ),
+        },
         procedure: { content: <span>{entry.concept.display}</span> },
         action: { content: <span>{entry.action}</span> },
         status: {

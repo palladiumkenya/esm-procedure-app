@@ -134,7 +134,16 @@ const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = () => {
           </span>
         ),
         patient: entry?.patient?.display.split("-")[1],
-        orderNumber: entry?.orderNumber,
+        orderNumber: {
+          content: (
+            <span>
+              {entry.orderNumber}
+              {entry.numberOfRepeats > 0
+                ? `(${entry.procedures?.length}/${entry.numberOfRepeats + 1})`
+                : ""}
+            </span>
+          ),
+        },
         procedure: entry?.concept.display,
         priority: entry?.urgency,
         action: entry?.action,

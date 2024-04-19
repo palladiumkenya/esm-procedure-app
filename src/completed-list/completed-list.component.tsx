@@ -40,11 +40,7 @@ export const CompletedList: React.FC<CompletedListProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  // eslint-disable-next-line prefer-const
-  let { workListEntries, isLoading } = useOrdersWorklist("", fulfillerStatus);
-  workListEntries = workListEntries.filter(
-    (order) => order?.procedures?.length > 0
-  );
+  const { workListEntries, isLoading } = useOrdersWorklist("", fulfillerStatus);
   const [activatedOnOrAfterDate, setActivatedOnOrAfterDate] = useState("");
   const pageSizes = [10, 20, 30, 40, 50];
   const [currentPageSize, setPageSize] = useState(10);
@@ -68,7 +64,7 @@ export const CompletedList: React.FC<CompletedListProps> = ({
 
   const tableRows = useMemo(() => {
     return paginatedWorkListEntries
-      ?.filter((item) => item.fulfillerStatus === "IN_PROGRESS")
+      ?.filter((item) => item.fulfillerStatus === "COMPLETED")
       .map((entry, index) => ({
         ...entry,
         id: entry.uuid,
