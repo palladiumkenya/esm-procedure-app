@@ -3,12 +3,14 @@ import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import { Button, Tile } from "@carbon/react";
 import { Add, ChevronDown, ChevronUp } from "@carbon/react/icons";
-import { useLayoutType } from "@openmrs/esm-framework";
 import {
-  launchPatientWorkspace,
+  useLayoutType,
+  closeWorkspace,
+  launchWorkspace,
+} from "@openmrs/esm-framework";
+import {
   type OrderBasketItem,
   useOrderBasket,
-  closeWorkspace,
 } from "@openmrs/esm-patient-common-lib";
 import { ProceduresOrderBasketItemTile } from "./procedures-order-basket-item-tile.component";
 import { prepProceduresOrderPostData } from "../api";
@@ -65,8 +67,7 @@ export default function ProceduresOrderBasketPanelExtension() {
     closeWorkspace("order-basket", {
       ignoreChanges: true,
       onWorkspaceClose: () => {
-        console.warn("basket closed");
-        launchPatientWorkspace("add-procedures-order");
+        launchWorkspace("add-procedures-order");
       },
     });
   }, []);
@@ -75,7 +76,7 @@ export default function ProceduresOrderBasketPanelExtension() {
     closeWorkspace("order-basket", {
       ignoreChanges: true,
       onWorkspaceClose: () =>
-        launchPatientWorkspace("add-procedures-order", { order }),
+        launchWorkspace("add-procedures-order", { order }),
     });
   }, []);
 
