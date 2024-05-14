@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import SummaryTile from "../summary-tiles/summary-tile.component";
 import { useProcedureOrderStats } from "../summary-tiles/procedure-summary.resource";
 
-const ReferredOutTileComponent = () => {
+const ReferredOutProcedureTileComponent = () => {
   const { t } = useTranslation();
   const { count: referredOutCount } = useProcedureOrderStats("EXCEPTION");
 
@@ -16,4 +16,4 @@ const ReferredOutTileComponent = () => {
   );
 };
 
-export default ReferredOutTileComponent;
+export default ReferredOutProcedureTileComponent;

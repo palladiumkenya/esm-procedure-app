@@ -12,7 +12,7 @@ import {
 } from "@openmrs/esm-patient-common-lib";
 import { ProceduresOrderBasketItemTile } from "./procedures-order-basket-item-tile.component";
 import { prepProceduresOrderPostData } from "../api";
-import LabIcon from "./procedures-icon.component";
+import ProcedureIcon from "./procedures-icon.component";
 import styles from "./procedures-order-basket-panel.scss";
 import { type ProcedureOrderBasketItem } from "../../../types";
 
@@ -100,7 +100,7 @@ export default function ProceduresOrderBasketPanelExtension() {
     >
       <div className={styles.container}>
         <div className={styles.iconAndLabel}>
-          <LabIcon isTablet={isTablet} />
+          <ProcedureIcon isTablet={isTablet} />
           <h4 className={styles.heading}>{`${t(
             "proceduresOrders",
             "Procedures orders"
