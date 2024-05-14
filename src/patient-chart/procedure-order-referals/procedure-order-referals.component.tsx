@@ -13,6 +13,7 @@ import {
   ErrorState,
   showModal,
   useConfig,
+  launchWorkspace,
 } from "@openmrs/esm-framework";
 
 import {
@@ -59,10 +60,7 @@ import {
   getOrderColor,
 } from "../patient-procedure-order-results.resource";
 import { useLaboratoryOrderResultsPages } from "../patient-procedure-order-results-table.resource";
-import {
-  CardHeader,
-  launchPatientWorkspace,
-} from "@openmrs/esm-patient-common-lib";
+import { CardHeader } from "@openmrs/esm-patient-common-lib";
 import { mutate } from "swr";
 
 interface LaboratoryOrderReferalResultsProps {
@@ -169,7 +167,7 @@ const LaboratoryOrderReferalResults: React.FC<
     encounterUuid,
   }) => {
     const launchForm = () => {
-      launchPatientWorkspace("patient-laboratory-referral-workspace", {
+      launchWorkspace("patient-laboratory-referral-workspace", {
         workspaceTitle: "Edit Referral Form",
         mutateForm: () => {
           mutate((key) => true, undefined, {

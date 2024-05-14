@@ -14,6 +14,7 @@ import {
   showModal,
   useConfig,
   usePagination,
+  launchWorkspace,
 } from "@openmrs/esm-framework";
 import { mutate } from "swr";
 import {
@@ -61,10 +62,7 @@ import {
   getOrderColor,
 } from "../patient-procedure-order-results.resource";
 import { useLaboratoryOrderResultsPages } from "../patient-procedure-order-results-table.resource";
-import {
-  CardHeader,
-  launchPatientWorkspace,
-} from "@openmrs/esm-patient-common-lib";
+import { CardHeader } from "@openmrs/esm-patient-common-lib";
 
 interface LaboratoryActiveTestOrderResultsProps {
   patientUuid: string;
@@ -153,7 +151,7 @@ const LaboratoryActiveTestOrderResults: React.FC<
   };
 
   const launchLabRequestForm = () => {
-    launchPatientWorkspace("patient-laboratory-referral-workspace", {
+    launchWorkspace("patient-laboratory-referral-workspace", {
       workspaceTitle: "Lab Request Form",
       mutateForm: () => {
         mutate((key) => true, undefined, {

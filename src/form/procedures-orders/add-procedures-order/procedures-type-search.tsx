@@ -18,12 +18,10 @@ import {
   useLayoutType,
   useSession,
   ResponsiveWrapper,
-} from "@openmrs/esm-framework";
-import {
   closeWorkspace,
-  launchPatientWorkspace,
-  useOrderBasket,
-} from "@openmrs/esm-patient-common-lib";
+  launchWorkspace,
+} from "@openmrs/esm-framework";
+import { useOrderBasket } from "@openmrs/esm-patient-common-lib";
 import { prepProceduresOrderPostData } from "../api";
 import { type ProceduresType, useProceduresTypes } from "./useProceduresTypes";
 import { createEmptyLabOrder } from "./procedures-order";
@@ -224,7 +222,7 @@ const TestTypeSearchResultItem: React.FC<TestTypeSearchResultItemProps> = ({
     setOrders([...orders, labOrder]);
     closeWorkspace("add-procedures-order", {
       ignoreChanges: true,
-      onWorkspaceClose: () => launchPatientWorkspace("order-basket"),
+      onWorkspaceClose: () => launchWorkspace("order-basket"),
     });
   }, [orders, setOrders, createLabOrder, testType]);
 
