@@ -132,7 +132,7 @@
   ],
   "workspaces": [
     {
-      "name": "add-procedure-order",
+      "name": "add-procedures-order",
       "type": "order",
       "title": "Add procedure order",
       "component": "addProceduresOrderWorkspace"
