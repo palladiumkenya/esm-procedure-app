@@ -3,12 +3,11 @@ import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import { Button, Tile } from "@carbon/react";
 import { Add, ChevronDown, ChevronUp } from "@carbon/react/icons";
-import { useLayoutType } from "@openmrs/esm-framework";
+import { useLayoutType, closeWorkspace } from "@openmrs/esm-framework";
 import {
   launchPatientWorkspace,
   type OrderBasketItem,
   useOrderBasket,
-  closeWorkspace,
 } from "@openmrs/esm-patient-common-lib";
 import { ProceduresOrderBasketItemTile } from "./procedures-order-basket-item-tile.component";
 import { prepProceduresOrderPostData } from "../api";

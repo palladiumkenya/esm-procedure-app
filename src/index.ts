@@ -17,7 +17,6 @@ import completedProcedures from "./procedure-tabs/completed-tab.component";
 import notDoneProcedures from "./procedure-tabs/not-done-tab.component";
 import addProcedureToWorklistDialog from "./procedures-ordered/pick-procedure-order/add-to-worklist-dialog.component";
 import procedureInstructionsModal from "./procedures-ordered/procedure-instructions/procedure-instructions.component";
-import { registerWorkspace } from "@openmrs/esm-patient-common-lib";
 import ProceduresOrderBasketPanelExtension from "./form/procedures-orders/procedures-order-basket-panel/procedures-order-basket-panel.extension";
 import rejectProcedureOrderDialog from "./procedures-ordered/reject-order-dialog/reject-procedure-order-dialog.component";
 import procedureRejectReasonModal from "./procedures-ordered/reject-reason/procedure-reject-reason.component";
@@ -25,7 +24,7 @@ import procedureRejectReasonModal from "./procedures-ordered/reject-reason/proce
 const moduleName = "@kenyaemr/esm-procedure-app";
 
 const options = {
-  featureName: "root-world",
+  featureName: "kenyaemr/esm-procedure-app",
   moduleName,
 };
 
@@ -103,19 +102,10 @@ export const proceduresOrderPanel = getSyncLifecycle(
 );
 
 // t('addProcedureOrderWorkspaceTitle', 'Add procedure order')
-registerWorkspace({
-  name: "add-procedures-order",
-  type: "order",
-  title: translateFrom(
-    moduleName,
-    "addProceduresOrderWorkspaceTitle",
-    "Add procedures order"
-  ),
-  load: getAsyncLifecycle(
-    () =>
-      import(
-        "./form/procedures-orders/add-procedures-order/add-procedures-order.workspace"
-      ),
-    options
-  ),
-});
+export const addProceduresOrderWorkspace = getAsyncLifecycle(
+  () =>
+    import(
+      "./form/procedures-orders/add-procedures-order/add-procedures-order.workspace"
+    ),
+  options
+);
