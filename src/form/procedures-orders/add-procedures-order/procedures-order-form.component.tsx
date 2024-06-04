@@ -1,19 +1,22 @@
 import React, { useCallback, useEffect, useState, useMemo } from "react";
 import classNames from "classnames";
-import { useOrderBasket } from "@openmrs/esm-patient-common-lib";
 import {
   type DefaultWorkspaceProps,
+  launchPatientWorkspace,
+  useOrderBasket,
+} from "@openmrs/esm-patient-common-lib";
+import {
   translateFrom,
   useLayoutType,
   useSession,
   useConfig,
-  launchWorkspace,
 } from "@openmrs/esm-framework";
 import {
   careSettingUuid,
   prepProceduresOrderPostData,
   useOrderReasons,
   useConceptById,
+  type Concept,
 } from "../api";
 import {
   Button,
@@ -186,7 +189,7 @@ export function ProceduresOrderForm({
       newOrders[orderIndex] = data;
       setOrders(newOrders);
       closeWorkspaceWithSavedChanges({
-        onWorkspaceClose: () => launchWorkspace("order-basket"),
+        onWorkspaceClose: () => launchPatientWorkspace("order-basket"),
       });
     },
     [
@@ -206,7 +209,7 @@ export function ProceduresOrderForm({
       )
     );
     closeWorkspace({
-      onWorkspaceClose: () => launchWorkspace("order-basket"),
+      onWorkspaceClose: () => launchPatientWorkspace("order-basket"),
     });
   }, [closeWorkspace, orders, setOrders, defaultValues]);
 

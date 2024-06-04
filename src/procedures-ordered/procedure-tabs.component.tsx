@@ -69,7 +69,6 @@ const ProcedureOrdersTabs: React.FC = () => {
                       key={extension.id}
                       value={{
                         moduleName: extension.moduleName,
-                        featureName: extension.meta.title,
                         extension: {
                           extensionId: extension.id,
                           extensionSlotName: procedurePanelSlot,

@@ -23,7 +23,6 @@ const ProcedureSummaryTiles: React.FC = () => {
             <ComponentContext.Provider
               key={extension.id}
               value={{
-                featureName: extension.meta.title,
                 moduleName: extension.moduleName,
                 extension: {
                   extensionId: extension.id,
