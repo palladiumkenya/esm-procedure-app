@@ -35,7 +35,6 @@ export default function AddProceduresOrderWorkspace({
   closeWorkspaceWithSavedChanges,
   promptBeforeClosing,
 }: AddProceduresOrderWorkspace) {
-  console.warn("Hey: We got here");
   const { t } = useTranslation();
 
   const { patient, isLoading: isLoadingPatient } = usePatient();
