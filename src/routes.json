@@ -129,13 +129,5 @@
       "component": "root",
       "route": "procedure"
     }
-  ],
-  "workspaces": [
-    {
-      "name": "add-procedure-order",
-      "type": "order",
-      "title": "Add procedure order",
-      "component": "addProceduresOrderWorkspace"
-    }
   ]
 }
