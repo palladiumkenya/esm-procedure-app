@@ -21,7 +21,7 @@
       "slot": "procedure-dashboard-slot"
     },
     {
-        "name": "ordered-tile-component",
+        "name": "procedures-ordered-tile-component",
         "slot": "procedure-tiles-slot",
         "component": "OrderedTileComponent",
         "meta": {
@@ -30,7 +30,7 @@
         }
     },
     {
-      "name": "worklist-tile-component",
+      "name": "procedures-worklist-tile-component",
       "slot": "procedure-tiles-slot",
       "component": "worklistTileComponent",
       "meta": {
@@ -39,7 +39,7 @@
       }
   },
   {
-    "name": "referred-tile-component",
+    "name": "procedures-referred-tile-component",
     "slot": "procedure-tiles-slot",
     "component": "referredOutTileComponent",
     "meta": {
@@ -48,7 +48,7 @@
     }
   },
   {
-    "name": "not-done-tile-component",
+    "name": "procedures-not-done-tile-component",
     "slot": "procedure-tiles-slot",
     "component": "notDoneTileComponent",
     "meta": {
@@ -57,7 +57,7 @@
     }
   },
   {
-    "name": "completed-tile-component",
+    "name": "procedures-completed-tile-component",
     "slot": "procedure-tiles-slot",
     "component": "completedTileComponent",
     "meta": {
@@ -66,7 +66,7 @@
     }
 },
     {
-      "name": "worklist-tab-component",
+      "name": "procedures-worklist-tab-component",
       "slot": "procedures-panels-slot",
       "component": "worklistProceduresTabComponent",
       "meta": {
@@ -75,7 +75,7 @@
       }
   },
     {
-      "name": "referred-tab-component",
+      "name": "procedures-referred-tab-component",
       "slot": "procedures-panels-slot",
       "component": "referredProceduresTabComponent",
       "meta": {
@@ -84,7 +84,7 @@
       }
   },
   {
-    "name": "not-done-tab-component",
+    "name": "procedures-not-done-tab-component",
     "slot": "procedures-panels-slot",
     "component": "notDoneProceduresTabComponent",
     "meta": {
@@ -93,7 +93,7 @@
     }
 },
   {
-    "name": "completed-tab-component",
+    "name": "procedures-completed-tab-component",
     "slot": "procedures-panels-slot",
     "component": "completedProceduresTabComponent",
     "meta": {
