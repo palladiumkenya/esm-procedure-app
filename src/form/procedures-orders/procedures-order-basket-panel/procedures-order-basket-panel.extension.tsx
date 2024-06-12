@@ -60,11 +60,9 @@ export default function ProceduresOrderBasketPanelExtension() {
   }, [orders]);
 
   const openNewProceduresForm = useCallback(() => {
-    console.warn("closing basket");
     closeWorkspace("order-basket", {
       ignoreChanges: true,
       onWorkspaceClose: () => {
-        console.warn("basket closed");
         launchPatientWorkspace("add-procedures-order");
       },
     });
