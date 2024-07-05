@@ -37,6 +37,7 @@ import { closeOverlay } from "../../components/overlay/hook";
 import { type ConfigObject, StringPath } from "../../config-schema";
 import { updateOrder } from "../../procedures-ordered/pick-procedure-order/add-to-worklist-dialog.resource";
 import { mutate } from "swr";
+import { closeWorkspace } from "@openmrs/esm-patient-common-lib";
 
 const validationSchema = z.object({
   startDatetime: z.date({ required_error: "Start datetime is required" }),
@@ -260,9 +261,12 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
                 value={value}
                 id="startDatetime"
                 labelText={t("startDatetime", "Start Datetime")}
-                onChange={onChange}
-                invalid={!!errors.startDatetime}
-                invalidText={errors.startDatetime?.message}
+                onChange={(calendar) =>
+                  onChange(
+                    new Date(calendar.year, calendar.month, calendar.day, 0, 0)
+                  )
+                }
+                isInvalid={!!errors.startDatetime}
               />
             )}
           />
@@ -276,9 +280,12 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
                 value={value}
                 id="endDatetime"
                 labelText={t("endDatetime", "End Datetime")}
-                onChange={onChange}
-                invalid={!!errors.endDatetime}
-                invalidText={errors.endDatetime?.message}
+                onChange={(calendar) =>
+                  onChange(
+                    new Date(calendar.year, calendar.month, calendar.day, 0, 0)
+                  )
+                }
+                isInvalid={!!errors.endDatetime}
               />
             )}
           />
@@ -500,7 +507,7 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
         </Layer>
       </Stack>
       <ButtonSet className={styles.buttonSetContainer}>
-        <Button size="lg" kind="secondary">
+        <Button onClick={() => closeOverlay()} size="lg" kind="secondary">
           {t("discard", "Discard")}
         </Button>
         <Button type="submit" size="lg" kind="primary">
