@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import styles from "./procedure-queue.scss";
 import ProcedureOrderedList from "./procedures-ordered-list.component";
 import { ComponentContext } from "@openmrs/esm-framework/src/internal";
+import { useProcedureOrderStats } from "../summary-tiles/procedure-summary.resource";
 
 const procedurePanelSlot = "procedures-panels-slot";
 
@@ -18,6 +19,29 @@ const ProcedureOrdersTabs: React.FC = () => {
   const tabExtensions = useConnectedExtensions(
     procedurePanelSlot
   ) as AssignedExtension[];
+
+  // Get individual statistics each tab using their fulfillerstatus
+  const activeOrdersStats = useProcedureOrderStats("");
+  const inProgressStats = useProcedureOrderStats("IN_PROGRESS");
+  const referredStats = useProcedureOrderStats("EXCEPTION");
+  const notDoneStats = useProcedureOrderStats("DECLINED");
+  const completedStats = useProcedureOrderStats("COMPLETED");
+
+  // Returns appropriate statistics based on their tab names
+  const getStatsForTab = (tabName: string) => {
+    switch (tabName) {
+      case "procedures-worklist-tab-component":
+        return inProgressStats;
+      case "procedures-referred-tab-component":
+        return referredStats;
+      case "procedures-not-done-tab-component":
+        return notDoneStats;
+      case "procedures-completed-tab-component":
+        return completedStats;
+      default:
+        return { count: 0, isLoading: false, isError: false };
+    }
+  };
 
   return (
     <main className={`omrs-main-content`}>
@@ -32,13 +56,16 @@ const ProcedureOrdersTabs: React.FC = () => {
             aria-label="Procedure tabs"
             contained
           >
-            <Tab>{t("proceduresOrdered", "Active Orders")}</Tab>
+            <Tab>
+              {t("proceduresOrdered", "Active Orders")} (
+              {activeOrdersStats.isLoading ? "..." : activeOrdersStats.count})
+            </Tab>
             {tabExtensions
               .filter((extension) => Object.keys(extension.meta).length > 0)
               .map((extension, index) => {
                 const { name, title } = extension.meta;
-
                 if (name && title) {
+                  const stats = getStatsForTab(extension.name);
                   return (
                     <Tab
                       key={index}
@@ -49,6 +76,7 @@ const ProcedureOrdersTabs: React.FC = () => {
                         ns: extension.moduleName,
                         defaultValue: title,
                       })}
+                      ({stats.isLoading ? "..." : stats.count})
                     </Tab>
                   );
                 } else {
