@@ -1,6 +1,6 @@
 {
   "name": "@kenyaemr/esm-procedure-app",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "license": "MPL-2.0",
   "description": "An OpenMRS seed application for building microfrontends",
   "browser": "dist/kenyaemr-esm-procedure-app.js",
@@ -55,8 +55,8 @@
     "zod": "^3.22.4"
   },
   "peerDependencies": {
-    "@openmrs/esm-framework": "*",
-    "@openmrs/esm-patient-common-lib": "8.x",
+    "@openmrs/esm-framework": "^5.6.0",
+    "@openmrs/esm-patient-common-lib": "^8.x",
     "dayjs": "1.x",
     "react": "18.x",
     "react-i18next": "11.x",
