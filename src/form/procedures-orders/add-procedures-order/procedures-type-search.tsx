@@ -17,10 +17,10 @@ import {
   useDebounce,
   useLayoutType,
   useSession,
+  closeWorkspace,
   ResponsiveWrapper,
 } from "@openmrs/esm-framework";
 import {
-  closeWorkspace,
   launchPatientWorkspace,
   useOrderBasket,
 } from "@openmrs/esm-patient-common-lib";
