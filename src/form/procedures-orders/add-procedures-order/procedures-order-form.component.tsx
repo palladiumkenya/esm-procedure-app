@@ -17,18 +17,26 @@ import {
   useOrderReasons,
   useConceptById,
   type Concept,
+  useBillableItem,
 } from "../api";
 import {
   Button,
   ButtonSet,
   Column,
   ComboBox,
+  Tile,
+  InlineLoading,
   DatePicker,
   DatePickerInput,
   Form,
   Layer,
   Grid,
   InlineNotification,
+  StructuredListWrapper,
+  StructuredListHead,
+  StructuredListRow,
+  StructuredListCell,
+  StructuredListBody,
   TextArea,
   NumberInput,
 } from "@carbon/react";
@@ -60,6 +68,8 @@ export function ProceduresOrderForm({
   const { t } = useTranslation();
   const isTablet = useLayoutType() === "tablet";
   const session = useSession();
+  const { billableItem } = useBillableItem(initialOrder?.testType.conceptUuid);
+
   const {
     orderConfigObject,
     isLoading: isLoadingOrderConfig,
@@ -221,7 +231,7 @@ export function ProceduresOrderForm({
 
   useEffect(() => {
     promptBeforeClosing(() => isDirty);
-  }, [isDirty]);
+  }, [isDirty, promptBeforeClosing]);
 
   const [showScheduleDate, setShowScheduleDate] = useState(false);
 
@@ -248,6 +258,42 @@ export function ProceduresOrderForm({
         id="procedureOrderForm"
       >
         <div className={styles.form}>
+          <Tile id="" className={styles.prices}>
+            {billableItem ? (
+              <div className={styles.listContainer}>
+                <StructuredListWrapper isCondensed>
+                  <StructuredListHead>
+                    <StructuredListRow head>
+                      <StructuredListCell head className={styles.cell}>
+                        {t("mode", "payment methods")}
+                      </StructuredListCell>
+                      <StructuredListCell head className={styles.cell}>
+                        {t("prices", "prices")}
+                      </StructuredListCell>
+                    </StructuredListRow>
+                  </StructuredListHead>
+                  <StructuredListBody>
+                    {billableItem.servicePrices.map((priceItem) => (
+                      <StructuredListRow key={priceItem.uuid}>
+                        <StructuredListCell className={styles.cell}>
+                          {priceItem.paymentMode.name}
+                        </StructuredListCell>
+                        <StructuredListCell className={styles.cell}>
+                          {priceItem.price}
+                        </StructuredListCell>
+                      </StructuredListRow>
+                    ))}
+                  </StructuredListBody>
+                </StructuredListWrapper>
+              </div>
+            ) : (
+              <InlineLoading
+                iconDescription="Loading"
+                description="Loading the prices..."
+              />
+            )}
+          </Tile>
+
           <Grid className={styles.gridRow}>
             <Column lg={16} md={8} sm={4}>
               <InputWrapper>

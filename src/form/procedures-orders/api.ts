@@ -284,6 +284,22 @@ export interface Concept extends BaseOpenmrsObject, Auditable, Retireable {
   fullySpecifiedName: ConceptName;
   answers: Concept[];
 }
+type BillableItemResponse = {
+  uuid: string;
+  name: string;
+  concept: {
+    uuid: string;
+    display: string;
+  };
+  servicePrices: Array<{
+    uuid: string;
+    price: number;
+    paymentMode: {
+      uuid: string;
+      name: string;
+    };
+  }>;
+};
 
 export function useConceptById(id: string) {
   const apiUrl = `ws/rest/v1/concept/${id}`;
@@ -299,3 +315,21 @@ export function useConceptById(id: string) {
     isError: error,
   };
 }
+export const useBillableItem = (billableItemId: string) => {
+  const customRepresentation = `v=custom:(uuid,name,concept:(uuid,display),servicePrices:(uuid,price,paymentMode:(uuid,name)))`;
+  const { data, error, isLoading } = useSWRImmutable<{
+    data: { results: Array<BillableItemResponse> };
+  }>(
+    `${restBaseUrl}/cashier/billableService?${customRepresentation}`,
+    openmrsFetch
+  );
+  const billableItem = data?.data?.results?.find(
+    (item) => item?.concept?.uuid === billableItemId
+  );
+
+  return {
+    billableItem: billableItem,
+    isLoading: isLoading,
+    error,
+  };
+};
