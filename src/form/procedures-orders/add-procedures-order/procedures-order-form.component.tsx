@@ -268,7 +268,7 @@ export function ProceduresOrderForm({
                         {t("paymentMethods", "Payment methods")}
                       </StructuredListCell>
                       <StructuredListCell head className={styles.cell}>
-                        {t("prices", "prices")}
+                        {t("prices", "Prices")}
                       </StructuredListCell>
                     </StructuredListRow>
                   </StructuredListHead>
