@@ -4891,7 +4891,7 @@ __metadata:
     "@hookform/resolvers": ^3.3.4
     "@openmrs/esm-extensions": next
     "@openmrs/esm-framework": next
-    "@openmrs/esm-patient-common-lib": next
+    "@openmrs/esm-patient-common-lib": "*"
     "@openmrs/esm-react-utils": next
     "@openmrs/esm-styleguide": next
     "@playwright/test": ^1.30.0
@@ -4945,7 +4945,7 @@ __metadata:
     zod: ^3.22.4
   peerDependencies:
     "@openmrs/esm-framework": ^5.6.0
-    "@openmrs/esm-patient-common-lib": ^8.x
+    "@openmrs/esm-patient-common-lib": 8.x
     dayjs: 1.x
     react: 18.x
     react-i18next: 11.x
@@ -5829,9 +5829,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openmrs/esm-patient-common-lib@npm:next":
-  version: 7.0.2-pre.4066
-  resolution: "@openmrs/esm-patient-common-lib@npm:7.0.2-pre.4066"
+"@openmrs/esm-patient-common-lib@npm:*":
+  version: 8.0.0
+  resolution: "@openmrs/esm-patient-common-lib@npm:8.0.0"
   dependencies:
     "@carbon/react": ^1.12.0
     lodash-es: ^4.17.21
@@ -5840,7 +5840,7 @@ __metadata:
     "@openmrs/esm-framework": 5.x
     react: 18.x
     single-spa: 6.x
-  checksum: cb9e9c6127365b6bf7e387aa59cbfc313b05e033539cae130e57818252d494c7cbbeeeabd1a0eec21e84a2bad5f3b50dccbe9fbc9e53758de9801aa20f1500d0
+  checksum: 53143bc1e0c0e1f51c9ef52c14de099d2ce7d494fa58d2a11beaf1a5d952d07ca6cef5282aacd623968f9620e9f7e1914a2e6dd4a3c6ad54b47d1e3d35274f44
   languageName: node
   linkType: hard
 
