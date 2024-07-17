@@ -250,7 +250,7 @@ export function ProceduresOrderForm({
       >
         <div className={styles.form}>
           <ExtensionSlot
-            name="top-of-lab-order-form-slot"
+            name="top-of-procedure-order-form-slot"
             state={{ order: initialOrder }}
           />
 
