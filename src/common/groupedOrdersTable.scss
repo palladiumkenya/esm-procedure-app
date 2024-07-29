@@ -1,0 +1,46 @@
+@use '@carbon/layout';
+@use '@carbon/colors';
+@use '@openmrs/esm-styleguide/src/vars' as *;
+@use '@carbon/styles/scss/spacing';
+@use '@carbon/styles/scss/type';
+
+.tableContainer {
+  background-color: $ui-01;
+  margin: 0 spacing.$spacing-05;
+  padding: 0;
+
+  a {
+    text-decoration: none;
+  }
+
+  th {
+    color: $text-02;
+  }
+
+  :global(.cds--data-table) {
+    background-color: $ui-03;
+  }
+
+  .toolbarContent {
+    height: spacing.$spacing-07;
+    margin-bottom: spacing.$spacing-02;
+  }
+}
+  .noOrdersDiv{
+    background-color: #fff;
+    text-align: center;
+    font-weight:bold;
+    width: 100%;
+  }
+  
+  .ordersTableToolbar{
+    position: static;
+    height: 3rem;
+    overflow: visible;
+    margin: 0;
+  }
+
+  .ordersToolbarSearchBar{
+    background-color:#f4f4f4 ;
+  }
+  
