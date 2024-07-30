@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { GroupedOrders } from "../common/commonProps.resource";
+import { GroupedOrders } from "../types";
 
 export function useSearchGroupedResults(
   data: Array<GroupedOrders>,

@@ -2,7 +2,6 @@ import React, { useMemo, useState } from "react";
 import styles from "./groupedOrdersTable.scss";
 import { useTranslation } from "react-i18next";
 import { formatDate, parseDate, usePagination } from "@openmrs/esm-framework";
-import { GroupedOrdersTableProps } from "./commonProps.resource";
 import { useSearchGroupedResults } from "../hooks/useSearchGroupedResults";
 import {
   Table,
@@ -27,6 +26,7 @@ import {
 } from "@carbon/react";
 import ListOrderDetails from "./listOrderDetails.component";
 import Overlay from "../components/overlay/overlay.component";
+import { GroupedOrdersTableProps, OrderStatusFilterType } from "../types";
 
 //  render Grouped by patient Orders in procedures app
 const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
@@ -46,15 +46,7 @@ const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
     "DECLINED",
   ];
 
-  const [filter, setFilter] = useState<
-    | "All"
-    | "EXCEPTION"
-    | "RECEIVED"
-    | "COMPLETED"
-    | "IN_PROGRESS"
-    | "ON_HOLD"
-    | "DECLINED"
-  >("All");
+  const [filter, setFilter] = useState<OrderStatusFilterType>("All");
 
   const filteredEntries = useMemo(() => {
     if (!filter || filter == "All") {
@@ -104,23 +96,23 @@ const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
 
   const pageSizes = [10, 20, 30, 40, 50];
 
-  const rowsdata = useMemo(() => {
+  const rowsData = useMemo(() => {
     return paginatedResults.map((patient) => ({
       id: patient.patientId,
-      patientname: patient.orders[0].patient?.display?.split("-")[1],
+      patientName: patient.orders[0].patient?.display?.split("-")[1],
       orders: patient.orders,
-      totalorders: patient.orders?.length,
+      totalOrders: patient.orders?.length,
     }));
   }, [paginatedResults]);
 
   const tableColumns = [
-    { id: 0, header: t("patient", "Patient"), key: "patientname" },
-    { id: 1, header: t("totalorders", "Total Orders"), key: "totalorders" },
+    { id: 0, header: t("patient", "Patient"), key: "patientName" },
+    { id: 1, header: t("totalorders", "Total Orders"), key: "totalOrders" },
   ];
   return (
     <div>
       <DataTable
-        rows={rowsdata}
+        rows={rowsData}
         headers={tableColumns}
         useZebraStyles
         overflowMenuOnHover={true}
@@ -147,7 +139,7 @@ const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
                       initialSelectedItem={"All"}
                       label=""
                       titleText={
-                        t("filterOrdersByStatus", "Filter Orders by status") +
+                        t("filterOrdersByStatus", "Filter orders by status") +
                         ":"
                       }
                       type="inline"
@@ -226,7 +218,7 @@ const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
                       style={{ textAlign: "center" }}
                       className={styles.noOrdersDiv}
                     >
-                      {t("noOrderAvailable", "No Orders Availalble")}
+                      {t("noOrderAvailable", "No orders available")}
                     </TableCell>
                   </TableRow>
                 )}

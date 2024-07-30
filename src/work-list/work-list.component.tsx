@@ -1,19 +1,11 @@
 import React, { useState, useMemo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { Result } from "./work-list.resource";
 import styles from "./work-list.scss";
 import Overlay from "../components/overlay/overlay.component";
 import { useOrdersWorklist } from "../hooks/useOrdersWorklist";
 import GroupedOrdersTable from "../common/groupedOrdersTable.component";
 import { DataTableSkeleton } from "@carbon/react";
-interface WorklistProps {
-  fulfillerStatus: string;
-}
-
-interface ResultsOrderProps {
-  order: Result;
-  patientUuid: string;
-}
+import { WorklistProps } from "../types";
 
 const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
   const { t } = useTranslation();

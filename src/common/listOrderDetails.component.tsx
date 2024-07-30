@@ -2,19 +2,12 @@ import React, { useMemo, useState } from "react";
 import styles from "./listOrderDetails.scss";
 
 import { useTranslation } from "react-i18next";
-import {
-  formatDate,
-  openmrsFetch,
-  parseDate,
-  restBaseUrl,
-  showModal,
-  showSnackbar,
-} from "@openmrs/esm-framework";
-import { ListOrdersDetailsProps } from "./commonProps.resource";
+import { formatDate, parseDate, showModal } from "@openmrs/esm-framework";
 import { launchOverlay } from "../components/overlay/hook";
 import { Button, Tile } from "@carbon/react";
 import { OrderDetail } from "./orderDetail.component";
 import PostProcedureForm from "../form/post-procedures/post-procedure-form.component";
+import { ListOrdersDetailsProps } from "../types";
 
 // can render orders of a patient
 const ListOrderDetails: React.FC<ListOrdersDetailsProps> = (props) => {
