@@ -1,12 +1,11 @@
 @use '@carbon/layout';
 @use '@carbon/colors';
 @use '@openmrs/esm-styleguide/src/vars' as *;
-@use '@carbon/layout';
 @use '@carbon/styles/scss/type';
 
 .tableContainer {
   background-color: $ui-01;
-  margin: 0 spacing.$spacing-05;
+  margin: layout.$spacing-05;
   padding: 0;
 
   a {
@@ -22,8 +21,8 @@
   }
 
   .toolbarContent {
-    height: spacing.$spacing-07;
-    margin-bottom: spacing.$spacing-02;
+    height: layout.$spacing-07;
+    margin-bottom: layout.$spacing-02;
   }
 }
   .noOrdersDiv{
