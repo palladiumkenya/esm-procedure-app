@@ -1,7 +1,7 @@
 import { ConfigObject, openmrsFetch, useConfig } from "@openmrs/esm-framework";
 import useSWR from "swr";
-import { Result } from "../work-list/work-list.resource";
 import { ProcedureConceptClass_UUID } from "../constants";
+import { Result } from "../types";
 export function useOrdersWorklist(
   activatedOnOrAfterDate: string,
   fulfillerStatus: string

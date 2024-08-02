@@ -12,8 +12,8 @@ import { useTranslation } from "react-i18next";
 import styles from "./add-to-worklist-dialog.scss";
 import { showNotification, showSnackbar } from "@openmrs/esm-framework";
 import { updateOrder } from "./add-to-worklist-dialog.resource";
-import { Result } from "../../work-list/work-list.resource";
 import { mutate } from "swr";
+import { Result } from "../../types";
 
 interface AddProcedureToWorklistDialogProps {
   queueId;

@@ -10,10 +10,10 @@ import {
 } from "@carbon/react";
 import { useTranslation } from "react-i18next";
 import styles from "./reject-order-dialog.scss";
-import { Result } from "../../work-list/work-list.resource";
 import { showNotification, showSnackbar } from "@openmrs/esm-framework";
 import { mutate } from "swr";
 import { updateOrder } from "../pick-procedure-order/add-to-worklist-dialog.resource";
+import { Result } from "../../types";
 interface RejectProcedureOrderDialogProps {
   order: Result;
   closeModal: () => void;

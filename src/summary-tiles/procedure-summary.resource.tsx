@@ -1,16 +1,13 @@
 import useSWR, { mutate } from "swr";
-import useSWRImmutable from "swr/immutable";
 import {
   ConfigObject,
-  FetchResponse,
   openmrsFetch,
   restBaseUrl,
   useConfig,
 } from "@openmrs/esm-framework";
-
-import { Result } from "../work-list/work-list.resource";
 import { useCallback } from "react";
 import { ProcedureConceptClass_UUID } from "../constants";
+import { Result } from "../types";
 
 export function useMetrics() {
   const metrics = {
