@@ -225,6 +225,7 @@ export function ProceduresOrderForm({
   }, [isDirty]);
 
   const [showScheduleDate, setShowScheduleDate] = useState(false);
+  const [hasPrice, setHasPrice] = useState(true); // State to track if the billable item has a price
 
   return (
     <>
@@ -247,11 +248,12 @@ export function ProceduresOrderForm({
         className={styles.orderForm}
         onSubmit={handleSubmit(handleFormSubmission, onError)}
         id="procedureOrderForm"
+        disabled={!hasPrice}
       >
         <div className={styles.form}>
           <ExtensionSlot
             name="top-of-procedure-order-form-slot"
-            state={{ order: initialOrder }}
+            state={{ order: initialOrder, setHasPrice }}
           />
 
           <Grid className={styles.gridRow}>
@@ -273,7 +275,7 @@ export function ProceduresOrderForm({
                           : t("testTypePlaceholder", "Select one")
                       }
                       onBlur={onBlur}
-                      disabled={isLoadingTestTypes}
+                      disabled={isLoadingTestTypes || !hasPrice}
                       onChange={({ selectedItem }) => onChange(selectedItem)}
                       invalid={errors.testType?.message}
                       invalidText={errors.testType?.message}
@@ -301,6 +303,7 @@ export function ProceduresOrderForm({
                       }
                       items={priorityOptions}
                       onBlur={onBlur}
+                      disabled={!hasPrice}
                       onChange={({ selectedItem }) => {
                         onChange(selectedItem?.value || "");
                         setShowScheduleDate(
@@ -329,6 +332,7 @@ export function ProceduresOrderForm({
                           value={value}
                           onChange={([newStartDate]) => onChange(newStartDate)}
                           onBlur={onBlur}
+                          disabled={!hasPrice}
                           ref={ref}
                         >
                           <DatePickerInput
@@ -361,6 +365,7 @@ export function ProceduresOrderForm({
                         itemToString={(item) => item?.display}
                         items={orderReasons}
                         onBlur={onBlur}
+                        disabled={!hasPrice}
                         onChange={({ selectedItem }) =>
                           onChange(selectedItem?.uuid || "")
                         }
@@ -384,6 +389,7 @@ export function ProceduresOrderForm({
                       size="lg"
                       id="bodySiteInput"
                       titleText={t("bodySite", "Body Site")}
+                      disabled={!hasPrice}
                       selectedItem={
                         bodySiteItems?.find(
                           (option) => option.uuid === value
@@ -414,6 +420,7 @@ export function ProceduresOrderForm({
                       enableCounter
                       id="numberOfRepeats"
                       label={t("numberOfRepeats", "Number Of Repeats")}
+                      disabled={!hasPrice}
                       min={0}
                       hideSteppers={false}
                       value={value}
@@ -451,7 +458,7 @@ export function ProceduresOrderForm({
                       invalid={errors.frequency?.message}
                       invalidText={errors.frequency?.message}
                       itemToString={(item) => item?.value}
-                      disabled={isLoadingOrderConfig}
+                      disabled={isLoadingOrderConfig || !hasPrice}
                       placeholder={
                         isLoadingOrderConfig
                           ? `${t("loading", "Loading")}...`
@@ -473,6 +480,7 @@ export function ProceduresOrderForm({
                     <TextArea
                       enableCounter
                       id="additionalInstructionsInput"
+                      disabled={!hasPrice}
                       size="lg"
                       labelText={t(
                         "additionalInstructions",
@@ -500,6 +508,7 @@ export function ProceduresOrderForm({
                     <TextArea
                       enableCounter
                       id="commentsToFulfillerInput"
+                      disabled={!hasPrice}
                       size="lg"
                       labelText={t(
                         "commentsToFulfiller",
@@ -551,6 +560,7 @@ export function ProceduresOrderForm({
               kind="primary"
               type="submit"
               size="xl"
+              disabled={!hasPrice}
             >
               {t("saveOrder", "Save order")}
             </Button>
