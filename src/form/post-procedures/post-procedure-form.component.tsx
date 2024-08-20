@@ -142,6 +142,17 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
   );
 
   const onSubmit = async (data: PostProcedureFormSchema) => {
+    if (!data.startDatetime || !data.endDatetime) {
+      // Handle the error case when dates are invalid or missing
+      showSnackbar({
+        title: t("error", "Error"),
+        subtitle: t("invalidDates", "Invalid or missing dates"),
+        timeoutInMs: 5000,
+        isLowContrast: true,
+        kind: "error",
+      });
+      return;
+    }
     const participants = [];
     selectedParticipants.forEach((p) => {
       const provider = {
@@ -173,8 +184,8 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
       status: "COMPLETED",
       outcome: data.outcome,
       location: sessionLocation?.uuid,
-      startDatetime: dayjs(data.startDatetime).format("YYYY-MM-DDTHH:mm:ssZ"),
-      endDatetime: dayjs(data.endDatetime).format("YYYY-MM-DDTHH:mm:ssZ"),
+      startDatetime: dayjs(data.startDatetime).format("YYYY-MM-DDTHH:mm:ss"),
+      endDatetime: dayjs(data.endDatetime).format("YYYY-MM-DDTHH:mm:ss"),
       procedureReport: data.procedureReport,
       encounters: [
         {
@@ -264,12 +275,9 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
                 value={value}
                 id="startDatetime"
                 labelText={t("startDatetime", "Start Datetime")}
-                onChange={(calendar) =>
-                  onChange(
-                    new Date(calendar.year, calendar.month, calendar.day, 0, 0)
-                  )
-                }
+                onChange={onChange}
                 isInvalid={!!errors.startDatetime}
+                autoFocus
               />
             )}
           />
@@ -283,11 +291,7 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
                 value={value}
                 id="endDatetime"
                 labelText={t("endDatetime", "End Datetime")}
-                onChange={(calendar) =>
-                  onChange(
-                    new Date(calendar.year, calendar.month, calendar.day, 0, 0)
-                  )
-                }
+                onChange={onChange}
                 isInvalid={!!errors.endDatetime}
               />
             )}
