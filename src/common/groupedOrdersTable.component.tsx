@@ -27,6 +27,7 @@ import {
 import ListOrderDetails from "./listOrderDetails.component";
 import Overlay from "../components/overlay/overlay.component";
 import { GroupedOrdersTableProps, OrderStatusFilterType } from "../types";
+import TransitionLatestQueueEntryButton from "../procedures-ordered/transition-patient-new-queue/transition-latest-queue-entry-button.component";
 
 //  render Grouped by patient Orders in procedures app
 const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
@@ -102,13 +103,26 @@ const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
       patientName: patient.orders[0].patient?.display?.split("-")[1],
       orders: patient.orders,
       totalOrders: patient.orders?.length,
+      fulfillerStatus: patient.orders[0].fulfillerStatus,
+      action:
+        patient.orders[0].fulfillerStatus === "COMPLETED" ? (
+          <TransitionLatestQueueEntryButton patientUuid={patient.patientId} />
+        ) : null,
     }));
   }, [paginatedResults]);
 
+  const showActionColumn = filteredEntries.some(
+    (order) => order.fulfillerStatus === "COMPLETED"
+  );
+
   const tableColumns = [
-    { id: 0, header: t("patient", "Patient"), key: "patientName" },
+    { id: 0, header: t("patientName", "Patient Name"), key: "patientName" },
     { id: 1, header: t("totalorders", "Total Orders"), key: "totalOrders" },
+    ...(showActionColumn
+      ? [{ id: 2, header: t("action", "Action"), key: "action" }]
+      : []),
   ];
+
   return (
     <div>
       <DataTable
